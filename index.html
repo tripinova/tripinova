@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TRIPINOVA – Dein persönlicher Reiseplaner</title>
+<meta name="description" content="TRIPINOVA – Deine Reise. Neu gedacht.">
+<style>
+:root{--navy:#0b2940;--teal:#087f83;--bg:#f4f7f7;--muted:#637887;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--navy)}
+header{background:#fff;border-bottom:1px solid #e4eaec;position:sticky;top:0;z-index:5}
+.nav{max-width:1100px;margin:auto;padding:18px 22px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:Georgia,serif;font-weight:700;letter-spacing:3px;font-size:28px}.logo span{color:var(--teal)}
+.btn{border:0;border-radius:12px;padding:13px 20px;font-weight:700;cursor:pointer}.primary{background:var(--teal);color:white}.secondary{background:#edf2f3;color:var(--navy)}
+.hero{max-width:1100px;margin:28px auto;padding:0 22px;display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
+.hero h1{font-size:52px;line-height:1.02;margin:0 0 16px}.hero p{font-size:20px;color:var(--muted);line-height:1.5}
+.card{background:white;border-radius:22px;padding:26px;box-shadow:0 10px 30px #12314212}
+.form label{display:block;font-size:13px;font-weight:700;margin:14px 0 7px}.form input,.form select{width:100%;padding:13px;border:1px solid #d8e1e4;border-radius:10px;font-size:15px}
+.grid{max-width:1100px;margin:28px auto;padding:0 22px}.section-title{display:flex;justify-content:space-between;align-items:end;margin:35px 0 14px}.section-title h2{margin:0;font-size:28px}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.feature{background:white;padding:20px;border-radius:18px}.feature b{display:block;margin:8px 0}.muted{color:var(--muted)}
+.results{display:none}.route{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stop{background:white;border-radius:16px;padding:16px;border-left:5px solid var(--teal)}
+.budget{display:grid;grid-template-columns:1fr 1fr;gap:18px}.budgetbox{background:white;border-radius:18px;padding:20px}.line{display:flex;justify-content:space-between;border-bottom:1px solid #edf0f1;padding:10px 0}.total{font-size:24px;font-weight:800;margin-top:12px}
+.offer{background:white;border-radius:18px;padding:20px;margin:12px 0;display:flex;justify-content:space-between;gap:15px;align-items:center}
+.badge{display:inline-block;background:#e3f4f3;color:#086b6d;padding:6px 9px;border-radius:20px;font-size:12px;font-weight:700}
+footer{margin-top:60px;background:var(--navy);color:white;padding:35px 22px;text-align:center}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.hero h1{font-size:40px}.features,.route,.budget{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.features,.route,.budget{grid-template-columns:1fr}.nav{padding:14px}.hero,.grid{padding:0 14px}.hero h1{font-size:36px}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="logo">TRIP<span>INOVA</span></div><button class="btn secondary" onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">Meine Reise</button></div></header>
+
+<section class="hero">
+<div><span class="badge">SMART TRAVEL PLANNER</span><h1>Deine Reise.<br><span style="color:var(--teal)">Neu gedacht.</span></h1>
+<p>TRIPINOVA plant deine Reise passend zu deinen Wünschen und deinem Budget – mit Route, Hotels, Flügen, Mietwagen und Ausflügen an einem Ort.</p>
+<button class="btn primary" onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">Reise planen →</button></div>
+<div class="card form" id="planner"><h2 style="margin-top:0">Erzähle uns von deiner Reise</h2>
+<label>Reiseziel</label><input id="destination" placeholder="z. B. Mexiko, Bali, Italien">
+<label>Reisedatum</label><input id="dates" placeholder="z. B. 10.–25. April 2027">
+<label>Reisende</label><select id="travellers"><option>2 Erwachsene</option><option>2 Erwachsene, 1 Kind</option><option>2 Erwachsene, 2 Kinder</option><option>4 Erwachsene</option></select>
+<label>Budget (CHF)</label><input id="budget" type="number" value="8000">
+<button class="btn primary" style="width:100%;margin-top:18px" onclick="plan()">Meine Reise erstellen →</button>
+</div></section>
+
+<div class="grid">
+<section><div class="section-title"><h2>Warum TRIPINOVA?</h2></div><div class="features">
+<div class="feature">🧠<b>Persönlich geplant</b><span class="muted">Deine Wünsche stehen im Mittelpunkt.</span></div>
+<div class="feature">💰<b>Budget im Blick</b><span class="muted">Du bestimmst, was du ausgeben möchtest.</span></div>
+<div class="feature">🗺️<b>Alles in einer Reise</b><span class="muted">Route, Hotels und Aktivitäten übersichtlich.</span></div>
+<div class="feature">🛒<b>Du buchst selbst</b><span class="muted">TRIPINOVA zeigt dir, wo du buchen kannst.</span></div>
+</div></section>
+
+<section class="results" id="results">
+<div class="section-title"><h2 id="resultTitle">Deine Reise</h2><span class="badge">TRIPINOVA PLAN</span></div>
+<div class="card"><p class="muted">Wir haben einen ersten Vorschlag für dich erstellt. Du kannst die Kosten später anpassen.</p>
+<div class="route">
+<div class="stop"><b>01</b><br>✈️ Anreise<br><span class="muted">Flug</span></div>
+<div class="stop"><b>02</b><br>🏨 Aufenthalt<br><span class="muted">Hotel</span></div>
+<div class="stop"><b>03</b><br>🎯 Erlebnisse<br><span class="muted">Ausflüge</span></div>
+<div class="stop"><b>04</b><br>✈️ Rückreise<br><span class="muted">Flug</span></div>
+</div></div>
+
+<div class="section-title"><h2>Budget</h2></div>
+<div class="budget"><div class="budgetbox">
+<div class="line"><span>✈️ Flug</span><b id="flight">CHF 2'200</b></div>
+<div class="line"><span>🏨 Hotels</span><b id="hotel">CHF 3'200</b></div>
+<div class="line"><span>🚗 Mietwagen / Transfer</span><b id="car">CHF 650</b></div>
+<div class="line"><span>🎯 Ausflüge</span><b id="activities">CHF 650</b></div>
+<div class="line"><span>🍽️ Essen</span><b id="food">CHF 500</b></div>
+<div class="total">Total: <span id="total">CHF 7'200</span></div>
+</div><div class="budgetbox"><h3>Budget anpassen</h3><p class="muted">Dein Gesamtbudget: <b id="budgetText">CHF 8'000</b></p>
+<input id="budgetSlider" type="range" min="2000" max="30000" step="100" value="8000" style="width:100%" oninput="adjustBudget(this.value)">
+<p class="muted">Schiebe den Regler und TRIPINOVA passt die Planung an.</p></div></div>
+
+<div class="section-title"><h2>Deine Buchungsmöglichkeiten</h2></div>
+<div class="offer"><div><span class="badge">FLUG</span><h3>Passende Flugangebote</h3><span class="muted">Du buchst direkt beim Anbieter.</span></div><button class="btn primary" onclick="alert('Hier wird später unser echter Affiliate-Link eingebaut.')">Angebote ansehen</button></div>
+<div class="offer"><div><span class="badge">HOTEL</span><h3>Passende Hotels</h3><span class="muted">Preis und Bewertung vergleichen.</span></div><button class="btn primary" onclick="alert('Hier wird später unser echter Hotel-Affiliate-Link eingebaut.')">Hotels ansehen</button></div>
+<div class="offer"><div><span class="badge">AKTIVITÄT</span><h3>Ausflüge & Erlebnisse</h3><span class="muted">Aktivitäten passend zu deiner Route.</span></div><button class="btn primary" onclick="alert('Hier wird später unser echter Aktivitäts-Affiliate-Link eingebaut.')">Ausflüge ansehen</button></div>
+</section></div>
+
+<footer><div class="logo">TRIP<span>INOVA</span></div><p>Deine Reise. Neu gedacht.</p><small>Prototyp – Buchungsanbieter und Affiliate-Links werden in der nächsten Phase integriert.</small></footer>
+
+<script>
+function money(n){return 'CHF '+Math.round(n).toLocaleString('de-CH')}
+function plan(){
+ const d=document.getElementById('destination').value||'deine Reise';
+ document.getElementById('resultTitle').textContent='Deine TRIPINOVA-Reise nach '+d;
+ document.getElementById('budgetText').textContent=money(+document.getElementById('budget').value||8000);
+ document.getElementById('budgetSlider').value=+document.getElementById('budget').value||8000;
+ document.getElementById('results').style.display='block';
+ document.getElementById('results').scrollIntoView({behavior:'smooth'});
+ adjustBudget(document.getElementById('budgetSlider').value);
+}
+function adjustBudget(v){
+ v=+v; document.getElementById('budgetText').textContent=money(v);
+ const flight=v*.28, hotel=v*.40, car=v*.08, act=v*.09, food=v*.07;
+ document.getElementById('flight').textContent=money(flight);
+ document.getElementById('hotel').textContent=money(hotel);
+ document.getElementById('car').textContent=money(car);
+ document.getElementById('activities').textContent=money(act);
+ document.getElementById('food').textContent=money(food);
+ document.getElementById('total').textContent=money(flight+hotel+car+act+food);
+}
+</script>
+</body></html>

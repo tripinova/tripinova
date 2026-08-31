@@ -1,105 +1,1048 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TRIPINOVA – Dein persönlicher Reiseplaner</title>
-<meta name="description" content="TRIPINOVA – Deine Reise. Neu gedacht.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TRIPINOVA – Deine Reise. Neu gedacht.</title>
+
 <style>
-:root{--navy:#0b2940;--teal:#087f83;--bg:#f4f7f7;--muted:#637887;--white:#fff}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--navy)}
-header{background:#fff;border-bottom:1px solid #e4eaec;position:sticky;top:0;z-index:5}
-.nav{max-width:1100px;margin:auto;padding:18px 22px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:Georgia,serif;font-weight:700;letter-spacing:3px;font-size:28px}.logo span{color:var(--teal)}
-.btn{border:0;border-radius:12px;padding:13px 20px;font-weight:700;cursor:pointer}.primary{background:var(--teal);color:white}.secondary{background:#edf2f3;color:var(--navy)}
-.hero{max-width:1100px;margin:28px auto;padding:0 22px;display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
-.hero h1{font-size:52px;line-height:1.02;margin:0 0 16px}.hero p{font-size:20px;color:var(--muted);line-height:1.5}
-.card{background:white;border-radius:22px;padding:26px;box-shadow:0 10px 30px #12314212}
-.form label{display:block;font-size:13px;font-weight:700;margin:14px 0 7px}.form input,.form select{width:100%;padding:13px;border:1px solid #d8e1e4;border-radius:10px;font-size:15px}
-.grid{max-width:1100px;margin:28px auto;padding:0 22px}.section-title{display:flex;justify-content:space-between;align-items:end;margin:35px 0 14px}.section-title h2{margin:0;font-size:28px}
-.features{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.feature{background:white;padding:20px;border-radius:18px}.feature b{display:block;margin:8px 0}.muted{color:var(--muted)}
-.results{display:none}.route{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stop{background:white;border-radius:16px;padding:16px;border-left:5px solid var(--teal)}
-.budget{display:grid;grid-template-columns:1fr 1fr;gap:18px}.budgetbox{background:white;border-radius:18px;padding:20px}.line{display:flex;justify-content:space-between;border-bottom:1px solid #edf0f1;padding:10px 0}.total{font-size:24px;font-weight:800;margin-top:12px}
-.offer{background:white;border-radius:18px;padding:20px;margin:12px 0;display:flex;justify-content:space-between;gap:15px;align-items:center}
-.badge{display:inline-block;background:#e3f4f3;color:#086b6d;padding:6px 9px;border-radius:20px;font-size:12px;font-weight:700}
-footer{margin-top:60px;background:var(--navy);color:white;padding:35px 22px;text-align:center}
-@media(max-width:800px){.hero{grid-template-columns:1fr}.hero h1{font-size:40px}.features,.route,.budget{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.features,.route,.budget{grid-template-columns:1fr}.nav{padding:14px}.hero,.grid{padding:0 14px}.hero h1{font-size:36px}}
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7f8;
+    color: #09283f;
+}
+
+header {
+    background: white;
+    border-bottom: 1px solid #dde5e8;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav {
+    max-width: 1180px;
+    margin: auto;
+    padding: 18px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: Georgia, serif;
+    font-size: 29px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.logo span {
+    color: #0b8588;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 13px 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary {
+    background: #0b8588;
+    color: white;
+}
+
+.secondary {
+    background: #edf3f4;
+    color: #09283f;
+}
+
+.hero {
+    max-width: 1180px;
+    margin: 40px auto;
+    padding: 0 25px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 35px;
+    align-items: center;
+}
+
+.hero h1 {
+    font-family: Georgia, serif;
+    font-size: 58px;
+    line-height: 1.02;
+    margin: 20px 0;
+}
+
+.hero h1 span {
+    color: #0b8588;
+}
+
+.hero p {
+    color: #647985;
+    font-size: 19px;
+    line-height: 1.6;
+}
+
+.badge {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 20px;
+    background: #e2f4f3;
+    color: #08696c;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.card {
+    background: white;
+    border-radius: 22px;
+    padding: 27px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.07);
+}
+
+.form label {
+    display: block;
+    margin: 14px 0 7px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.form input,
+.form select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d9e2e5;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+main {
+    max-width: 1180px;
+    margin: auto;
+    padding: 0 25px;
+}
+
+.section {
+    margin: 45px 0;
+}
+
+.section h2 {
+    font-family: Georgia, serif;
+    font-size: 31px;
+    margin-bottom: 18px;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.feature {
+    background: white;
+    border-radius: 17px;
+    padding: 21px;
+}
+
+.feature b {
+    display: block;
+    margin: 9px 0;
+}
+
+.muted {
+    color: #647985;
+    line-height: 1.5;
+}
+
+.results {
+    display: none;
+}
+
+.route {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.stop {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    border-top: 4px solid #0b8588;
+}
+
+.stop strong {
+    display: block;
+    margin: 8px 0;
+}
+
+.budget {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 18px;
+}
+
+.budget-box {
+    background: white;
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.line {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf0f1;
+}
+
+.total {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 17px;
+}
+
+.slider {
+    width: 100%;
+}
+
+.booking-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.booking {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.booking h3 {
+    margin: 10px 0;
+}
+
+.booking button {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.map {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+}
+
+.map-route {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.map-point {
+    background: #e2f4f3;
+    color: #08696c;
+    padding: 12px 17px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+.arrow {
+    font-size: 20px;
+    color: #0b8588;
+}
+
+footer {
+    margin-top: 60px;
+    background: #09283f;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+@media(max-width:850px) {
+
+    .hero {
+        grid-template-columns: 1fr;
+    }
+
+    .features,
+    .booking-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .route {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .budget {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width:520px) {
+
+    .hero h1 {
+        font-size: 42px;
+    }
+
+    .features,
+    .booking-grid,
+    .route {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 </head>
+
 <body>
-<header><div class="nav"><div class="logo">TRIP<span>INOVA</span></div><button class="btn secondary" onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">Meine Reise</button></div></header>
+
+<header>
+
+<div class="nav">
+
+<div class="logo">
+TRIP<span>INOVA</span>
+</div>
+
+<button class="secondary"
+onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">
+Meine Reise
+</button>
+
+</div>
+
+</header>
+
 
 <section class="hero">
-<div><span class="badge">SMART TRAVEL PLANNER</span><h1>Deine Reise.<br><span style="color:var(--teal)">Neu gedacht.</span></h1>
-<p>TRIPINOVA plant deine Reise passend zu deinen Wünschen und deinem Budget – mit Route, Hotels, Flügen, Mietwagen und Ausflügen an einem Ort.</p>
-<button class="btn primary" onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">Reise planen →</button></div>
-<div class="card form" id="planner"><h2 style="margin-top:0">Erzähle uns von deiner Reise</h2>
-<label>Reiseziel</label><input id="destination" placeholder="z. B. Mexiko, Bali, Italien">
-<label>Reisedatum</label><input id="dates" placeholder="z. B. 10.–25. April 2027">
-<label>Reisende</label><select id="travellers"><option>2 Erwachsene</option><option>2 Erwachsene, 1 Kind</option><option>2 Erwachsene, 2 Kinder</option><option>4 Erwachsene</option></select>
-<label>Budget (CHF)</label><input id="budget" type="number" value="8000">
-<button class="btn primary" style="width:100%;margin-top:18px" onclick="plan()">Meine Reise erstellen →</button>
-</div></section>
 
-<div class="grid">
-<section><div class="section-title"><h2>Warum TRIPINOVA?</h2></div><div class="features">
-<div class="feature">🧠<b>Persönlich geplant</b><span class="muted">Deine Wünsche stehen im Mittelpunkt.</span></div>
-<div class="feature">💰<b>Budget im Blick</b><span class="muted">Du bestimmst, was du ausgeben möchtest.</span></div>
-<div class="feature">🗺️<b>Alles in einer Reise</b><span class="muted">Route, Hotels und Aktivitäten übersichtlich.</span></div>
-<div class="feature">🛒<b>Du buchst selbst</b><span class="muted">TRIPINOVA zeigt dir, wo du buchen kannst.</span></div>
-</div></section>
+<div>
 
-<section class="results" id="results">
-<div class="section-title"><h2 id="resultTitle">Deine Reise</h2><span class="badge">TRIPINOVA PLAN</span></div>
-<div class="card"><p class="muted">Wir haben einen ersten Vorschlag für dich erstellt. Du kannst die Kosten später anpassen.</p>
+<span class="badge">
+SMART TRAVEL PLANNER
+</span>
+
+<h1>
+Deine Reise.<br>
+<span>Neu gedacht.</span>
+</h1>
+
+<p>
+TRIPINOVA hilft dir, deine komplette Reise einfach zu planen.
+Reiseziel, Hotels, Flüge, Mietwagen, Aktivitäten,
+Route und Budget – alles übersichtlich an einem Ort.
+</p>
+
+</div>
+
+
+<div class="card form" id="planner">
+
+<h2>Reise planen</h2>
+
+<label>Reiseziel</label>
+
+<input
+id="destination"
+placeholder="z. B. Mexico, Bali, Italien">
+
+
+<label>Abflugort</label>
+
+<input
+id="from"
+placeholder="z. B. Zürich">
+
+
+<label>Reisedaten</label>
+
+<input
+id="dates"
+placeholder="z. B. 10.–25. April 2027">
+
+
+<label>Reisende</label>
+
+<select id="travellers">
+
+<option>2 Erwachsene</option>
+
+<option>2 Erwachsene, 1 Kind</option>
+
+<option>2 Erwachsene, 2 Kinder</option>
+
+<option>3 Erwachsene</option>
+
+<option>4 Erwachsene</option>
+
+</select>
+
+
+<label>Gesamtbudget CHF</label>
+
+<input
+id="budget"
+type="number"
+value="8000">
+
+
+<button
+class="primary"
+style="width:100%;margin-top:18px"
+onclick="createTrip()">
+
+Meine Reise erstellen →
+
+</button>
+
+</div>
+
+</section>
+
+
+<main>
+
+
+<section class="section">
+
+<h2>Warum TRIPINOVA?</h2>
+
+<div class="features">
+
+<div class="feature">
+🧠
+<b>Persönlich geplant</b>
+<span class="muted">
+Deine Wünsche bestimmen die Reise.
+</span>
+</div>
+
+<div class="feature">
+💰
+<b>Budget im Griff</b>
+<span class="muted">
+Du bestimmst dein Reisebudget.
+</span>
+</div>
+
+<div class="feature">
+🗺️
+<b>Alles an einem Ort</b>
+<span class="muted">
+Route, Hotels, Flüge und Aktivitäten.
+</span>
+</div>
+
+<div class="feature">
+🛒
+<b>Du buchst selbst</b>
+<span class="muted">
+Wir zeigen dir, wo du buchen kannst.
+</span>
+</div>
+
+</div>
+
+</section>
+
+
+<section class="section results" id="results">
+
+<h2 id="tripTitle">
+Deine Reise
+</h2>
+
+
+<div class="card">
+
+<p class="muted">
+
+Dein persönlicher Reiseentwurf.
+
+</p>
+
+
 <div class="route">
-<div class="stop"><b>01</b><br>✈️ Anreise<br><span class="muted">Flug</span></div>
-<div class="stop"><b>02</b><br>🏨 Aufenthalt<br><span class="muted">Hotel</span></div>
-<div class="stop"><b>03</b><br>🎯 Erlebnisse<br><span class="muted">Ausflüge</span></div>
-<div class="stop"><b>04</b><br>✈️ Rückreise<br><span class="muted">Flug</span></div>
-</div></div>
 
-<div class="section-title"><h2>Budget</h2></div>
-<div class="budget"><div class="budgetbox">
-<div class="line"><span>✈️ Flug</span><b id="flight">CHF 2'200</b></div>
-<div class="line"><span>🏨 Hotels</span><b id="hotel">CHF 3'200</b></div>
-<div class="line"><span>🚗 Mietwagen / Transfer</span><b id="car">CHF 650</b></div>
-<div class="line"><span>🎯 Ausflüge</span><b id="activities">CHF 650</b></div>
-<div class="line"><span>🍽️ Essen</span><b id="food">CHF 500</b></div>
-<div class="total">Total: <span id="total">CHF 7'200</span></div>
-</div><div class="budgetbox"><h3>Budget anpassen</h3><p class="muted">Dein Gesamtbudget: <b id="budgetText">CHF 8'000</b></p>
-<input id="budgetSlider" type="range" min="2000" max="30000" step="100" value="8000" style="width:100%" oninput="adjustBudget(this.value)">
-<p class="muted">Schiebe den Regler und TRIPINOVA passt die Planung an.</p></div></div>
+<div class="stop">
+01
+<strong>✈️ Flug</strong>
+<span class="muted">Anreise</span>
+</div>
 
-<div class="section-title"><h2>Deine Buchungsmöglichkeiten</h2></div>
-<div class="offer"><div><span class="badge">FLUG</span><h3>Passende Flugangebote</h3><span class="muted">Du buchst direkt beim Anbieter.</span></div><button class="btn primary" onclick="window.open('https://www.google.com/travel/flights?q='+encodeURIComponent('Flüge nach '+document.getElementById('destination').value+' '+document.getElementById('dates').value),'_blank')">Angebote ansehen</button></div>
-<div class="offer"><div><span class="badge">HOTEL</span><h3>Passende Hotels</h3><span class="muted">Preis und Bewertung vergleichen.</span></div><button class="btn primary" onclick="window.open('https://www.google.com/travel/search?q='+encodeURIComponent('Hotels in '+document.getElementById('destination').value+' '+document.getElementById('dates').value),'_blank')">Hotels ansehen</button></div>
-<div class="offer"><div><span class="badge">AKTIVITÄTEN</span><h3>Ausflüge & Erlebnisse</h3><span class="muted">Aktivitäten passend zu deiner Reise.</span></div><button class="btn primary" onclick="window.open('https://www.google.com/search?q='+encodeURIComponent('Ausflüge Aktivitäten '+document.getElementById('destination').value),'_blank')">Ausflüge ansehen</button></div>
-</section></div>
+<div class="stop">
+02
+<strong>🏨 Hotel</strong>
+<span class="muted">Unterkunft</span>
+</div>
 
-<footer><div class="logo">TRIP<span>INOVA</span></div><p>Deine Reise. Neu gedacht.</p><small>Prototyp – Buchungsanbieter und Affiliate-Links werden in der nächsten Phase integriert.</small></footer>
+<div class="stop">
+03
+<strong>🚗 Mietwagen</strong>
+<span class="muted">Mobilität</span>
+</div>
+
+<div class="stop">
+04
+<strong>🎯 Aktivitäten</strong>
+<span class="muted">Erlebnisse</span>
+</div>
+
+<div class="stop">
+05
+<strong>✈️ Rückflug</strong>
+<span class="muted">Heimreise</span>
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="section">
+
+<h2>Budget</h2>
+
+<div class="budget">
+
+
+<div class="budget-box">
+
+<div class="line">
+<span>✈️ Flüge</span>
+<b id="flightCost">CHF 2'240</b>
+</div>
+
+<div class="line">
+<span>🏨 Hotels</span>
+<b id="hotelCost">CHF 3'200</b>
+</div>
+
+<div class="line">
+<span>🚗 Mietwagen / Transfer</span>
+<b id="carCost">CHF 640</b>
+</div>
+
+<div class="line">
+<span>🎯 Aktivitäten</span>
+<b id="activityCost">CHF 720</b>
+</div>
+
+<div class="line">
+<span>🍽️ Essen</span>
+<b id="foodCost">CHF 560</b>
+</div>
+
+<div class="total">
+Total:
+<span id="totalCost">
+CHF 7'360
+</span>
+</div>
+
+</div>
+
+
+<div class="budget-box">
+
+<h3>
+Budget anpassen
+</h3>
+
+<p class="muted">
+
+Dein Budget:
+<b id="budgetDisplay">
+CHF 8'000
+</b>
+
+</p>
+
+<input
+class="slider"
+id="budgetSlider"
+type="range"
+min="2000"
+max="30000"
+step="100"
+value="8000"
+oninput="updateBudget(this.value)">
+
+<p class="muted">
+
+Bewege den Regler und die Kostenverteilung
+wird automatisch angepasst.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="section">
+
+<h2>
+Buchen & entdecken
+</h2>
+
+
+<div class="booking-grid">
+
+
+<div class="booking">
+
+<span class="badge">
+FLUG
+</span>
+
+<h3>
+Flugangebote
+</h3>
+
+<span class="muted">
+Flüge für deine Reise suchen.
+</span>
+
+<button
+class="primary"
+onclick="searchFlights()">
+
+Flüge suchen
+
+</button>
+
+</div>
+
+
+
+<div class="booking">
+
+<span class="badge">
+HOTEL
+</span>
+
+<h3>
+Hotels
+</h3>
+
+<span class="muted">
+Hotels am Reiseziel vergleichen.
+</span>
+
+<button
+class="primary"
+onclick="searchHotels()">
+
+Hotels suchen
+
+</button>
+
+</div>
+
+
+
+<div class="booking">
+
+<span class="badge">
+MIETWAGEN
+</span>
+
+<h3>
+Mietwagen
+</h3>
+
+<span class="muted">
+Mietwagen am Reiseziel suchen.
+</span>
+
+<button
+class="primary"
+onclick="searchCars()">
+
+Mietwagen suchen
+
+</button>
+
+</div>
+
+
+
+<div class="booking">
+
+<span class="badge">
+AKTIVITÄTEN
+</span>
+
+<h3>
+Ausflüge
+</h3>
+
+<span class="muted">
+Erlebnisse und Aktivitäten entdecken.
+</span>
+
+<button
+class="primary"
+onclick="searchActivities()">
+
+Ausflüge suchen
+
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<div class="section">
+
+<h2>
+Deine Route
+</h2>
+
+<div class="map">
+
+<p class="muted">
+Deine geplante Reise:
+</p>
+
+<div class="map-route">
+
+<div class="map-point" id="routeFrom">
+Zürich
+</div>
+
+<div class="arrow">
+→
+</div>
+
+<div class="map-point" id="routeDestination">
+Reiseziel
+</div>
+
+<div class="arrow">
+→
+</div>
+
+<div class="map-point">
+Rückreise
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="section">
+
+<h2>
+Reiseübersicht
+</h2>
+
+<div class="card">
+
+<p>
+<strong>📍 Reiseziel:</strong>
+<span id="overviewDestination">
+–
+</span>
+</p>
+
+<p>
+<strong>📅 Reisedaten:</strong>
+<span id="overviewDates">
+–
+</span>
+</p>
+
+<p>
+<strong>✈️ Abflug:</strong>
+<span id="overviewFrom">
+–
+</span>
+</p>
+
+<p>
+<strong>👨‍👩‍👧‍👦 Reisende:</strong>
+<span id="overviewTravellers">
+–
+</span>
+</p>
+
+</div>
+
+</div>
+
+
+</section>
+
+</main>
+
+
+<footer>
+
+<div class="logo">
+TRIP<span>INOVA</span>
+</div>
+
+<p>
+Deine Reise. Neu gedacht.
+</p>
+
+</footer>
+
 
 <script>
-function money(n){return 'CHF '+Math.round(n).toLocaleString('de-CH')}
-function plan(){
- const d=document.getElementById('destination').value||'deine Reise';
- document.getElementById('resultTitle').textContent='Deine TRIPINOVA-Reise nach '+d;
- document.getElementById('budgetText').textContent=money(+document.getElementById('budget').value||8000);
- document.getElementById('budgetSlider').value=+document.getElementById('budget').value||8000;
- document.getElementById('results').style.display='block';
- document.getElementById('results').scrollIntoView({behavior:'smooth'});
- adjustBudget(document.getElementById('budgetSlider').value);
+
+function value(id) {
+
+return document.getElementById(id).value;
+
 }
-function adjustBudget(v){
- v=+v; document.getElementById('budgetText').textContent=money(v);
- const flight=v*.28, hotel=v*.40, car=v*.08, act=v*.09, food=v*.07;
- document.getElementById('flight').textContent=money(flight);
- document.getElementById('hotel').textContent=money(hotel);
- document.getElementById('car').textContent=money(car);
- document.getElementById('activities').textContent=money(act);
- document.getElementById('food').textContent=money(food);
- document.getElementById('total').textContent=money(flight+hotel+car+act+food);
+
+
+function money(number) {
+
+return "CHF " +
+Math.round(number).toLocaleString("de-CH");
+
 }
+
+
+function createTrip() {
+
+const destination =
+value("destination") || "Deine Reise";
+
+const from =
+value("from") || "Zürich";
+
+const dates =
+value("dates") || "Noch nicht angegeben";
+
+const travellers =
+value("travellers");
+
+const budget =
+Number(value("budget")) || 8000;
+
+
+document.getElementById("tripTitle").textContent =
+"Deine Reise nach " + destination;
+
+
+document.getElementById("overviewDestination").textContent =
+destination;
+
+document.getElementById("overviewDates").textContent =
+dates;
+
+document.getElementById("overviewFrom").textContent =
+from;
+
+document.getElementById("overviewTravellers").textContent =
+travellers;
+
+
+document.getElementById("routeFrom").textContent =
+from;
+
+document.getElementById("routeDestination").textContent =
+destination;
+
+
+document.getElementById("budgetSlider").value =
+budget;
+
+
+updateBudget(budget);
+
+
+document.getElementById("results").style.display =
+"block";
+
+
+document.getElementById("results").scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+
+function updateBudget(budget) {
+
+budget = Number(budget);
+
+
+document.getElementById("budgetDisplay").textContent =
+money(budget);
+
+
+const flights =
+budget * 0.28;
+
+const hotels =
+budget * 0.40;
+
+const cars =
+budget * 0.08;
+
+const activities =
+budget * 0.09;
+
+const food =
+budget * 0.07;
+
+
+document.getElementById("flightCost").textContent =
+money(flights);
+
+document.getElementById("hotelCost").textContent =
+money(hotels);
+
+document.getElementById("carCost").textContent =
+money(cars);
+
+document.getElementById("activityCost").textContent =
+money(activities);
+
+document.getElementById("foodCost").textContent =
+money(food);
+
+
+document.getElementById("totalCost").textContent =
+money(
+flights +
+hotels +
+cars +
+activities +
+food
+);
+
+}
+
+
+function searchFlights() {
+
+const destination =
+value("destination");
+
+const from =
+value("from");
+
+const dates =
+value("dates");
+
+
+const search =
+"Flüge von " +
+from +
+" nach " +
+destination +
+" " +
+dates;
+
+
+window.open(
+"https://www.google.com/travel/flights?q=" +
+encodeURIComponent(search),
+"_blank"
+);
+
+}
+
+
+function searchHotels() {
+
+const destination =
+value("destination");
+
+const dates =
+value("dates");
+
+
+const search =
+"Hotels in " +
+destination +
+" " +
+dates;
+
+
+window.open(
+"https://www.google.com/travel/search?q=" +
+encodeURIComponent(search),
+"_blank"
+);
+
+}
+
+
+function searchCars() {
+
+const destination =
+value("destination");
+
+
+const search =
+"Mietwagen " +
+destination;
+
+
+window.open(
+"https://www.google.com/search?q=" +
+encodeURIComponent(search),
+"_blank"
+);
+
+}
+
+
+function searchActivities() {
+
+const destination =
+value("destination");
+
+
+const search =
+"Ausflüge Aktivitäten Sehenswürdigkeiten " +
+destination;
+
+
+window.open(
+"https://www.google.com/search?q=" +
+encodeURIComponent(search),
+"_blank"
+);
+
+}
+
+
+updateBudget(8000);
+
 </script>
-</body></html>
+
+</body>
+</html>

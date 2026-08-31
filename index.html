@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TRIPINOVA – Persönlicher Reiseplaner</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
 <style>
 :root{--navy:#09283f;--teal:#0b8588;--light:#e9f5f4;--bg:#f4f7f8;--line:#d9e4e6;--muted:#667b85;--gold:#d9a51c;--white:#fff}
 *{box-sizing:border-box}
@@ -19,7 +18,6 @@ button{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:poin
 .hero{padding:42px 0 20px;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
 .hero h1{font:58px/1.03 Georgia,serif;margin:20px 0}.hero h1 span{color:var(--teal)}
 .hero p{font-size:19px;line-height:1.6;color:var(--muted)}
-.badge{display:inline-block;background:var(--light);color:#08696c;border-radius:20px;padding:7px 11px;font-size:11px;font-weight:800;letter-spacing:.5px}
 .card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 10px 30px rgba(9,40,63,.07)}
 .form label{display:block;font-size:13px;font-weight:700;margin:12px 0 7px}
 input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:15px}
@@ -37,9 +35,11 @@ input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:
 .placecard{background:#fff;border:2px solid transparent;border-radius:15px;padding:14px;cursor:pointer;text-align:left}
 .placecard.selected{border-color:var(--teal);background:var(--light)}
 .placecard h4{margin:7px 0 5px}.placecard small{color:var(--muted);line-height:1.4}
-.emoji{font-size:23px;display:block;margin-bottom:5px}.stars{margin-top:6px}.star{font-size:18px;color:#ccd5d8;cursor:pointer}.star.active{color:var(--gold)}
+.emoji{font-size:23px;display:block;margin-bottom:5px}
 .stylegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.choice{background:#fff;border:2px solid transparent;border-radius:15px;padding:16px;cursor:pointer}.choice.selected{border-color:var(--teal);background:var(--light)}
 .routecards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.routecard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:19px}.routecard.best{border:2px solid var(--teal)}.routecard h3{margin:9px 0}.routecard button{width:100%;margin-top:10px}
+.badge{display:inline-block;background:var(--light);color:#08696c;border-radius:20px;padding:7px 11px;font-size:11px;font-weight:800;letter-spacing:.5px}
+.notice{background:#fff8e2;border:1px solid #f0d47a;padding:13px 15px;border-radius:12px;color:#6b5411}
 .routebar{background:#eaf3f3;border-radius:20px;padding:20px}.route-line{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:20px 0}.point{background:#fff;border:2px solid var(--teal);padding:10px 14px;border-radius:25px;font-weight:700}.arrow{color:var(--teal);font-size:19px}
 .editor{display:grid;gap:11px}.stop{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;grid-template-columns:55px 1fr auto;gap:13px;align-items:center}.stopnum{color:var(--teal);font-weight:800}.stop h3{margin:0 0 5px}.stop-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.night{display:flex;align-items:center;gap:5px}.night button{padding:6px 10px}.night span{min-width:25px;text-align:center;font-weight:700}
 .mapbox{background:#e7f0ef;border-radius:20px;padding:22px;min-height:150px}
@@ -58,22 +58,11 @@ input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:
 .route-card-mini{min-width:170px;background:#f7faf9;border:1px solid var(--line);padding:14px;border-radius:14px}
 .route-card-mini .mini-num{font-size:11px;color:var(--teal);font-weight:800}.route-card-mini h4{margin:6px 0}.route-card-mini small{color:var(--muted)}
 .route-connector{min-width:38px;display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:20px;font-weight:800}
-.notice{background:#fff8e2;border:1px solid #f0d47a;padding:13px 15px;border-radius:12px;color:#6b5411}
-footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;padding:38px}
 .hidden{display:none}
-@media(max-width:900px){
-.hero{grid-template-columns:1fr}.countries,.routecards{grid-template-columns:1fr 1fr}
-.interests{grid-template-columns:repeat(3,1fr)}.bookinggrid{grid-template-columns:1fr 1fr}
-.budget{grid-template-columns:1fr}
-}
-@media(max-width:700px){
-.route-summary{grid-template-columns:1fr 1fr}.finalroute-map{height:340px}
-}
-@media(max-width:600px){
-.grid2,.stylegrid,.countries,.routecards,.bookinggrid{grid-template-columns:1fr}
-.interests{grid-template-columns:1fr 1fr}.stop{grid-template-columns:45px 1fr}
-.stop-actions{grid-column:2;justify-content:flex-start}.hero h1{font-size:43px}
-}
+footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;padding:38px}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.countries,.routecards{grid-template-columns:1fr 1fr}.interests{grid-template-columns:repeat(3,1fr)}.bookinggrid{grid-template-columns:1fr 1fr}.budget{grid-template-columns:1fr}}
+@media(max-width:700px){.route-summary{grid-template-columns:1fr 1fr}.finalroute-map{height:340px}}
+@media(max-width:600px){.grid2,.stylegrid,.countries,.routecards,.bookinggrid{grid-template-columns:1fr}.interests{grid-template-columns:1fr 1fr}.stop{grid-template-columns:45px 1fr}.stop-actions{grid-column:2;justify-content:flex-start}.hero h1{font-size:43px}}
 </style>
 </head>
 
@@ -89,71 +78,179 @@ footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;paddi
 <div class="container">
 
 <section class="hero">
+
 <div>
 <span class="badge">DEINE REISE. NEU GEDACHT.</span>
-<h1>Eine fertige Reise.<br><span>Aber nach deinen Regeln.</span></h1>
-<p>Wähle dein Land, deine Interessen und die gewünschte Anzahl Orte. TRIPINOVA schlägt dir konkrete Routen vor – und du kannst jeden Ort, jede Nacht und die Reihenfolge danach selbst verändern.</p>
+
+<h1>
+Eine fertige Reise.<br>
+<span>Aber nach deinen Regeln.</span>
+</h1>
+
+<p>
+Wähle dein Land, deine Interessen und die gewünschte Anzahl Orte.
+TRIPINOVA schlägt dir konkrete Routen vor – und du kannst jeden Ort,
+jede Nacht und die Reihenfolge danach selbst verändern.
+</p>
 </div>
 
+
 <div class="card form" id="planner">
+
 <h2>1. Reise festlegen</h2>
 
 <label>Land</label>
+
 <select id="country" onchange="countryChanged()">
-<option value="">Bitte Land auswählen</option>
-<option value="thailand">🇹🇭 Thailand</option>
-<option value="indonesia">🇮🇩 Indonesien</option>
-<option value="mexico">🇲🇽 Mexico</option>
+
+<option value="">
+Bitte Land auswählen
+</option>
+
+<option value="thailand">
+🇹🇭 Thailand
+</option>
+
+<option value="indonesia">
+🇮🇩 Indonesien
+</option>
+
+<option value="mexico">
+🇲🇽 Mexico
+</option>
+
 </select>
 
+
 <div class="grid2">
-<div><label>Abflugort</label><input id="from" placeholder="z. B. Zürich"></div>
-<div><label>Reisedauer</label><input id="days" type="number" value="14" min="3" max="60"></div>
+
+<div>
+<label>Abflugort</label>
+<input id="from" placeholder="z. B. Zürich">
 </div>
+
+<div>
+<label>Reisedauer</label>
+<input id="days" type="number" value="14" min="3" max="60">
+</div>
+
+</div>
+
 
 <label>Reisedaten</label>
-<input id="dates" placeholder="z. B. 10.–24. April 2027">
 
-<label>Wie viele Orte möchtest du besuchen?</label>
+<input
+id="dates"
+placeholder="z. B. 10.–24. April 2027"
+>
+
+
+<label>
+Wie viele Orte möchtest du besuchen?
+</label>
+
 <select id="placeCount">
-<option value="3">3 Orte – entspannt</option>
-<option value="4">4 Orte – ruhig & ausgewogen</option>
-<option value="5" selected>5 Orte – ausgewogen</option>
-<option value="6">6 Orte – viel sehen</option>
-<option value="7">7 Orte – intensiv</option>
+
+<option value="3">
+3 Orte – entspannt
+</option>
+
+<option value="4">
+4 Orte – ruhig & ausgewogen
+</option>
+
+<option value="5" selected>
+5 Orte – ausgewogen
+</option>
+
+<option value="6">
+6 Orte – viel sehen
+</option>
+
+<option value="7">
+7 Orte – intensiv
+</option>
+
 </select>
 
+
 <label>Reisende</label>
+
 <div class="grid2">
-<div>
-<div class="counter">
-<button type="button" onclick="changeAdults(-1)">−</button>
-<div id="adultCount">2</div>
-<button type="button" onclick="changeAdults(1)">+</button>
-</div>
-<small>Erwachsene</small>
-</div>
 
 <div>
+
 <div class="counter">
-<button type="button" onclick="changeChildren(-1)">−</button>
-<div id="childCount">2</div>
-<button type="button" onclick="changeChildren(1)">+</button>
+
+<button type="button" onclick="changeAdults(-1)">
+−
+</button>
+
+<div id="adultCount">
+2
 </div>
+
+<button type="button" onclick="changeAdults(1)">
++
+</button>
+
+</div>
+
+<small>Erwachsene</small>
+
+</div>
+
+
+<div>
+
+<div class="counter">
+
+<button type="button" onclick="changeChildren(-1)">
+−
+</button>
+
+<div id="childCount">
+2
+</div>
+
+<button type="button" onclick="changeChildren(1)">
++
+</button>
+
+</div>
+
 <small>Kinder</small>
+
 </div>
+
 </div>
+
 
 <div class="children" id="childrenBox">
+
 <b>Alter der Kinder</b>
+
 <div id="childrenAges"></div>
+
 </div>
+
 
 <label>Budget CHF</label>
+
 <input id="budget" type="number" value="8000">
 
-<button class="primary" style="width:100%;margin-top:16px" onclick="goToPreferences()">Weiter zu Interessen →</button>
+
+<button
+class="primary"
+style="width:100%;margin-top:16px"
+onclick="goToPreferences()">
+
+Weiter zu Interessen →
+
+</button>
+
 </div>
+
 </section>
 
 
@@ -162,19 +259,37 @@ footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;paddi
 <div id="countryIntro" class="card" style="margin-bottom:15px"></div>
 
 <div class="card" style="margin-bottom:15px">
-<h3 style="margin-top:0">Oder wähle Orte, die du unbedingt sehen möchtest</h3>
-<p class="muted">Diese Orte werden bei der persönlichen Route bevorzugt berücksichtigt.</p>
+
+<h3 style="margin-top:0">
+Oder wähle Orte, die du unbedingt sehen möchtest
+</h3>
+
+<p class="muted">
+Diese Orte werden bei der persönlichen Route bevorzugt berücksichtigt.
+</p>
+
 <div id="placeChoices" class="interests"></div>
+
 </div>
 
-<h2>2. Was möchtest du erleben?</h2>
-<p class="muted">Diese Auswahl beeinflusst, welche Route TRIPINOVA zuerst empfiehlt.</p>
+<h2>
+2. Was möchtest du erleben?
+</h2>
+
+<p class="muted">
+Diese Auswahl beeinflusst, welche Route TRIPINOVA zuerst empfiehlt.
+</p>
+
 <div class="interests" id="interests"></div>
+
 </section>
 
 
 <section class="section hidden" id="styleSection">
-<h2>3. Wie möchtest du reisen?</h2>
+
+<h2>
+3. Wie möchtest du reisen?
+</h2>
 
 <div class="stylegrid">
 
@@ -209,17 +324,25 @@ footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;paddi
 </div>
 
 </div>
+
 </section>
 
 
 <section class="section hidden" id="routeSection">
 
 <div class="notice">
+
 ✨ <b>TRIPINOVA Empfehlung:</b>
-Du bekommst mehrere konkrete Reiserouten. Wähle eine aus und passe sie danach selbst an.
+
+Du bekommst mehrere konkrete Reiserouten.
+Wähle eine aus und passe sie danach selbst an.
+
 </div>
 
-<h2 style="margin-top:24px">4. Konkrete Routenvorschläge</h2>
+
+<h2 style="margin-top:24px">
+4. Konkrete Routenvorschläge
+</h2>
 
 <p class="muted">
 Du bekommst komplette Reisen statt einzelner Bausteine.
@@ -233,7 +356,9 @@ Wähle eine Route – danach kannst du sie komplett verändern.
 
 <section class="section hidden" id="customSection">
 
-<h2>5. Deine Reise selbst bearbeiten</h2>
+<h2>
+5. Deine Reise selbst bearbeiten
+</h2>
 
 <p class="muted">
 Du kannst Orte entfernen, Nächte verändern,
@@ -244,7 +369,9 @@ die Reihenfolge verschieben oder einen weiteren Ort hinzufügen.
 
 <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:15px">
 
-<button class="secondary" onclick="addStop()">＋ Ort hinzufügen</button>
+<button class="secondary" onclick="addStop()">
+＋ Ort hinzufügen
+</button>
 
 <button class="primary" onclick="refreshTrip()">
 ✨ Reise aktualisieren
@@ -263,24 +390,46 @@ die Reihenfolge verschieben oder einen weiteren Ort hinzufügen.
 
 <div>
 
-<span class="badge">DEINE FERTIGE REISE</span>
+<span class="badge">
+DEINE FERTIGE REISE
+</span>
 
 <h2 id="finalRouteTitle">
 Deine Route
 </h2>
 
 <p class="muted">
-Die komplette Reise auf einen Blick – mit Karte, Etappen und Nächten.
+Die komplette Reise auf einen Blick – mit Karte,
+Etappen und Nächten.
 </p>
 
 </div>
 
-<button class="secondary"
+
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+
+<button
+class="secondary"
 onclick="document.getElementById('customSection').scrollIntoView({behavior:'smooth'})">
+
 ✏️ Reise bearbeiten
+
+</button>
+
+<button class="primary" onclick="saveTrip()">
+💾 Reise speichern
+</button>
+
+<button class="secondary" onclick="loadTrip()">
+↩️ Gespeicherte Reise
 </button>
 
 </div>
+
+</div>
+
+
+<div id="saveMessage" class="notice" style="display:none;margin-top:12px"></div>
 
 
 <div id="finalRealMap" class="finalroute-map"></div>
@@ -318,11 +467,14 @@ onclick="document.getElementById('customSection').scrollIntoView({behavior:'smoo
 
 <div class="section">
 
-<h2>6. Deine komplette Reise</h2>
+<h2>
+6. Deine komplette Reise
+</h2>
 
 <div class="card" style="margin-bottom:15px">
 <b id="tripMeta"></b>
 </div>
+
 
 <div class="routebar">
 
@@ -334,7 +486,9 @@ onclick="document.getElementById('customSection').scrollIntoView({behavior:'smoo
 
 <div class="mapbox">
 
-<b>🗺️ Routenübersicht</b>
+<b>
+🗺️ Routenübersicht
+</b>
 
 <p class="muted">
 Die grosse Karte oben zeigt deine komplette Reise.
@@ -343,6 +497,8 @@ Die grosse Karte oben zeigt deine komplette Reise.
 
 <div class="maphint" id="mapSummary"></div>
 
+<div id="realMap"></div>
+
 </div>
 
 </div>
@@ -352,7 +508,9 @@ Die grosse Karte oben zeigt deine komplette Reise.
 
 <div class="section">
 
-<h2>📅 Etappenplan</h2>
+<h2>
+📅 Etappenplan
+</h2>
 
 <div class="itinerary" id="itinerary"></div>
 
@@ -361,7 +519,9 @@ Die grosse Karte oben zeigt deine komplette Reise.
 
 <div class="section">
 
-<h2>💰 Reisebudget</h2>
+<h2>
+💰 Reisebudget
+</h2>
 
 <div class="budget">
 
@@ -402,7 +562,9 @@ Planungsbudget:
 
 <div class="budgetbox">
 
-<h3>Budget ändern</h3>
+<h3>
+Budget ändern
+</h3>
 
 <p class="muted">
 CHF <b id="budgetDisplay"></b>
@@ -415,7 +577,8 @@ max="30000"
 step="100"
 value="8000"
 id="budgetSlider"
-oninput="updateBudget(this.value)">
+oninput="updateBudget(this.value)"
+>
 
 </div>
 
@@ -426,7 +589,9 @@ oninput="updateBudget(this.value)">
 
 <div class="section">
 
-<h2>🔗 Reise buchen</h2>
+<h2>
+🔗 Reise buchen
+</h2>
 
 <div class="bookinggrid">
 
@@ -454,7 +619,7 @@ oninput="updateBudget(this.value)">
 <div class="booking">
 <span class="badge">ERLEBNIS</span>
 <h3>Aktivitäten</h3>
-<span class="muted">Ausflüge passend zur Route.</span>
+<span class="muted">Ausflüge passend zur Route suchen.</span>
 <button class="primary" onclick="searchActivities()">Aktivitäten suchen</button>
 </div>
 
@@ -570,7 +735,6 @@ mexico:[
 const coords={
 
 Bangkok:[13.7563,100.5018],
-Ayutthaya:[14.3532,100.5689],
 "Chiang Mai":[18.7883,98.9853],
 "Khao Sok":[8.936,98.532],
 Krabi:[8.0863,98.9063],
@@ -723,7 +887,6 @@ let selectedRoute=0;
 let currentStops=[];
 let map=null;
 let mapLayer=null;
-
 let interests={};
 
 
@@ -745,7 +908,7 @@ const interestData=[
 
 function money(n){
 
-return "CHF " +
+return "CHF "+
 Math.round(n).toLocaleString("de-CH");
 
 }
@@ -753,9 +916,11 @@ Math.round(n).toLocaleString("de-CH");
 
 function countryChanged(){
 
-country=document.getElementById("country").value;
+country=
+document.getElementById("country").value;
 
-if(!country)return;
+if(!country)
+return;
 
 renderCountryPlaces();
 
@@ -772,11 +937,17 @@ mexico:
 
 };
 
-document.getElementById("countryIntro").innerHTML=
+document.getElementById(
+"countryIntro"
+).innerHTML=
 
 "<span class='badge'>"+
-document.getElementById("country").options[
-document.getElementById("country").selectedIndex
+document.getElementById(
+"country"
+).options[
+document.getElementById(
+"country"
+).selectedIndex
 ].textContent+
 "</span><h3>"+
 intro[country]+
@@ -789,13 +960,17 @@ renderPlaceChoices();
 
 function renderPlaceChoices(){
 
-const box=document.getElementById("placeChoices");
+const box=
+document.getElementById(
+"placeChoices"
+);
 
 box.innerHTML="";
 
 places[country].forEach(p=>{
 
-const el=document.createElement("div");
+const el=
+document.createElement("div");
 
 el.className="placecard";
 
@@ -806,7 +981,8 @@ el.innerHTML=
 "<h4>"+p.name+"</h4>"+
 "<small>"+p.desc+"</small>";
 
-el.onclick=()=>el.classList.toggle("selected");
+el.onclick=()=>
+el.classList.toggle("selected");
 
 box.appendChild(el);
 
@@ -817,16 +993,23 @@ box.appendChild(el);
 
 function getMustPlaces(){
 
-return [...document.querySelectorAll(
+return [
+...document.querySelectorAll(
 "#placeChoices .placecard.selected"
-)].map(x=>x.dataset.name);
+)
+].map(
+x=>x.dataset.name
+);
 
 }
 
 
 function renderCountryPlaces(){
 
-const box=document.getElementById("interests");
+const box=
+document.getElementById(
+"interests"
+);
 
 box.innerHTML="";
 
@@ -834,23 +1017,26 @@ interestData.forEach(x=>{
 
 interests[x[0]]=0;
 
-const el=document.createElement("div");
+const el=
+document.createElement("div");
 
 el.className="interest";
 
 el.dataset.key=x[0];
 
 el.innerHTML=
-
 `<span class="emoji">${x[1]}</span>
 <b>${x[2]}</b>
 <div class="stars">★ ★ ★</div>`;
 
 el.onclick=()=>{
 
-interests[x[0]]=interests[x[0]]?0:3;
+interests[x[0]]=
+interests[x[0]]?0:3;
 
-el.classList.toggle("selected");
+el.classList.toggle(
+"selected"
+);
 
 };
 
@@ -863,7 +1049,8 @@ box.appendChild(el);
 
 function changeAdults(n){
 
-adults=Math.max(
+adults=
+Math.max(
 1,
 Math.min(8,adults+n)
 );
@@ -877,7 +1064,8 @@ document.getElementById(
 
 function changeChildren(n){
 
-children=Math.max(
+children=
+Math.max(
 0,
 Math.min(6,children+n)
 );
@@ -892,7 +1080,11 @@ childAges.push(0);
 
 }
 
-childAges=childAges.slice(0,children);
+childAges=
+childAges.slice(
+0,
+children
+);
 
 renderChildren();
 
@@ -901,11 +1093,13 @@ renderChildren();
 
 function renderChildren(){
 
-const box=document.getElementById(
+const box=
+document.getElementById(
 "childrenBox"
 );
 
-const out=document.getElementById(
+const out=
+document.getElementById(
 "childrenAges"
 );
 
@@ -923,19 +1117,24 @@ box.style.display="block";
 
 for(let i=0;i<children;i++){
 
-const row=document.createElement("div");
+const row=
+document.createElement("div");
 
 row.className="child";
 
-const b=document.createElement("b");
+const b=
+document.createElement("b");
 
-b.textContent="Kind "+(i+1);
+b.textContent=
+"Kind "+(i+1);
 
-const s=document.createElement("select");
+const s=
+document.createElement("select");
 
 for(let a=0;a<=17;a++){
 
-let o=document.createElement("option");
+const o=
+document.createElement("option");
 
 o.value=a;
 
@@ -952,9 +1151,13 @@ s.appendChild(o);
 }
 
 s.onchange=()=>
-childAges[i]=Number(s.value);
+childAges[i]=
+Number(s.value);
 
-row.append(b,s);
+row.append(
+b,
+s
+);
 
 out.appendChild(row);
 
@@ -966,10 +1169,18 @@ out.appendChild(row);
 function choose(el,g){
 
 document
-.querySelectorAll(`[data-group="${g}"]`)
-.forEach(x=>x.classList.remove("selected"));
+.querySelectorAll(
+`[data-group="${g}"]`
+)
+.forEach(
+x=>x.classList.remove(
+"selected"
+)
+);
 
-el.classList.add("selected");
+el.classList.add(
+"selected"
+);
 
 }
 
@@ -988,15 +1199,21 @@ return;
 
 document.getElementById(
 "countrySection"
-).classList.remove("hidden");
+).classList.remove(
+"hidden"
+);
 
 document.getElementById(
 "styleSection"
-).classList.remove("hidden");
+).classList.remove(
+"hidden"
+);
 
 document.getElementById(
 "routeSection"
-).classList.remove("hidden");
+).classList.remove(
+"hidden"
+);
 
 renderRoutes();
 
@@ -1011,20 +1228,17 @@ behavior:"smooth"
 
 function renderRoutes(){
 
-const box=document.getElementById(
+const box=
+document.getElementById(
 "routeCards"
 );
 
 box.innerHTML="";
 
-const active=
-Object.entries(interests)
-.filter(x=>x[1]>0)
-.map(x=>x[0]);
-
 routes[country].forEach((r,i)=>{
 
-const el=document.createElement("div");
+const el=
+document.createElement("div");
 
 el.className=
 "routecard"+
@@ -1039,7 +1253,11 @@ ${i===0?"TRIPINOVA EMPFEHLUNG":"ALTERNATIVE"}
 <h3>${r.name}</h3>
 
 <p>
-<b>${r.stops.map(x=>x[0]).join(" → ")}</b>
+<b>
+${r.stops.map(
+x=>x[0]
+).join(" → ")}
+</b>
 </p>
 
 <p class="muted">
@@ -1054,7 +1272,9 @@ ${r.desc}
 
 <p>
 <b>${r.stops.length} Orte</b>
- · ${r.stops.reduce((a,b)=>a+b[1],0)} Nächte
+ · ${r.stops.reduce(
+(a,b)=>a+b[1],0
+)} Nächte
 </p>
 
 <button
@@ -1069,8 +1289,6 @@ box.appendChild(el);
 
 });
 
-selectRoute(0);
-
 }
 
 
@@ -1079,25 +1297,38 @@ function selectRoute(i){
 selectedRoute=i;
 
 const wanted=
-Number(document.getElementById("placeCount").value)||5;
+Number(
+document.getElementById(
+"placeCount"
+).value
+)||5;
 
 let base=
 routes[country][i].stops.map(
-x=>({name:x[0],nights:x[1]})
+x=>({
+name:x[0],
+nights:x[1]
+})
 );
 
-const must=getMustPlaces();
+const must=
+getMustPlaces();
 
 const merged=[];
 
 for(const n of must){
 
 const found=
-base.find(x=>x.name===n);
+base.find(
+x=>x.name===n
+);
 
 if(found)
+
 merged.push({...found});
+
 else
+
 merged.push({
 name:n,
 nights:2
@@ -1108,19 +1339,27 @@ nights:2
 for(const x of base){
 
 if(
-!merged.some(y=>y.name===x.name)&&
+!merged.some(
+y=>y.name===x.name
+)&&
 merged.length<wanted
 )
+
 merged.push({...x});
 
 }
 
-for(const p of places[country]){
+for(
+const p of places[country]
+){
 
 if(
 merged.length<wanted&&
-!merged.some(x=>x.name===p.name)
+!merged.some(
+x=>x.name===p.name
 )
+)
+
 merged.push({
 name:p.name,
 nights:2
@@ -1129,11 +1368,16 @@ nights:2
 }
 
 currentStops=
-merged.slice(0,wanted);
+merged.slice(
+0,
+wanted
+);
 
 document.getElementById(
 "customSection"
-).classList.remove("hidden");
+).classList.remove(
+"hidden"
+);
 
 renderEditor();
 
@@ -1149,7 +1393,9 @@ behavior:"smooth"
 function renderEditor(){
 
 const box=
-document.getElementById("editor");
+document.getElementById(
+"editor"
+);
 
 box.innerHTML="";
 
@@ -1221,7 +1467,9 @@ box.appendChild(el);
 function placeInfo(name){
 
 for(
-const p of Object.values(places).flat()
+const p of Object.values(
+places
+).flat()
 )
 
 if(p.name===name)
@@ -1252,7 +1500,10 @@ function moveStop(i,n){
 
 const j=i+n;
 
-if(j<0||j>=currentStops.length)
+if(
+j<0||
+j>=currentStops.length
+)
 return;
 
 [
@@ -1270,7 +1521,9 @@ renderEditor();
 
 function removeStop(i){
 
-if(currentStops.length<=2){
+if(
+currentStops.length<=2
+){
 
 alert(
 "Mindestens zwei Orte sollten in der Reise bleiben."
@@ -1280,7 +1533,10 @@ return;
 
 }
 
-currentStops.splice(i,1);
+currentStops.splice(
+i,
+1
+);
 
 renderEditor();
 
@@ -1290,11 +1546,15 @@ renderEditor();
 function addStop(){
 
 const used=
-currentStops.map(x=>x.name);
+currentStops.map(
+x=>x.name
+);
 
 const available=
 places[country].filter(
-x=>!used.includes(x.name)
+x=>!used.includes(
+x.name
+)
 );
 
 if(!available.length){
@@ -1307,7 +1567,8 @@ return;
 
 }
 
-const p=available[0];
+const p=
+available[0];
 
 currentStops.push({
 name:p.name,
@@ -1328,7 +1589,9 @@ renderResult();
 
 document.getElementById(
 "resultSection"
-).classList.remove("hidden");
+).classList.remove(
+"hidden"
+);
 
 document.getElementById(
 "resultSection"
@@ -1345,17 +1608,29 @@ const name=
 routes[country][selectedRoute].name;
 
 const dates=
-document.getElementById("dates").value||
+document.getElementById(
+"dates"
+).value||
 "Reisedaten noch offen";
 
 document.getElementById(
 "tripMeta"
 ).textContent=
-(document.getElementById("from").value||"Zürich")+
+(
+document.getElementById(
+"from"
+).value||
+"Zürich"
+)+
 " → "+
 country.toUpperCase()+
 " · "+
-(document.getElementById("days").value||14)+
+(
+document.getElementById(
+"days"
+).value||
+14
+)+
 " Tage · "+
 dates+
 " · "+
@@ -1373,14 +1648,19 @@ currentStops.length+
 " Orte";
 
 const line=
-document.getElementById("routeLine");
+document.getElementById(
+"routeLine"
+);
 
 line.innerHTML="";
 
-currentStops.forEach((s,i)=>{
+currentStops.forEach(
+(s,i)=>{
 
 const p=
-document.createElement("span");
+document.createElement(
+"span"
+);
 
 p.className="point";
 
@@ -1388,10 +1668,14 @@ p.textContent=s.name;
 
 line.appendChild(p);
 
-if(i<currentStops.length-1){
+if(
+i<currentStops.length-1
+){
 
 const a=
-document.createElement("span");
+document.createElement(
+"span"
+);
 
 a.className="arrow";
 
@@ -1402,6 +1686,7 @@ line.appendChild(a);
 }
 
 });
+
 
 const totalNights=
 currentStops.reduce(
@@ -1427,6 +1712,7 @@ s.nights+
 ).join(" → ")}
 </span>`;
 
+
 const it=
 document.getElementById(
 "itinerary"
@@ -1436,10 +1722,13 @@ it.innerHTML="";
 
 let day=1;
 
-currentStops.forEach(s=>{
+currentStops.forEach(
+s=>{
 
 const el=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 el.className="day";
 
@@ -1468,9 +1757,12 @@ day+=s.nights;
 
 });
 
+
 const budget=
 Number(
-document.getElementById("budget").value
+document.getElementById(
+"budget"
+).value
 )||8000;
 
 document.getElementById(
@@ -1479,7 +1771,10 @@ document.getElementById(
 
 updateBudget(budget);
 
-setTimeout(drawMap,80);
+setTimeout(
+drawMap,
+80
+);
 
 }
 
@@ -1491,7 +1786,9 @@ return;
 
 const pts=
 currentStops
-.map(s=>coords[s.name])
+.map(
+s=>coords[s.name]
+)
 .filter(Boolean);
 
 if(!pts.length)
@@ -1518,16 +1815,22 @@ attribution:
 }
 
 if(mapLayer)
-map.removeLayer(mapLayer);
+map.removeLayer(
+mapLayer
+);
 
 mapLayer=
-L.layerGroup().addTo(map);
+L.layerGroup().addTo(
+map
+);
 
 const line=[];
 
-currentStops.forEach((s,i)=>{
+currentStops.forEach(
+(s,i)=>{
 
-const c=coords[s.name];
+const c=
+coords[s.name];
 
 if(!c)
 return;
@@ -1547,6 +1850,7 @@ s.nights+
 .addTo(mapLayer);
 
 });
+
 
 if(line.length>1)
 
@@ -1578,7 +1882,10 @@ document.getElementById(
 "finalRealMap"
 );
 
-if(!el||!window.L)
+if(
+!el||
+!window.L
+)
 return;
 
 if(window.finalMap)
@@ -1599,7 +1906,9 @@ L.tileLayer(
 attribution:
 "© OpenStreetMap contributors"
 }
-).addTo(window.finalMap);
+).addTo(
+window.finalMap
+);
 
 const layer=
 L.layerGroup().addTo(
@@ -1608,9 +1917,11 @@ window.finalMap
 
 const line=[];
 
-currentStops.forEach((s,i)=>{
+currentStops.forEach(
+(s,i)=>{
 
-const c=coords[s.name];
+const c=
+coords[s.name];
 
 if(!c)
 return;
@@ -1636,6 +1947,7 @@ s.nights===1
 
 });
 
+
 if(line.length>1)
 
 L.polyline(
@@ -1644,6 +1956,7 @@ line,
 weight:5
 }
 ).addTo(layer);
+
 
 if(line.length===1)
 
@@ -1661,6 +1974,7 @@ padding:[35,35]
 }
 );
 
+
 const totalNights=
 currentStops.reduce(
 (a,b)=>a+b.nights,
@@ -1672,7 +1986,12 @@ document.getElementById(
 ).textContent=
 routes[country][selectedRoute].name+
 " · "+
-(document.getElementById("days").value||totalNights)+
+(
+document.getElementById(
+"days"
+).value||
+totalNights
+)+
 " Tage";
 
 document.getElementById(
@@ -1697,7 +2016,9 @@ document.getElementById(
 ).textContent=
 money(
 Number(
-document.getElementById("budget").value
+document.getElementById(
+"budget"
+).value
 )||8000
 );
 
@@ -1716,16 +2037,18 @@ return;
 
 strip.innerHTML="";
 
-currentStops.forEach((s,i)=>{
+currentStops.forEach(
+(s,i)=>{
 
 const card=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 card.className=
 "route-card-mini";
 
 card.innerHTML=
-
 "<div class='mini-num'>ETAPPE "+
 (i+1)+
 "</div>"+
@@ -1735,17 +2058,26 @@ s.name+
 "<small>"+
 s.nights+
 " "+
-(s.nights===1?"Nacht":"Nächte")+
+(
+s.nights===1
+?"Nacht"
+:"Nächte"
+)+
 "<br>"+
 placeInfo(s.name)+
 "</small>";
 
 strip.appendChild(card);
 
-if(i<currentStops.length-1){
+
+if(
+i<currentStops.length-1
+){
 
 const c=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 c.className=
 "route-connector";
@@ -1769,7 +2101,9 @@ document.getElementById(
 "budgetDisplay"
 ).textContent=
 Math.round(v)
-.toLocaleString("de-CH");
+.toLocaleString(
+"de-CH"
+);
 
 const vals=
 [
@@ -1811,7 +2145,283 @@ document.getElementById(
 );
 
 if(sb)
-sb.textContent=money(v);
+sb.textContent=
+money(v);
+
+}
+
+
+function saveTrip(){
+
+const data={
+
+version:1,
+
+savedAt:
+new Date().toISOString(),
+
+country,
+
+adults,
+
+children,
+
+childAges:[
+...childAges
+],
+
+selectedRoute,
+
+currentStops:
+currentStops.map(
+x=>({
+name:x.name,
+nights:x.nights
+})
+),
+
+interests:{
+...interests
+},
+
+from:
+document.getElementById(
+"from"
+)?.value||
+"",
+
+days:
+document.getElementById(
+"days"
+)?.value||
+14,
+
+dates:
+document.getElementById(
+"dates"
+)?.value||
+"",
+
+budget:
+document.getElementById(
+"budget"
+)?.value||
+8000,
+
+placeCount:
+document.getElementById(
+"placeCount"
+)?.value||
+5
+
+};
+
+localStorage.setItem(
+"tripinova_saved_trip",
+JSON.stringify(data)
+);
+
+const msg=
+document.getElementById(
+"saveMessage"
+);
+
+if(msg){
+
+msg.style.display="block";
+
+msg.textContent=
+"✓ Deine Reise wurde auf diesem Gerät gespeichert.";
+
+setTimeout(
+()=>msg.style.display="none",
+3500
+);
+
+}
+
+}
+
+
+function loadTrip(){
+
+const raw=
+localStorage.getItem(
+"tripinova_saved_trip"
+);
+
+if(!raw){
+
+alert(
+"Es wurde noch keine gespeicherte Reise gefunden."
+);
+
+return;
+
+}
+
+try{
+
+const d=
+JSON.parse(raw);
+
+country=
+d.country||
+"";
+
+adults=
+Number(d.adults)||
+2;
+
+children=
+Number(d.children)||
+0;
+
+childAges=
+Array.isArray(d.childAges)
+?d.childAges:
+[];
+
+selectedRoute=
+Number(d.selectedRoute)||
+0;
+
+currentStops=
+Array.isArray(d.currentStops)
+?
+d.currentStops.map(
+x=>({
+name:x.name,
+nights:
+Number(x.nights)||
+1
+})
+)
+:
+[];
+
+interests=
+d.interests||
+{};
+
+
+document.getElementById(
+"country"
+).value=
+country;
+
+document.getElementById(
+"from"
+).value=
+d.from||
+"";
+
+document.getElementById(
+"days"
+).value=
+d.days||
+14;
+
+document.getElementById(
+"dates"
+).value=
+d.dates||
+"";
+
+document.getElementById(
+"budget"
+).value=
+d.budget||
+8000;
+
+document.getElementById(
+"budgetSlider"
+).value=
+d.budget||
+8000;
+
+document.getElementById(
+"placeCount"
+).value=
+d.placeCount||
+5;
+
+document.getElementById(
+"adultCount"
+).textContent=
+adults;
+
+document.getElementById(
+"childCount"
+).textContent=
+children;
+
+renderChildren();
+
+
+if(country){
+
+document.getElementById(
+"countrySection"
+).classList.remove(
+"hidden"
+);
+
+document.getElementById(
+"styleSection"
+).classList.remove(
+"hidden"
+);
+
+document.getElementById(
+"routeSection"
+).classList.remove(
+"hidden"
+);
+
+renderCountryPlaces();
+
+renderPlaceChoices();
+
+renderRoutes();
+
+document.getElementById(
+"customSection"
+).classList.remove(
+"hidden"
+);
+
+renderEditor();
+
+document.getElementById(
+"resultSection"
+).classList.remove(
+"hidden"
+);
+
+renderResult();
+
+setTimeout(
+drawMap,
+150
+);
+
+document.getElementById(
+"resultSection"
+).scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+}
+catch(e){
+
+alert(
+"Die gespeicherte Reise konnte nicht geladen werden."
+);
+
+}
 
 }
 
@@ -1854,7 +2464,9 @@ window.open(
 encodeURIComponent(
 "Hotels "+
 currentStops
-.map(x=>x.name)
+.map(
+x=>x.name
+)
 .join(" ")
 ),
 "_blank"
@@ -1884,7 +2496,9 @@ window.open(
 encodeURIComponent(
 "Aktivitäten "+
 currentStops
-.map(x=>x.name)
+.map(
+x=>x.name
+)
 .join(" ")
 ),
 "_blank"

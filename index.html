@@ -3,304 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>TRIPINOVA – Deine Reise. Neu gedacht.</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7f8;color:#09283f}
+header{background:#fff;border-bottom:1px solid #dde5e8;position:sticky;top:0;z-index:100}
+.nav{max-width:1180px;margin:auto;padding:18px 25px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:Georgia,serif;font-size:29px;font-weight:bold;letter-spacing:3px}
+.logo span{color:#0b8588}
+button{border:none;border-radius:10px;padding:13px 20px;font-weight:bold;cursor:pointer}
+.primary{background:#0b8588;color:white}
+.secondary{background:#edf3f4;color:#09283f}
+
+.hero{max-width:1180px;margin:40px auto;padding:0 25px;display:grid;grid-template-columns:1.05fr .95fr;gap:35px;align-items:center}
+.hero h1{font-family:Georgia,serif;font-size:58px;line-height:1.02;margin:20px 0}
+.hero h1 span{color:#0b8588}
+.hero p{color:#647985;font-size:19px;line-height:1.6}
+.badge{display:inline-block;padding:7px 11px;border-radius:20px;background:#e2f4f3;color:#08696c;font-size:11px;font-weight:bold}
+
+.card{background:white;border-radius:22px;padding:27px;box-shadow:0 12px 35px rgba(0,0,0,.07)}
+.form label{display:block;margin:14px 0 7px;font-size:13px;font-weight:bold}
+.form input,.form select{width:100%;padding:13px;border:1px solid #d9e2e5;border-radius:10px;font-size:15px;background:white}
+
+.traveller-row{display:grid;grid-template-columns:1fr 1fr;gap:25px}
+.counter{display:grid;grid-template-columns:44px 1fr 44px;border:1px solid #d9e2e5;border-radius:10px;overflow:hidden}
+.counter button{border-radius:0;background:white;padding:10px;font-size:20px}
+.counter-value{text-align:center;padding:12px 5px;font-weight:bold;border-left:1px solid #d9e2e5;border-right:1px solid #d9e2e5}
+
+.children-box{margin-top:14px;border:1px solid #d9e2e5;border-radius:14px;padding:14px;background:#fbfcfc}
+.child-row{display:grid;grid-template-columns:1fr 200px;gap:15px;align-items:center;margin-top:10px}
+.child-row select{width:100%;padding:11px;border:1px solid #d9e2e5;border-radius:9px;background:white}
+
+main{max-width:1180px;margin:auto;padding:0 25px}
+.section{margin:45px 0}
+.section h2{font-family:Georgia,serif;font-size:31px;margin-bottom:18px}
+
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.feature{background:white;border-radius:17px;padding:21px}
+.feature b{display:block;margin:9px 0}
+.muted{color:#647985;line-height:1.5}
+
+.results{display:none}
+.route{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:20px}
+.stop{background:white;border-radius:16px;padding:18px;border-top:4px solid #0b8588}
+.stop strong{display:block;margin:8px 0}
+
+.budget{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.budget-box{background:white;border-radius:18px;padding:22px}
+.line{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #edf0f1}
+.total{font-size:25px;font-weight:bold;margin-top:17px}
+.slider{width:100%}
+
+.booking-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.booking{background:white;border-radius:18px;padding:20px}
+.booking h3{margin:10px 0}
+.booking button{width:100%;margin-top:15px}
+
+.map{background:white;border-radius:20px;padding:25px}
+.map-route{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px}
+.map-point{background:#e2f4f3;color:#08696c;padding:12px 17px;border-radius:30px;font-weight:bold}
+.arrow{font-size:20px;color:#0b8588}
+
+footer{margin-top:60px;background:#09283f;color:white;text-align:center;padding:40px 20px}
+
+@media(max-width:850px){
+.hero{grid-template-columns:1fr}
+.features,.booking-grid{grid-template-columns:1fr 1fr}
+.route{grid-template-columns:1fr 1fr}
+.budget{grid-template-columns:1fr}
 }
 
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f7f8;
-    color: #09283f;
-}
-
-header {
-    background: white;
-    border-bottom: 1px solid #dde5e8;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.nav {
-    max-width: 1180px;
-    margin: auto;
-    padding: 18px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-family: Georgia, serif;
-    font-size: 29px;
-    font-weight: bold;
-    letter-spacing: 3px;
-}
-
-.logo span {
-    color: #0b8588;
-}
-
-button {
-    border: none;
-    border-radius: 10px;
-    padding: 13px 20px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.primary {
-    background: #0b8588;
-    color: white;
-}
-
-.secondary {
-    background: #edf3f4;
-    color: #09283f;
-}
-
-.hero {
-    max-width: 1180px;
-    margin: 40px auto;
-    padding: 0 25px;
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 35px;
-    align-items: center;
-}
-
-.hero h1 {
-    font-family: Georgia, serif;
-    font-size: 58px;
-    line-height: 1.02;
-    margin: 20px 0;
-}
-
-.hero h1 span {
-    color: #0b8588;
-}
-
-.hero p {
-    color: #647985;
-    font-size: 19px;
-    line-height: 1.6;
-}
-
-.badge {
-    display: inline-block;
-    padding: 7px 11px;
-    border-radius: 20px;
-    background: #e2f4f3;
-    color: #08696c;
-    font-size: 11px;
-    font-weight: bold;
-}
-
-.card {
-    background: white;
-    border-radius: 22px;
-    padding: 27px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.07);
-}
-
-.form label {
-    display: block;
-    margin: 14px 0 7px;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.form input,
-.form select {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #d9e2e5;
-    border-radius: 10px;
-    font-size: 15px;
-}
-
-main {
-    max-width: 1180px;
-    margin: auto;
-    padding: 0 25px;
-}
-
-.section {
-    margin: 45px 0;
-}
-
-.section h2 {
-    font-family: Georgia, serif;
-    font-size: 31px;
-    margin-bottom: 18px;
-}
-
-.features {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-}
-
-.feature {
-    background: white;
-    border-radius: 17px;
-    padding: 21px;
-}
-
-.feature b {
-    display: block;
-    margin: 9px 0;
-}
-
-.muted {
-    color: #647985;
-    line-height: 1.5;
-}
-
-.results {
-    display: none;
-}
-
-.route {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.stop {
-    background: white;
-    border-radius: 16px;
-    padding: 18px;
-    border-top: 4px solid #0b8588;
-}
-
-.stop strong {
-    display: block;
-    margin: 8px 0;
-}
-
-.budget {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 18px;
-}
-
-.budget-box {
-    background: white;
-    border-radius: 18px;
-    padding: 22px;
-}
-
-.line {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #edf0f1;
-}
-
-.total {
-    font-size: 25px;
-    font-weight: bold;
-    margin-top: 17px;
-}
-
-.slider {
-    width: 100%;
-}
-
-.booking-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-}
-
-.booking {
-    background: white;
-    border-radius: 18px;
-    padding: 20px;
-}
-
-.booking h3 {
-    margin: 10px 0;
-}
-
-.booking button {
-    width: 100%;
-    margin-top: 15px;
-}
-
-.map {
-    background: white;
-    border-radius: 20px;
-    padding: 25px;
-}
-
-.map-route {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-.map-point {
-    background: #e2f4f3;
-    color: #08696c;
-    padding: 12px 17px;
-    border-radius: 30px;
-    font-weight: bold;
-}
-
-.arrow {
-    font-size: 20px;
-    color: #0b8588;
-}
-
-footer {
-    margin-top: 60px;
-    background: #09283f;
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
-}
-
-@media(max-width:850px) {
-
-    .hero {
-        grid-template-columns: 1fr;
-    }
-
-    .features,
-    .booking-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .route {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .budget {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media(max-width:520px) {
-
-    .hero h1 {
-        font-size: 42px;
-    }
-
-    .features,
-    .booking-grid,
-    .route {
-        grid-template-columns: 1fr;
-    }
+@media(max-width:600px){
+.traveller-row{grid-template-columns:1fr}
+.child-row{grid-template-columns:1fr}
+.hero h1{font-size:42px}
+.features,.booking-grid,.route{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -308,30 +86,18 @@ footer {
 <body>
 
 <header>
-
 <div class="nav">
-
-<div class="logo">
-TRIP<span>INOVA</span>
-</div>
-
-<button class="secondary"
-onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">
+<div class="logo">TRIP<span>INOVA</span></div>
+<button class="secondary" onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">
 Meine Reise
 </button>
-
 </div>
-
 </header>
-
 
 <section class="hero">
 
 <div>
-
-<span class="badge">
-SMART TRAVEL PLANNER
-</span>
+<span class="badge">SMART TRAVEL PLANNER</span>
 
 <h1>
 Deine Reise.<br>
@@ -343,7 +109,6 @@ TRIPINOVA hilft dir, deine komplette Reise einfach zu planen.
 Reiseziel, Hotels, Flüge, Mietwagen, Aktivitäten,
 Route und Budget – alles übersichtlich an einem Ort.
 </p>
-
 </div>
 
 
@@ -352,49 +117,64 @@ Route und Budget – alles übersichtlich an einem Ort.
 <h2>Reise planen</h2>
 
 <label>Reiseziel</label>
-
-<input
-id="destination"
-placeholder="z. B. Mexico, Bali, Italien">
-
+<input id="destination" placeholder="z. B. Mexico, Bali, Italien">
 
 <label>Abflugort</label>
-
-<input
-id="from"
-placeholder="z. B. Zürich">
-
+<input id="from" placeholder="z. B. Zürich">
 
 <label>Reisedaten</label>
-
-<input
-id="dates"
-placeholder="z. B. 10.–25. April 2027">
-
+<input id="dates" placeholder="z. B. 10.–25. April 2027">
 
 <label>Reisende</label>
 
-<select id="travellers">
+<div class="traveller-row">
 
-<option>2 Erwachsene</option>
+<div>
+<label style="margin-top:0">Erwachsene</label>
 
-<option>2 Erwachsene, 1 Kind</option>
+<div class="counter">
 
-<option>2 Erwachsene, 2 Kinder</option>
+<button type="button" onclick="changeAdults(-1)">−</button>
 
-<option>3 Erwachsene</option>
+<div class="counter-value" id="adultCount">2</div>
 
-<option>4 Erwachsene</option>
+<button type="button" onclick="changeAdults(1)">+</button>
 
-</select>
+</div>
+</div>
+
+
+<div>
+
+<label style="margin-top:0">Kinder</label>
+
+<div class="counter">
+
+<button type="button" onclick="changeChildren(-1)">−</button>
+
+<div class="counter-value" id="childCount">2</div>
+
+<button type="button" onclick="changeChildren(1)">+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="children-box" id="childrenBox">
+
+<strong>Alter der Kinder</strong>
+
+<div id="childrenAges"></div>
+
+</div>
 
 
 <label>Gesamtbudget CHF</label>
 
-<input
-id="budget"
-type="number"
-value="8000">
+<input id="budget" type="number" value="8000">
 
 
 <button
@@ -413,7 +193,6 @@ Meine Reise erstellen →
 
 <main>
 
-
 <section class="section">
 
 <h2>Warum TRIPINOVA?</h2>
@@ -423,55 +202,40 @@ Meine Reise erstellen →
 <div class="feature">
 🧠
 <b>Persönlich geplant</b>
-<span class="muted">
-Deine Wünsche bestimmen die Reise.
-</span>
+<span class="muted">Deine Wünsche bestimmen die Reise.</span>
 </div>
 
 <div class="feature">
 💰
 <b>Budget im Griff</b>
-<span class="muted">
-Du bestimmst dein Reisebudget.
-</span>
+<span class="muted">Du bestimmst dein Reisebudget.</span>
 </div>
 
 <div class="feature">
 🗺️
 <b>Alles an einem Ort</b>
-<span class="muted">
-Route, Hotels, Flüge und Aktivitäten.
-</span>
+<span class="muted">Route, Hotels, Flüge und Aktivitäten.</span>
 </div>
 
 <div class="feature">
 🛒
 <b>Du buchst selbst</b>
-<span class="muted">
-Wir zeigen dir, wo du buchen kannst.
-</span>
+<span class="muted">Wir zeigen dir, wo du buchen kannst.</span>
 </div>
 
 </div>
-
 </section>
 
 
 <section class="section results" id="results">
 
-<h2 id="tripTitle">
-Deine Reise
-</h2>
-
+<h2 id="tripTitle">Deine Reise</h2>
 
 <div class="card">
 
 <p class="muted">
-
 Dein persönlicher Reiseentwurf.
-
 </p>
-
 
 <div class="route">
 
@@ -506,9 +270,7 @@ Dein persönlicher Reiseentwurf.
 </div>
 
 </div>
-
 </div>
-
 
 
 <div class="section">
@@ -516,7 +278,6 @@ Dein persönlicher Reiseentwurf.
 <h2>Budget</h2>
 
 <div class="budget">
-
 
 <div class="budget-box">
 
@@ -547,9 +308,7 @@ Dein persönlicher Reiseentwurf.
 
 <div class="total">
 Total:
-<span id="totalCost">
-CHF 7'360
-</span>
+<span id="totalCost">CHF 7'360</span>
 </div>
 
 </div>
@@ -557,17 +316,11 @@ CHF 7'360
 
 <div class="budget-box">
 
-<h3>
-Budget anpassen
-</h3>
+<h3>Budget anpassen</h3>
 
 <p class="muted">
-
 Dein Budget:
-<b id="budgetDisplay">
-CHF 8'000
-</b>
-
+<b id="budgetDisplay">CHF 8'000</b>
 </p>
 
 <input
@@ -581,144 +334,96 @@ value="8000"
 oninput="updateBudget(this.value)">
 
 <p class="muted">
-
-Bewege den Regler und die Kostenverteilung
-wird automatisch angepasst.
-
+Bewege den Regler und die Kostenverteilung wird automatisch angepasst.
 </p>
 
 </div>
 
 </div>
-
 </div>
-
 
 
 <div class="section">
 
-<h2>
-Buchen & entdecken
-</h2>
-
+<h2>Buchen & entdecken</h2>
 
 <div class="booking-grid">
 
 
 <div class="booking">
 
-<span class="badge">
-FLUG
-</span>
+<span class="badge">FLUG</span>
 
-<h3>
-Flugangebote
-</h3>
+<h3>Flugangebote</h3>
 
 <span class="muted">
 Flüge für deine Reise suchen.
 </span>
 
-<button
-class="primary"
-onclick="searchFlights()">
-
+<button class="primary" onclick="searchFlights()">
 Flüge suchen
-
 </button>
 
 </div>
 
 
-
 <div class="booking">
 
-<span class="badge">
-HOTEL
-</span>
+<span class="badge">HOTEL</span>
 
-<h3>
-Hotels
-</h3>
+<h3>Hotels</h3>
 
 <span class="muted">
 Hotels am Reiseziel vergleichen.
 </span>
 
-<button
-class="primary"
-onclick="searchHotels()">
-
+<button class="primary" onclick="searchHotels()">
 Hotels suchen
-
 </button>
 
 </div>
 
 
-
 <div class="booking">
 
-<span class="badge">
-MIETWAGEN
-</span>
+<span class="badge">MIETWAGEN</span>
 
-<h3>
-Mietwagen
-</h3>
+<h3>Mietwagen</h3>
 
 <span class="muted">
 Mietwagen am Reiseziel suchen.
 </span>
 
-<button
-class="primary"
-onclick="searchCars()">
-
+<button class="primary" onclick="searchCars()">
 Mietwagen suchen
-
 </button>
 
 </div>
 
 
-
 <div class="booking">
 
-<span class="badge">
-AKTIVITÄTEN
-</span>
+<span class="badge">AKTIVITÄTEN</span>
 
-<h3>
-Ausflüge
-</h3>
+<h3>Ausflüge</h3>
 
 <span class="muted">
 Erlebnisse und Aktivitäten entdecken.
 </span>
 
-<button
-class="primary"
-onclick="searchActivities()">
-
+<button class="primary" onclick="searchActivities()">
 Ausflüge suchen
-
 </button>
 
 </div>
 
-
 </div>
-
 </div>
-
 
 
 <div class="section">
 
-<h2>
-Deine Route
-</h2>
+<h2>Deine Route</h2>
 
 <div class="map">
 
@@ -732,70 +437,56 @@ Deine geplante Reise:
 Zürich
 </div>
 
-<div class="arrow">
-→
-</div>
+<div class="arrow">→</div>
 
 <div class="map-point" id="routeDestination">
 Reiseziel
 </div>
 
-<div class="arrow">
-→
-</div>
+<div class="arrow">→</div>
 
 <div class="map-point">
 Rückreise
 </div>
 
 </div>
-
 </div>
-
 </div>
-
 
 
 <div class="section">
 
-<h2>
-Reiseübersicht
-</h2>
+<h2>Reiseübersicht</h2>
 
 <div class="card">
 
 <p>
 <strong>📍 Reiseziel:</strong>
-<span id="overviewDestination">
-–
-</span>
+<span id="overviewDestination">–</span>
 </p>
 
 <p>
 <strong>📅 Reisedaten:</strong>
-<span id="overviewDates">
-–
-</span>
+<span id="overviewDates">–</span>
 </p>
 
 <p>
 <strong>✈️ Abflug:</strong>
-<span id="overviewFrom">
-–
-</span>
+<span id="overviewFrom">–</span>
 </p>
 
 <p>
 <strong>👨‍👩‍👧‍👦 Reisende:</strong>
-<span id="overviewTravellers">
-–
-</span>
+<span id="overviewTravellers">–</span>
+</p>
+
+<p>
+<strong>🧒 Kinderalter:</strong>
+<span id="overviewChildren">–</span>
 </p>
 
 </div>
-
 </div>
-
 
 </section>
 
@@ -817,14 +508,12 @@ Deine Reise. Neu gedacht.
 
 <script>
 
-function value(id) {
-
-return document.getElementById(id).value;
-
-}
+let adults = 2;
+let children = 2;
+let childAges = [11,14];
 
 
-function money(number) {
+function money(number){
 
 return "CHF " +
 Math.round(number).toLocaleString("de-CH");
@@ -832,22 +521,152 @@ Math.round(number).toLocaleString("de-CH");
 }
 
 
-function createTrip() {
+function changeAdults(amount){
+
+adults = Math.max(
+1,
+Math.min(8, adults + amount)
+);
+
+document.getElementById("adultCount").textContent =
+adults;
+
+}
+
+
+function changeChildren(amount){
+
+children = Math.max(
+0,
+Math.min(6, children + amount)
+);
+
+document.getElementById("childCount").textContent =
+children;
+
+
+while(childAges.length < children){
+
+childAges.push(0);
+
+}
+
+childAges = childAges.slice(0,children);
+
+renderChildren();
+
+}
+
+
+function renderChildren(){
+
+const box =
+document.getElementById("childrenAges");
+
+box.innerHTML = "";
+
+
+if(children === 0){
+
+document.getElementById("childrenBox").style.display =
+"none";
+
+return;
+
+}
+
+
+document.getElementById("childrenBox").style.display =
+"block";
+
+
+for(let i=0;i<children;i++){
+
+const row =
+document.createElement("div");
+
+row.className =
+"child-row";
+
+
+const label =
+document.createElement("div");
+
+label.textContent =
+"Alter Kind " + (i+1);
+
+
+const select =
+document.createElement("select");
+
+
+for(let age=0;age<=17;age++){
+
+const option =
+document.createElement("option");
+
+option.value =
+age;
+
+option.textContent =
+age === 0
+? "unter 1 Jahr"
+: age + " Jahre";
+
+
+if(childAges[i] === age){
+
+option.selected = true;
+
+}
+
+select.appendChild(option);
+
+}
+
+
+select.addEventListener(
+"change",
+function(){
+
+childAges[i] =
+Number(this.value);
+
+}
+);
+
+
+row.appendChild(label);
+
+row.appendChild(select);
+
+box.appendChild(row);
+
+}
+
+}
+
+
+function createTrip(){
 
 const destination =
-value("destination") || "Deine Reise";
+document.getElementById("destination").value
+|| "Deine Reise";
+
 
 const from =
-value("from") || "Zürich";
+document.getElementById("from").value
+|| "Zürich";
+
 
 const dates =
-value("dates") || "Noch nicht angegeben";
+document.getElementById("dates").value
+|| "Noch nicht angegeben";
 
-const travellers =
-value("travellers");
 
 const budget =
-Number(value("budget")) || 8000;
+Number(document.getElementById("budget").value)
+|| 8000;
 
 
 document.getElementById("tripTitle").textContent =
@@ -857,18 +676,34 @@ document.getElementById("tripTitle").textContent =
 document.getElementById("overviewDestination").textContent =
 destination;
 
+
 document.getElementById("overviewDates").textContent =
 dates;
+
 
 document.getElementById("overviewFrom").textContent =
 from;
 
+
 document.getElementById("overviewTravellers").textContent =
-travellers;
+adults + " Erwachsene, " + children + " Kinder";
+
+
+document.getElementById("overviewChildren").textContent =
+children
+? childAges.map(
+(a,i) =>
+"Kind " +
+(i+1) +
+": " +
+(a === 0 ? "unter 1 Jahr" : a + " Jahre")
+).join(" · ")
+: "Keine Kinder";
 
 
 document.getElementById("routeFrom").textContent =
 from;
+
 
 document.getElementById("routeDestination").textContent =
 destination;
@@ -892,10 +727,9 @@ behavior:"smooth"
 }
 
 
-function updateBudget(budget) {
+function updateBudget(budget){
 
 budget = Number(budget);
-
 
 document.getElementById("budgetDisplay").textContent =
 money(budget);
@@ -945,16 +779,16 @@ food
 }
 
 
-function searchFlights() {
+function searchFlights(){
 
 const destination =
-value("destination");
+document.getElementById("destination").value;
 
 const from =
-value("from");
+document.getElementById("from").value;
 
 const dates =
-value("dates");
+document.getElementById("dates").value;
 
 
 const search =
@@ -975,13 +809,13 @@ encodeURIComponent(search),
 }
 
 
-function searchHotels() {
+function searchHotels(){
 
 const destination =
-value("destination");
+document.getElementById("destination").value;
 
 const dates =
-value("dates");
+document.getElementById("dates").value;
 
 
 const search =
@@ -1000,46 +834,40 @@ encodeURIComponent(search),
 }
 
 
-function searchCars() {
+function searchCars(){
 
 const destination =
-value("destination");
-
-
-const search =
-"Mietwagen " +
-destination;
+document.getElementById("destination").value;
 
 
 window.open(
 "https://www.google.com/search?q=" +
-encodeURIComponent(search),
+encodeURIComponent("Mietwagen " + destination),
 "_blank"
 );
 
 }
 
 
-function searchActivities() {
+function searchActivities(){
 
 const destination =
-value("destination");
+document.getElementById("destination").value;
 
 
-const search =
+window.open(
+"https://www.google.com/search?q=" +
+encodeURIComponent(
 "Ausflüge Aktivitäten Sehenswürdigkeiten " +
-destination;
-
-
-window.open(
-"https://www.google.com/search?q=" +
-encodeURIComponent(search),
+destination
+),
 "_blank"
 );
 
 }
 
 
+renderChildren();
 updateBudget(8000);
 
 </script>

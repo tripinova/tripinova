@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TRIPINOVA – Persönlicher Reiseplaner</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
 <style>
 :root{--navy:#09283f;--teal:#0b8588;--light:#e9f5f4;--bg:#f4f7f8;--line:#d9e4e6;--muted:#667b85;--gold:#d9a51c;--white:#fff}
 *{box-sizing:border-box}
@@ -30,23 +31,52 @@ input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:
 .countries{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
 .country{background:#fff;border:2px solid transparent;border-radius:18px;padding:20px;cursor:pointer}.country.selected{border-color:var(--teal);background:var(--light)}
 .country .flag{font-size:38px}.country h3{margin:9px 0 5px}
-.interests{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.interest{background:#fff;border:2px solid transparent;border-radius:14px;padding:14px;text-align:center;cursor:pointer}.interest.selected{border-color:var(--teal);background:var(--light)}.placecard{background:#fff;border:2px solid transparent;border-radius:15px;padding:14px;cursor:pointer;text-align:left}.placecard.selected{border-color:var(--teal);background:var(--light)}.placecard h4{margin:7px 0 5px}.placecard small{color:var(--muted);line-height:1.4}
+.interests{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.interest{background:#fff;border:2px solid transparent;border-radius:14px;padding:14px;text-align:center;cursor:pointer}
+.interest.selected{border-color:var(--teal);background:var(--light)}
+.placecard{background:#fff;border:2px solid transparent;border-radius:15px;padding:14px;cursor:pointer;text-align:left}
+.placecard.selected{border-color:var(--teal);background:var(--light)}
+.placecard h4{margin:7px 0 5px}.placecard small{color:var(--muted);line-height:1.4}
 .emoji{font-size:23px;display:block;margin-bottom:5px}.stars{margin-top:6px}.star{font-size:18px;color:#ccd5d8;cursor:pointer}.star.active{color:var(--gold)}
 .stylegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.choice{background:#fff;border:2px solid transparent;border-radius:15px;padding:16px;cursor:pointer}.choice.selected{border-color:var(--teal);background:var(--light)}
 .routecards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.routecard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:19px}.routecard.best{border:2px solid var(--teal)}.routecard h3{margin:9px 0}.routecard button{width:100%;margin-top:10px}
 .routebar{background:#eaf3f3;border-radius:20px;padding:20px}.route-line{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:20px 0}.point{background:#fff;border:2px solid var(--teal);padding:10px 14px;border-radius:25px;font-weight:700}.arrow{color:var(--teal);font-size:19px}
 .editor{display:grid;gap:11px}.stop{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;grid-template-columns:55px 1fr auto;gap:13px;align-items:center}.stopnum{color:var(--teal);font-weight:800}.stop h3{margin:0 0 5px}.stop-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.night{display:flex;align-items:center;gap:5px}.night button{padding:6px 10px}.night span{min-width:25px;text-align:center;font-weight:700}
-.mapbox{background:#e7f0ef;border-radius:20px;padding:22px;min-height:150px}#realMap{height:390px;border-radius:15px;margin-top:12px;overflow:hidden}.maphint{background:#fff;border-radius:13px;padding:14px;margin-top:12px}
+.mapbox{background:#e7f0ef;border-radius:20px;padding:22px;min-height:150px}
+#realMap{height:390px;border-radius:15px;margin-top:12px;overflow:hidden}
+.maphint{background:#fff;border-radius:13px;padding:14px;margin-top:12px}
 .itinerary{display:grid;gap:9px}.day{background:#fff;border-radius:15px;padding:15px;display:grid;grid-template-columns:90px 1fr;gap:14px}.day b{display:block;margin-bottom:4px}
 .bookinggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.booking{background:#fff;border-radius:17px;padding:18px}.booking h3{margin:8px 0}.booking button{width:100%;margin-top:12px}
 .budget{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.budgetbox{background:#fff;border-radius:18px;padding:20px}.line{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #edf0f1}.total{font-size:23px;font-weight:800;margin-top:14px}
+.finalroute{background:#fff;border-radius:22px;padding:24px;box-shadow:0 10px 30px rgba(9,40,63,.07)}
+.finalroute-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;flex-wrap:wrap}
+.finalroute h2{margin:0 0 7px;font:31px Georgia,serif}
+.finalroute-map{height:430px;border-radius:17px;overflow:hidden;margin:18px 0;background:#e8f1f0}
+.route-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:15px}
+.summaryitem{background:#f4f7f8;border-radius:13px;padding:13px}.summaryitem b{display:block;font-size:18px;margin-top:3px}
+.route-strip{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:15px 0 8px}
+.route-card-mini{min-width:170px;background:#f7faf9;border:1px solid var(--line);padding:14px;border-radius:14px}
+.route-card-mini .mini-num{font-size:11px;color:var(--teal);font-weight:800}.route-card-mini h4{margin:6px 0}.route-card-mini small{color:var(--muted)}
+.route-connector{min-width:38px;display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:20px;font-weight:800}
+.notice{background:#fff8e2;border:1px solid #f0d47a;padding:13px 15px;border-radius:12px;color:#6b5411}
 footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;padding:38px}
 .hidden{display:none}
-.notice{background:#fff8e2;border:1px solid #f0d47a;padding:13px 15px;border-radius:12px;color:#6b5411}
-@media(max-width:900px){.hero{grid-template-columns:1fr}.countries,.routecards{grid-template-columns:1fr 1fr}.interests{grid-template-columns:repeat(3,1fr)}.bookinggrid{grid-template-columns:1fr 1fr}.budget{grid-template-columns:1fr}}
-@media(max-width:600px){.grid2,.stylegrid,.countries,.routecards,.bookinggrid{grid-template-columns:1fr}.interests{grid-template-columns:1fr 1fr}.stop{grid-template-columns:45px 1fr}.stop-actions{grid-column:2;justify-content:flex-start}.hero h1{font-size:43px}}
+@media(max-width:900px){
+.hero{grid-template-columns:1fr}.countries,.routecards{grid-template-columns:1fr 1fr}
+.interests{grid-template-columns:repeat(3,1fr)}.bookinggrid{grid-template-columns:1fr 1fr}
+.budget{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+.route-summary{grid-template-columns:1fr 1fr}.finalroute-map{height:340px}
+}
+@media(max-width:600px){
+.grid2,.stylegrid,.countries,.routecards,.bookinggrid{grid-template-columns:1fr}
+.interests{grid-template-columns:1fr 1fr}.stop{grid-template-columns:45px 1fr}
+.stop-actions{grid-column:2;justify-content:flex-start}.hero h1{font-size:43px}
+}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -67,6 +97,7 @@ footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;paddi
 
 <div class="card form" id="planner">
 <h2>1. Reise festlegen</h2>
+
 <label>Land</label>
 <select id="country" onchange="countryChanged()">
 <option value="">Bitte Land auswählen</option>
@@ -80,6 +111,9 @@ footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;paddi
 <div><label>Reisedauer</label><input id="days" type="number" value="14" min="3" max="60"></div>
 </div>
 
+<label>Reisedaten</label>
+<input id="dates" placeholder="z. B. 10.–24. April 2027">
+
 <label>Wie viele Orte möchtest du besuchen?</label>
 <select id="placeCount">
 <option value="3">3 Orte – entspannt</option>
@@ -91,10 +125,29 @@ footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;paddi
 
 <label>Reisende</label>
 <div class="grid2">
-<div><div class="counter"><button type="button" onclick="changeAdults(-1)">−</button><div id="adultCount">2</div><button type="button" onclick="changeAdults(1)">+</button></div><small>Erwachsene</small></div>
-<div><div class="counter"><button type="button" onclick="changeChildren(-1)">−</button><div id="childCount">2</div><button type="button" onclick="changeChildren(1)">+</button></div><small>Kinder</small></div>
+<div>
+<div class="counter">
+<button type="button" onclick="changeAdults(-1)">−</button>
+<div id="adultCount">2</div>
+<button type="button" onclick="changeAdults(1)">+</button>
 </div>
-<div class="children" id="childrenBox"><b>Alter der Kinder</b><div id="childrenAges"></div></div>
+<small>Erwachsene</small>
+</div>
+
+<div>
+<div class="counter">
+<button type="button" onclick="changeChildren(-1)">−</button>
+<div id="childCount">2</div>
+<button type="button" onclick="changeChildren(1)">+</button>
+</div>
+<small>Kinder</small>
+</div>
+</div>
+
+<div class="children" id="childrenBox">
+<b>Alter der Kinder</b>
+<div id="childrenAges"></div>
+</div>
 
 <label>Budget CHF</label>
 <input id="budget" type="number" value="8000">
@@ -103,330 +156,1746 @@ footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;paddi
 </div>
 </section>
 
+
 <section class="section hidden" id="countrySection">
+
+<div id="countryIntro" class="card" style="margin-bottom:15px"></div>
+
+<div class="card" style="margin-bottom:15px">
+<h3 style="margin-top:0">Oder wähle Orte, die du unbedingt sehen möchtest</h3>
+<p class="muted">Diese Orte werden bei der persönlichen Route bevorzugt berücksichtigt.</p>
+<div id="placeChoices" class="interests"></div>
+</div>
+
 <h2>2. Was möchtest du erleben?</h2>
 <p class="muted">Diese Auswahl beeinflusst, welche Route TRIPINOVA zuerst empfiehlt.</p>
 <div class="interests" id="interests"></div>
 </section>
 
+
 <section class="section hidden" id="styleSection">
 <h2>3. Wie möchtest du reisen?</h2>
+
 <div class="stylegrid">
-<div class="choice selected" data-group="pace" onclick="choose(this,'pace')">🐢 <b>Entspannt</b><br><span class="muted">Weniger Wechsel, mehr Zeit.</span></div>
-<div class="choice" data-group="pace" onclick="choose(this,'pace')">⚖️ <b>Ausgewogen</b><br><span class="muted">Sehen und geniessen.</span></div>
-<div class="choice" data-group="pace" onclick="choose(this,'pace')">⚡ <b>Viel erleben</b><br><span class="muted">Mehr Orte und Eindrücke.</span></div>
-<div class="choice selected" data-group="comfort" onclick="choose(this,'comfort')">⭐ <b>Komfort</b><br><span class="muted">Gute Hotels und Service.</span></div>
-<div class="choice" data-group="comfort" onclick="choose(this,'comfort')">💎 <b>Luxus</b><br><span class="muted">Besondere Hotels.</span></div>
-<div class="choice" data-group="comfort" onclick="choose(this,'comfort')">💰 <b>Preisbewusst</b><br><span class="muted">Gutes Preis-Leistungs-Verhältnis.</span></div>
+
+<div class="choice selected" data-group="pace" onclick="choose(this,'pace')">
+🐢 <b>Entspannt</b><br>
+<span class="muted">Weniger Wechsel, mehr Zeit.</span>
+</div>
+
+<div class="choice" data-group="pace" onclick="choose(this,'pace')">
+⚖️ <b>Ausgewogen</b><br>
+<span class="muted">Sehen und geniessen.</span>
+</div>
+
+<div class="choice" data-group="pace" onclick="choose(this,'pace')">
+⚡ <b>Viel erleben</b><br>
+<span class="muted">Mehr Orte und Eindrücke.</span>
+</div>
+
+<div class="choice selected" data-group="comfort" onclick="choose(this,'comfort')">
+⭐ <b>Komfort</b><br>
+<span class="muted">Gute Hotels und Service.</span>
+</div>
+
+<div class="choice" data-group="comfort" onclick="choose(this,'comfort')">
+💎 <b>Luxus</b><br>
+<span class="muted">Besondere Hotels.</span>
+</div>
+
+<div class="choice" data-group="comfort" onclick="choose(this,'comfort')">
+💰 <b>Preisbewusst</b><br>
+<span class="muted">Gutes Preis-Leistungs-Verhältnis.</span>
+</div>
+
 </div>
 </section>
+
 
 <section class="section hidden" id="routeSection">
-<div class="notice">✨ <b>TRIPINOVA Empfehlung:</b> Du bekommst mehrere konkrete Reiserouten. Wähle eine aus und passe sie danach selbst an.</div>
+
+<div class="notice">
+✨ <b>TRIPINOVA Empfehlung:</b>
+Du bekommst mehrere konkrete Reiserouten. Wähle eine aus und passe sie danach selbst an.
+</div>
+
 <h2 style="margin-top:24px">4. Konkrete Routenvorschläge</h2>
+
+<p class="muted">
+Du bekommst komplette Reisen statt einzelner Bausteine.
+Wähle eine Route – danach kannst du sie komplett verändern.
+</p>
+
 <div class="routecards" id="routeCards"></div>
+
 </section>
 
+
 <section class="section hidden" id="customSection">
+
 <h2>5. Deine Reise selbst bearbeiten</h2>
-<p class="muted">Du kannst Orte entfernen, Nächte verändern, die Reihenfolge verschieben oder einen weiteren Ort hinzufügen.</p>
+
+<p class="muted">
+Du kannst Orte entfernen, Nächte verändern,
+die Reihenfolge verschieben oder einen weiteren Ort hinzufügen.
+</p>
+
 <div class="editor" id="editor"></div>
+
 <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:15px">
+
 <button class="secondary" onclick="addStop()">＋ Ort hinzufügen</button>
-<button class="primary" onclick="refreshTrip()">✨ Reise aktualisieren</button>
+
+<button class="primary" onclick="refreshTrip()">
+✨ Reise aktualisieren
+</button>
+
 </div>
+
 </section>
+
 
 <section class="section hidden" id="resultSection">
 
+<div class="finalroute">
+
+<div class="finalroute-head">
+
+<div>
+
+<span class="badge">DEINE FERTIGE REISE</span>
+
+<h2 id="finalRouteTitle">
+Deine Route
+</h2>
+
+<p class="muted">
+Die komplette Reise auf einen Blick – mit Karte, Etappen und Nächten.
+</p>
+
+</div>
+
+<button class="secondary"
+onclick="document.getElementById('customSection').scrollIntoView({behavior:'smooth'})">
+✏️ Reise bearbeiten
+</button>
+
+</div>
+
+
+<div id="finalRealMap" class="finalroute-map"></div>
+
+
+<div class="route-summary">
+
+<div class="summaryitem">
+📍 Orte
+<b id="sumPlaces">–</b>
+</div>
+
+<div class="summaryitem">
+🌙 Nächte
+<b id="sumNights">–</b>
+</div>
+
+<div class="summaryitem">
+👨‍👩‍👧‍👦 Reisende
+<b id="sumPeople">–</b>
+</div>
+
+<div class="summaryitem">
+💰 Budget
+<b id="sumBudget">–</b>
+</div>
+
+</div>
+
+
+<div class="route-strip" id="routeStrip"></div>
+
+</div>
+
+
+<div class="section">
+
 <h2>6. Deine komplette Reise</h2>
+
+<div class="card" style="margin-bottom:15px">
+<b id="tripMeta"></b>
+</div>
+
 <div class="routebar">
-<div><b id="routeName"></b></div>
+
+<div>
+<b id="routeName"></b>
+</div>
+
 <div class="route-line" id="routeLine"></div>
-<div class="mapbox"><div id="realMap"></div>
-<b>🗺️ Deine Routenkarte</b>
-<p class="muted">Die Orte deiner Reise sind hier in der gewählten Reihenfolge dargestellt. Eine echte Kartenintegration kann im nächsten Schritt angeschlossen werden.</p>
+
+<div class="mapbox">
+
+<b>🗺️ Routenübersicht</b>
+
+<p class="muted">
+Die grosse Karte oben zeigt deine komplette Reise.
+Änderungen an den Etappen werden automatisch übernommen.
+</p>
+
 <div class="maphint" id="mapSummary"></div>
-</div>
+
 </div>
 
+</div>
+
+</div>
+
+
 <div class="section">
+
 <h2>📅 Etappenplan</h2>
+
 <div class="itinerary" id="itinerary"></div>
+
 </div>
 
+
 <div class="section">
+
 <h2>💰 Reisebudget</h2>
+
 <div class="budget">
+
 <div class="budgetbox">
-<div class="line"><span>✈️ Flüge</span><b id="flightCost"></b></div>
-<div class="line"><span>🏨 Hotels</span><b id="hotelCost"></b></div>
-<div class="line"><span>🚗 Mietwagen / Transfers</span><b id="carCost"></b></div>
-<div class="line"><span>🎯 Aktivitäten</span><b id="activityCost"></b></div>
-<div class="line"><span>🍽️ Essen</span><b id="foodCost"></b></div>
-<div class="total">Planungsbudget: <span id="totalCost"></span></div>
-</div>
-<div class="budgetbox">
-<h3>Budget ändern</h3>
-<p class="muted">CHF <b id="budgetDisplay"></b></p>
-<input type="range" min="2000" max="30000" step="100" value="8000" id="budgetSlider" oninput="updateBudget(this.value)">
-</div>
-</div>
+
+<div class="line">
+<span>✈️ Flüge</span>
+<b id="flightCost"></b>
 </div>
 
-<div class="section">
-<h2>🔗 Reise buchen</h2>
-<div class="bookinggrid">
-<div class="booking"><span class="badge">FLUG</span><h3>Flüge</h3><span class="muted">Passende Flüge suchen.</span><button class="primary" onclick="searchFlights()">Flüge suchen</button></div>
-<div class="booking"><span class="badge">HOTEL</span><h3>Hotels</h3><span class="muted">Hotels für deine Etappen suchen.</span><button class="primary" onclick="searchHotels()">Hotels suchen</button></div>
-<div class="booking"><span class="badge">AUTO</span><h3>Mietwagen</h3><span class="muted">Mietwagen und Transfers.</span><button class="primary" onclick="searchCars()">Mietwagen suchen</button></div>
-<div class="booking"><span class="badge">ERLEBNIS</span><h3>Aktivitäten</h3><span class="muted">Ausflüge passend zur Route.</span><button class="primary" onclick="searchActivities()">Aktivitäten suchen</button></div>
+<div class="line">
+<span>🏨 Hotels</span>
+<b id="hotelCost"></b>
 </div>
+
+<div class="line">
+<span>🚗 Mietwagen / Transfers</span>
+<b id="carCost"></b>
+</div>
+
+<div class="line">
+<span>🎯 Aktivitäten</span>
+<b id="activityCost"></b>
+</div>
+
+<div class="line">
+<span>🍽️ Essen</span>
+<b id="foodCost"></b>
+</div>
+
+<div class="total">
+Planungsbudget:
+<span id="totalCost"></span>
+</div>
+
+</div>
+
+
+<div class="budgetbox">
+
+<h3>Budget ändern</h3>
+
+<p class="muted">
+CHF <b id="budgetDisplay"></b>
+</p>
+
+<input
+type="range"
+min="2000"
+max="30000"
+step="100"
+value="8000"
+id="budgetSlider"
+oninput="updateBudget(this.value)">
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="section">
+
+<h2>🔗 Reise buchen</h2>
+
+<div class="bookinggrid">
+
+<div class="booking">
+<span class="badge">FLUG</span>
+<h3>Flüge</h3>
+<span class="muted">Passende Flüge suchen.</span>
+<button class="primary" onclick="searchFlights()">Flüge suchen</button>
+</div>
+
+<div class="booking">
+<span class="badge">HOTEL</span>
+<h3>Hotels</h3>
+<span class="muted">Hotels für deine Etappen suchen.</span>
+<button class="primary" onclick="searchHotels()">Hotels suchen</button>
+</div>
+
+<div class="booking">
+<span class="badge">AUTO</span>
+<h3>Mietwagen</h3>
+<span class="muted">Mietwagen und Transfers.</span>
+<button class="primary" onclick="searchCars()">Mietwagen suchen</button>
+</div>
+
+<div class="booking">
+<span class="badge">ERLEBNIS</span>
+<h3>Aktivitäten</h3>
+<span class="muted">Ausflüge passend zur Route.</span>
+<button class="primary" onclick="searchActivities()">Aktivitäten suchen</button>
+</div>
+
+</div>
+
 </div>
 
 </section>
+
 </div>
 
+
 <footer>
-<div class="logo">TRIP<span>INOVA</span></div>
-<p>Deine Reise. Neu gedacht.</p>
+
+<div class="logo">
+TRIP<span>INOVA</span>
+</div>
+
+<p>
+Deine Reise. Neu gedacht.
+</p>
+
 </footer>
 
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
+
 const places={
+
 thailand:[
+
 {name:"Bangkok",tag:"🏙️ Kultur · Stadt",desc:"Tempel, Streetfood und pulsierendes Bangkok"},
-{name:"Ayutthaya",tag:"🏛️ Kultur",desc:"Historische Tempel und alte Hauptstadt"},
-{name:"Chiang Mai",tag:"🌿 Kultur · Natur",desc:"Tempel, Berge und nordthailändische Küche"},
-{name:"Khao Sok",tag:"🌴 Urwald · Abenteuer",desc:"Nationalpark, Dschungel und Cheow-Lan-See"},
+
+{name:"Koh Chang",tag:"🌴 Insel · Natur",desc:"Dschungel, Wasserfälle und lange Strände"},
+
+{name:"Koh Kood",tag:"🏝️ Traumstrand · Ruhe",desc:"Ruhige Buchten, klares Wasser und Natur"},
+
+{name:"Koh Samui",tag:"🏝️ Strand · Erholung",desc:"Strand, Komfort und viele Ausflugsmöglichkeiten"},
+
+{name:"Koh Phangan",tag:"🌴 Insel · Natur",desc:"Buchten, Dschungel und Inselgefühl"},
+
+{name:"Koh Tao",tag:"🐠 Tauchen · Schnorcheln",desc:"Unterwasserwelt, Schnorcheln und kleine Buchten"},
+
+{name:"Chumphon",tag:"🌿 Festland · Transfer",desc:"Praktischer Übergang zwischen Golfinseln und Bangkok"},
+
+{name:"Phuket",tag:"🏝️ Strand · Komfort",desc:"Strände, Resorts und viele Ausflüge"},
+
+{name:"Khao Lak",tag:"🌴 Strand · Natur",desc:"Ruhigere Küste und guter Ausgangspunkt für Natur"},
+
+{name:"Khao Sok",tag:"🌳 Urwald · Abenteuer",desc:"Regenwald, Cheow-Lan-See und schwimmende Unterkünfte"},
+
 {name:"Krabi",tag:"🏝️ Strand · Natur",desc:"Karstfelsen, Inseln und Buchten"},
+
 {name:"Koh Lanta",tag:"🏝️ Strand · Familie",desc:"Ruhige Insel und schöne Strände"},
-{name:"Phuket",tag:"🏝️ Strand · Komfort",desc:"Strände, Resorts und Ausflüge"},
-{name:"Koh Samui",tag:"🏝️ Strand · Erholung",desc:"Strand, Inselerlebnisse und Resorts"},
-{name:"Koh Phangan",tag:"🏝️ Insel · Natur",desc:"Buchten, Dschungel und Inselgefühl"},
-{name:"Koh Tao",tag:"🐠 Tauchen · Strand",desc:"Tauchen, Schnorcheln und kleine Buchten"}
+
+{name:"Chiang Mai",tag:"🌿 Kultur · Natur",desc:"Tempel, Berge und nordthailändische Küche"}
+
 ],
+
 indonesia:[
+
 {name:"Ubud",tag:"🌴 Natur · Kultur",desc:"Reisfelder, Tempel und Dschungel"},
+
 {name:"Sidemen",tag:"🌿 Natur · Erholung",desc:"Ruhige Landschaft und Reisterrassen"},
+
 {name:"Munduk",tag:"🌴 Natur · Berge",desc:"Wasserfälle, Kaffee und grüne Berge"},
+
 {name:"Uluwatu",tag:"🏝️ Strand · Kultur",desc:"Klippen, Tempel und Strände"},
+
 {name:"Nusa Dua",tag:"🏝️ Strand · Luxus",desc:"Resorts und entspannte Strandtage"},
-{name:"Gili Air",tag:"🐠 Insel · Schnorcheln",desc:"Schnorcheln, Strände und autofreies Inselgefühl"},
+
+{name:"Gili Air",tag:"🐠 Insel · Schnorcheln",desc:"Schnorcheln, Strände und Inselgefühl"},
+
 {name:"Lombok",tag:"🌴 Natur · Strand",desc:"Natur, Strände und ruhiger als Bali"},
+
 {name:"Nusa Penida",tag:"🏝️ Abenteuer · Meer",desc:"Spektakuläre Küsten und Buchten"},
+
 {name:"Labuan Bajo",tag:"🐠 Abenteuer · Meer",desc:"Tor zum Komodo-Nationalpark"},
+
 {name:"Komodo",tag:"🦎 Natur · Abenteuer",desc:"Nationalpark und einzigartige Landschaft"}
+
 ],
+
 mexico:[
+
 {name:"Cancún",tag:"🏝️ Strand · Ankommen",desc:"Einfacher Start und karibisches Meer"},
+
 {name:"Puerto Morelos",tag:"🏝️ Strand · Erholung",desc:"Ruhiger Küstenort und Riff"},
+
 {name:"Valladolid",tag:"🏛️ Kultur · Cenoten",desc:"Kolonialstadt, Cenoten und Maya-Kultur"},
+
 {name:"Mérida",tag:"🏛️ Kultur · Essen",desc:"Yucatán-Kultur, Architektur und Küche"},
+
 {name:"Chichén Itzá",tag:"🏛️ Maya · Kultur",desc:"Eine der bekanntesten Maya-Stätten"},
-{name:"Calakmul",tag:"🌴 Urwald · Maya",desc:"Maya-Ruinen tief im Dschungel"},
+
+{name:"Calakmul",tag:"🌴 Urwald · Maya",desc:"Maya-Ruinen tief im Urwald"},
+
 {name:"Bacalar",tag:"💧 Natur · Erholung",desc:"Lagune der sieben Farben"},
+
 {name:"Tulum",tag:"🏝️ Strand · Maya",desc:"Küste, Ruinen und Cenoten"},
+
 {name:"Akumal",tag:"🐢 Strand · Schnorcheln",desc:"Meer, Schnorcheln und Schildkröten"},
+
 {name:"Isla Mujeres",tag:"🏝️ Insel · Erholung",desc:"Karibik, Strände und Inselgefühl"}
-]};
+
+]
+
+};
+
 
 const coords={
-Bangkok:[13.7563,100.5018],Ayutthaya:[14.3532,100.5689],Chiang Mai:[18.7883,98.9853],"Khao Sok":[8.936,98.532],"Krabi":[8.0863,98.9063],"Koh Lanta":[7.613,99.036],"Phuket":[7.8804,98.3923],"Koh Samui":[9.512,100.0136],"Koh Phangan":[9.756,100.035],"Koh Tao":[10.0956,99.8406],
-Ubud:[-8.5069,115.2625],Sidemen:[-8.475,115.445],"Munduk":[-8.275,115.080],"Uluwatu:[-8.829,115.084],"Nusa Dua":[-8.8005,115.2278],"Gili Air":[-8.357,116.083],"Lombok":[-8.6529,116.3249],"Nusa Penida":[-8.727,115.544],"Labuan Bajo":[-8.496,119.887],"Komodo":[-8.589,119.494],
-Cancún:[21.1619,-86.8515],"Puerto Morelos":[20.848,-86.8753],Valladolid:[20.6896,-88.2018],Mérida:[20.9674,-89.5926],"Chichén Itzá":[20.6843,-88.5678],Calakmul:[18.105,-89.810],"Bacalar:[18.678,-88.392],"Tulum:[20.2114,-87.4654],Akumal:[20.397,-87.313], "Isla Mujeres":[21.232,-86.731]
+
+Bangkok:[13.7563,100.5018],
+Ayutthaya:[14.3532,100.5689],
+"Chiang Mai":[18.7883,98.9853],
+"Khao Sok":[8.936,98.532],
+Krabi:[8.0863,98.9063],
+"Koh Lanta":[7.613,99.036],
+Phuket:[7.8804,98.3923],
+"Koh Samui":[9.512,100.0136],
+"Koh Phangan":[9.756,100.035],
+"Koh Tao":[10.0956,99.8406],
+"Koh Chang":[12.047,102.324],
+"Koh Kood":[11.657,102.565],
+Chumphon:[10.493,99.18],
+
+Ubud:[-8.5069,115.2625],
+Sidemen:[-8.475,115.445],
+Munduk:[-8.275,115.080],
+Uluwatu:[-8.829,115.084],
+"Nusa Dua":[-8.8005,115.2278],
+"Gili Air":[-8.357,116.083],
+Lombok:[-8.6529,116.3249],
+"Nusa Penida":[-8.727,115.544],
+"Labuan Bajo":[-8.496,119.887],
+Komodo:[-8.589,119.494],
+
+Cancún:[21.1619,-86.8515],
+"Puerto Morelos":[20.848,-86.8753],
+Valladolid:[20.6896,-88.2018],
+Mérida:[20.9674,-89.5926],
+"Chichén Itzá":[20.6843,-88.5678],
+Calakmul:[18.105,-89.810],
+Bacalar:[18.678,-88.392],
+Tulum:[20.2114,-87.4654],
+Akumal:[20.397,-87.313],
+"Isla Mujeres":[21.232,-86.731]
+
 };
+
 
 const routes={
+
 thailand:[
-{name:"Thailand Highlights",desc:"Die klassische Mischung aus Bangkok, Kultur, Natur und Strand.",stops:[["Bangkok",2],["Chiang Mai",3],["Khao Sok",2],["Krabi",3],["Koh Lanta",4]]},
-{name:"Insel & Strand",desc:"Mehr Meer, Inseln und Erholung mit wenig Kulturanteil.",stops:[["Bangkok",2],["Khao Sok",2],["Krabi",3],["Koh Samui",3],["Koh Tao",4]]},
-{name:"Natur & Abenteuer",desc:"Für Reisende, die Dschungel, Outdoor und Inseln priorisieren.",stops:[["Bangkok",2],["Chiang Mai",3],["Khao Sok",3],["Krabi",3],["Koh Tao",3]]}
+
+{
+name:"Bangkok & Trauminseln",
+desc:"Bangkok, Koh Chang und Koh Kood – Stadt, Dschungel und Traumstrände.",
+stops:[["Bangkok",3],["Koh Chang",4],["Koh Kood",5],["Bangkok",1]]
+},
+
+{
+name:"Golf von Thailand",
+desc:"Samui, Phangan und Tao mit Rückreise über Chumphon.",
+stops:[["Bangkok",3],["Koh Samui",3],["Koh Phangan",3],["Koh Tao",3],["Chumphon",1],["Bangkok",1]]
+},
+
+{
+name:"Thailand Klassiker",
+desc:"Phuket, Khao Lak, Khao Sok und die Inseln im Golf – sehr abwechslungsreich.",
+stops:[["Phuket",2],["Khao Lak",3],["Khao Sok",2],["Koh Samui",3],["Koh Phangan",3],["Bangkok",1]]
+},
+
+{
+name:"Andamanen & Inseln",
+desc:"Küste, Natur und Inseln der Andamanensee.",
+stops:[["Phuket",2],["Khao Lak",3],["Krabi",3],["Koh Lanta",4],["Bangkok",1]]
+},
+
+{
+name:"Nord & Inseln",
+desc:"Kultur und Berge im Norden, danach Erholung am Meer.",
+stops:[["Bangkok",3],["Chiang Mai",3],["Khao Sok",2],["Krabi",2],["Koh Lanta",3],["Bangkok",1]]
+}
+
 ],
+
 indonesia:[
-{name:"Bali & Inseln",desc:"Bali-Kultur, Natur, Gili und Lombok – ideal für Familien.",stops:[["Ubud",4],["Sidemen",2],["Gili Air",3],["Lombok",3],["Nusa Dua",2]]},
-{name:"Bali intensiv",desc:"Mehr Bali mit Natur, Kultur und Strand.",stops:[["Ubud",4],["Munduk",3],["Uluwatu",3],["Nusa Dua",4]]},
-{name:"Insel & Komodo",desc:"Für Abenteuer, Meer und besondere Naturerlebnisse.",stops:[["Ubud",3],["Nusa Penida",2],["Labuan Bajo",3],["Komodo",2],["Nusa Dua",4]]}
+
+{
+name:"Bali, Gili & Lombok",
+desc:"Ubud, Gili Air und Lombok – Kultur, Insel und viel Erholung.",
+stops:[["Ubud",4],["Gili Air",3],["Lombok",6],["Nusa Dua",1]]
+},
+
+{
+name:"Bali Klassiker",
+desc:"Ubud, Sidemen und die Strände im Süden.",
+stops:[["Ubud",4],["Sidemen",2],["Uluwatu",3],["Nusa Dua",4]]
+},
+
+{
+name:"Bali & Inseln",
+desc:"Bali kombiniert mit Gili Air und einem entspannten Strandabschluss.",
+stops:[["Ubud",4],["Gili Air",3],["Nusa Dua",5],["Uluwatu",2]]
+},
+
+{
+name:"Natur & Komodo",
+desc:"Bali, Nusa Penida und der Komodo-Nationalpark.",
+stops:[["Ubud",3],["Nusa Penida",2],["Labuan Bajo",3],["Komodo",2],["Nusa Dua",3]]
+},
+
+{
+name:"Lombok intensiv",
+desc:"Weniger Massentourismus, mehr Natur, Strände und Inselgefühl.",
+stops:[["Ubud",3],["Gili Air",3],["Lombok",7],["Nusa Dua",1]]
+}
+
 ],
+
 mexico:[
-{name:"Yucatán Highlights",desc:"Maya-Kultur, Cenoten, Lagune und Karibik.",stops:[["Cancún",1],["Valladolid",2],["Mérida",2],["Bacalar",3],["Akumal",6]]},
-{name:"Strand & Natur",desc:"Mehr Meer und Natur – mit Calakmul als besonderem Dschungel-Erlebnis.",stops:[["Puerto Morelos",2],["Valladolid",2],["Calakmul",1],["Bacalar",2],["Akumal",4],["Isla Mujeres",3]]},
-{name:"Entspannt & Familie",desc:"Wenige Wechsel, viel Strand und entspannte Familientage.",stops:[["Puerto Morelos",3],["Isla Mujeres",3],["Akumal",5],["Tulum",3]]}
-]};
 
-let country="",adults=2,children=2,childAges=[11,14],selectedRoute=0,currentStops=[],map=null,mapLayer=null;
+{
+name:"Mexico Strand & Natur",
+desc:"Puerto Morelos, Valladolid, Calakmul, Bacalar, Akumal und Isla Mujeres.",
+stops:[["Puerto Morelos",2],["Valladolid",2],["Calakmul",1],["Bacalar",2],["Akumal",4],["Isla Mujeres",3]]
+},
 
-const interestData=[
-["strand","🏝️","Strand & Meer"],["natur","🌴","Urwald & Natur"],["kultur","🏛️","Kultur & Geschichte"],["essen","🍜","Essen & Genuss"],["abenteuer","🏔️","Abenteuer"],["tauchen","🐠","Tauchen & Schnorcheln"],["erholung","😌","Erholung"],["familie","👨‍👩‍👧‍👦","Familie"],["stadt","🏙️","Städte & Shopping"],["romantik","❤️","Romantik"]
-];
+{
+name:"Yucatán Highlights",
+desc:"Maya-Kultur, Cenoten, Lagune und Karibik.",
+stops:[["Cancún",1],["Valladolid",2],["Mérida",2],["Bacalar",3],["Akumal",5]]
+},
+
+{
+name:"Entspannt & Familie",
+desc:"Wenige Wechsel, viel Strand und entspannte Familientage.",
+stops:[["Puerto Morelos",3],["Isla Mujeres",3],["Akumal",5],["Tulum",3]]
+},
+
+{
+name:"Maya & Dschungel",
+desc:"Mehr Kultur und Natur mit Calakmul als Höhepunkt.",
+stops:[["Cancún",1],["Valladolid",3],["Calakmul",2],["Bacalar",3],["Tulum",3],["Akumal",2]]
+},
+
+{
+name:"Karibik pur",
+desc:"Schwerpunkt auf Meer, Inseln und Erholung.",
+stops:[["Cancún",2],["Isla Mujeres",3],["Puerto Morelos",2],["Akumal",4],["Tulum",3]]
+}
+
+]
+
+};
+
+
+let country="";
+let adults=2;
+let children=2;
+let childAges=[11,14];
+let selectedRoute=0;
+let currentStops=[];
+let map=null;
+let mapLayer=null;
+
 let interests={};
 
-function money(n){return "CHF "+Math.round(n).toLocaleString("de-CH")}
+
+const interestData=[
+
+["strand","🏝️","Strand & Meer"],
+["natur","🌴","Urwald & Natur"],
+["kultur","🏛️","Kultur & Geschichte"],
+["essen","🍜","Essen & Genuss"],
+["abenteuer","🏔️","Abenteuer"],
+["tauchen","🐠","Tauchen & Schnorcheln"],
+["erholung","😌","Erholung"],
+["familie","👨‍👩‍👧‍👦","Familie"],
+["stadt","🏙️","Städte & Shopping"],
+["romantik","❤️","Romantik"]
+
+];
+
+
+function money(n){
+
+return "CHF " +
+Math.round(n).toLocaleString("de-CH");
+
+}
+
+
 function countryChanged(){
+
 country=document.getElementById("country").value;
+
 if(!country)return;
+
 renderCountryPlaces();
+
 const intro={
-thailand:"Thailand – Tempel, Dschungel, Inseln und Strände. TRIPINOVA verbindet Kultur, Natur und Inseln zu passenden Familien- und Rundreisen.",
-indonesia:"Indonesien – Bali, Gili, Lombok und Komodo. Ideal für Natur, Inseln, Kultur, Schnorcheln und Erholung.",
-mexico:"Mexico – Karibik, Maya-Kultur, Cenoten, Urwald und Lagunen. Besonders stark für kombinierte Rundreisen."
+
+thailand:
+"Thailand – Tempel, Dschungel, Inseln und Strände. TRIPINOVA verbindet Kultur, Natur und Inseln zu passenden Familien- und Rundreisen.",
+
+indonesia:
+"Indonesien – Bali, Gili, Lombok und Komodo. Ideal für Natur, Inseln, Kultur, Schnorcheln und Erholung.",
+
+mexico:
+"Mexico – Karibik, Maya-Kultur, Cenoten, Urwald und Lagunen. Besonders stark für kombinierte Rundreisen."
+
 };
-document.getElementById("countryIntro").innerHTML="<span class='badge'>"+document.getElementById("country").options[document.getElementById("country").selectedIndex].textContent+"</span><h3>"+intro[country]+"</h3>";
+
+document.getElementById("countryIntro").innerHTML=
+
+"<span class='badge'>"+
+document.getElementById("country").options[
+document.getElementById("country").selectedIndex
+].textContent+
+"</span><h3>"+
+intro[country]+
+"</h3>";
+
 renderPlaceChoices();
+
 }
+
+
 function renderPlaceChoices(){
-const box=document.getElementById("placeChoices");box.innerHTML="";
+
+const box=document.getElementById("placeChoices");
+
+box.innerHTML="";
+
 places[country].forEach(p=>{
-const el=document.createElement("div");el.className="placecard";el.dataset.name=p.name;
-el.innerHTML="<b>"+p.tag+"</b><h4>"+p.name+"</h4><small>"+p.desc+"</small>";
+
+const el=document.createElement("div");
+
+el.className="placecard";
+
+el.dataset.name=p.name;
+
+el.innerHTML=
+"<b>"+p.tag+"</b>"+
+"<h4>"+p.name+"</h4>"+
+"<small>"+p.desc+"</small>";
+
 el.onclick=()=>el.classList.toggle("selected");
+
 box.appendChild(el);
+
 });
+
 }
+
+
 function getMustPlaces(){
-return [...document.querySelectorAll("#placeChoices .placecard.selected")].map(x=>x.dataset.name);
+
+return [...document.querySelectorAll(
+"#placeChoices .placecard.selected"
+)].map(x=>x.dataset.name);
+
 }
+
 
 function renderCountryPlaces(){
-const box=document.getElementById("interests");box.innerHTML="";
+
+const box=document.getElementById("interests");
+
+box.innerHTML="";
+
 interestData.forEach(x=>{
+
 interests[x[0]]=0;
-const el=document.createElement("div");el.className="interest";el.dataset.key=x[0];
-el.innerHTML=`<span class="emoji">${x[1]}</span><b>${x[2]}</b><div class="stars">★ ★ ★</div>`;
-el.onclick=()=>{interests[x[0]]=interests[x[0]]?0:3;el.classList.toggle("selected")};
+
+const el=document.createElement("div");
+
+el.className="interest";
+
+el.dataset.key=x[0];
+
+el.innerHTML=
+
+`<span class="emoji">${x[1]}</span>
+<b>${x[2]}</b>
+<div class="stars">★ ★ ★</div>`;
+
+el.onclick=()=>{
+
+interests[x[0]]=interests[x[0]]?0:3;
+
+el.classList.toggle("selected");
+
+};
+
 box.appendChild(el);
+
 });
+
 }
-function changeAdults(n){adults=Math.max(1,Math.min(8,adults+n));document.getElementById("adultCount").textContent=adults}
-function changeChildren(n){children=Math.max(0,Math.min(6,children+n));document.getElementById("childCount").textContent=children;while(childAges.length<children)childAges.push(0);childAges=childAges.slice(0,children);renderChildren()}
+
+
+function changeAdults(n){
+
+adults=Math.max(
+1,
+Math.min(8,adults+n)
+);
+
+document.getElementById(
+"adultCount"
+).textContent=adults;
+
+}
+
+
+function changeChildren(n){
+
+children=Math.max(
+0,
+Math.min(6,children+n)
+);
+
+document.getElementById(
+"childCount"
+).textContent=children;
+
+while(childAges.length<children){
+
+childAges.push(0);
+
+}
+
+childAges=childAges.slice(0,children);
+
+renderChildren();
+
+}
+
+
 function renderChildren(){
-const box=document.getElementById("childrenBox"),out=document.getElementById("childrenAges");out.innerHTML="";
-if(!children){box.style.display="none";return}
-box.style.display="block";
-for(let i=0;i<children;i++){
-const row=document.createElement("div");row.className="child";
-const b=document.createElement("b");b.textContent="Kind "+(i+1);
-const s=document.createElement("select");
-for(let a=0;a<=17;a++){let o=document.createElement("option");o.value=a;o.textContent=a===0?"unter 1 Jahr":a+" Jahre";if(childAges[i]===a)o.selected=true;s.appendChild(o)}
-s.onchange=()=>childAges[i]=Number(s.value);row.append(b,s);out.appendChild(row);
-}}
-function choose(el,g){document.querySelectorAll(`[data-group="${g}"]`).forEach(x=>x.classList.remove("selected"));el.classList.add("selected")}
-function goToPreferences(){
-if(!country){alert("Bitte zuerst Thailand, Indonesien oder Mexico auswählen.");return}
-document.getElementById("countrySection").classList.remove("hidden");
-document.getElementById("styleSection").classList.remove("hidden");
-document.getElementById("routeSection").classList.remove("hidden");
-renderRoutes();
-document.getElementById("countrySection").scrollIntoView({behavior:"smooth"});
+
+const box=document.getElementById(
+"childrenBox"
+);
+
+const out=document.getElementById(
+"childrenAges"
+);
+
+out.innerHTML="";
+
+if(!children){
+
+box.style.display="none";
+
+return;
+
 }
+
+box.style.display="block";
+
+for(let i=0;i<children;i++){
+
+const row=document.createElement("div");
+
+row.className="child";
+
+const b=document.createElement("b");
+
+b.textContent="Kind "+(i+1);
+
+const s=document.createElement("select");
+
+for(let a=0;a<=17;a++){
+
+let o=document.createElement("option");
+
+o.value=a;
+
+o.textContent=
+a===0
+?"unter 1 Jahr"
+:a+" Jahre";
+
+if(childAges[i]===a)
+o.selected=true;
+
+s.appendChild(o);
+
+}
+
+s.onchange=()=>
+childAges[i]=Number(s.value);
+
+row.append(b,s);
+
+out.appendChild(row);
+
+}
+
+}
+
+
+function choose(el,g){
+
+document
+.querySelectorAll(`[data-group="${g}"]`)
+.forEach(x=>x.classList.remove("selected"));
+
+el.classList.add("selected");
+
+}
+
+
+function goToPreferences(){
+
+if(!country){
+
+alert(
+"Bitte zuerst Thailand, Indonesien oder Mexico auswählen."
+);
+
+return;
+
+}
+
+document.getElementById(
+"countrySection"
+).classList.remove("hidden");
+
+document.getElementById(
+"styleSection"
+).classList.remove("hidden");
+
+document.getElementById(
+"routeSection"
+).classList.remove("hidden");
+
+renderRoutes();
+
+document.getElementById(
+"countrySection"
+).scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+
 function renderRoutes(){
-const box=document.getElementById("routeCards");box.innerHTML="";
-const active=Object.entries(interests).filter(x=>x[1]>0).map(x=>x[0]);
+
+const box=document.getElementById(
+"routeCards"
+);
+
+box.innerHTML="";
+
+const active=
+Object.entries(interests)
+.filter(x=>x[1]>0)
+.map(x=>x[0]);
 
 routes[country].forEach((r,i)=>{
-const el=document.createElement("div");el.className="routecard"+(i===0?" best":"");
-el.innerHTML=`<span class="badge">${i===0?"TRIPINOVA EMPFEHLUNG":"ALTERNATIVE"}</span><h3>${r.name}</h3><p><b>${r.stops.map(x=>x[0]).join(" → ")}</b></p><p class="muted">${r.desc}</p><p><span class="badge">Karte</span> <span class="badge">Nächte</span> <span class="badge">Budget</span></p><p><b>${r.stops.length} Orte</b> · ${r.stops.reduce((a,b)=>a+b[1],0)} Nächte</p><button class="${i===0?"primary":"secondary"}" onclick="selectRoute(${i})">Diese Route wählen</button>`;
+
+const el=document.createElement("div");
+
+el.className=
+"routecard"+
+(i===0?" best":"");
+
+el.innerHTML=
+
+`<span class="badge">
+${i===0?"TRIPINOVA EMPFEHLUNG":"ALTERNATIVE"}
+</span>
+
+<h3>${r.name}</h3>
+
+<p>
+<b>${r.stops.map(x=>x[0]).join(" → ")}</b>
+</p>
+
+<p class="muted">
+${r.desc}
+</p>
+
+<p>
+<span class="badge">Karte</span>
+<span class="badge">Nächte</span>
+<span class="badge">Budget</span>
+</p>
+
+<p>
+<b>${r.stops.length} Orte</b>
+ · ${r.stops.reduce((a,b)=>a+b[1],0)} Nächte
+</p>
+
+<button
+class="${i===0?"primary":"secondary"}"
+onclick="selectRoute(${i})">
+
+Diese Route wählen
+
+</button>`;
+
 box.appendChild(el);
+
 });
+
 selectRoute(0);
+
 }
+
+
 function selectRoute(i){
+
 selectedRoute=i;
-const wanted=Number(document.getElementById("placeCount").value)||5;
-let base=routes[country][i].stops.map(x=>({name:x[0],nights:x[1]}));
+
+const wanted=
+Number(document.getElementById("placeCount").value)||5;
+
+let base=
+routes[country][i].stops.map(
+x=>({name:x[0],nights:x[1]})
+);
+
 const must=getMustPlaces();
+
 const merged=[];
+
 for(const n of must){
-const found=base.find(x=>x.name===n);
-if(found)merged.push({...found});
-else merged.push({name:n,nights:2});
+
+const found=
+base.find(x=>x.name===n);
+
+if(found)
+merged.push({...found});
+else
+merged.push({
+name:n,
+nights:2
+});
+
 }
-for(const x of base)if(!merged.some(y=>y.name===x.name)&&merged.length<wanted)merged.push({...x});
-for(const p of places[country])if(merged.length<wanted&&!merged.some(x=>x.name===p.name))merged.push({name:p.name,nights:2});
-currentStops=merged.slice(0,wanted);
-document.getElementById("customSection").classList.remove("hidden");
+
+for(const x of base){
+
+if(
+!merged.some(y=>y.name===x.name)&&
+merged.length<wanted
+)
+merged.push({...x});
+
+}
+
+for(const p of places[country]){
+
+if(
+merged.length<wanted&&
+!merged.some(x=>x.name===p.name)
+)
+merged.push({
+name:p.name,
+nights:2
+});
+
+}
+
+currentStops=
+merged.slice(0,wanted);
+
+document.getElementById(
+"customSection"
+).classList.remove("hidden");
+
 renderEditor();
-document.getElementById("customSection").scrollIntoView({behavior:"smooth"});
+
+document.getElementById(
+"customSection"
+).scrollIntoView({
+behavior:"smooth"
+});
+
 }
+
+
 function renderEditor(){
-const box=document.getElementById("editor");box.innerHTML="";
+
+const box=
+document.getElementById("editor");
+
+box.innerHTML="";
+
 currentStops.forEach((s,i)=>{
-const el=document.createElement("div");el.className="stop";
-el.innerHTML=`<div class="stopnum">${String(i+1).padStart(2,"0")}</div><div><h3>${s.name}</h3><span class="muted">${placeInfo(s.name)}</span></div><div class="stop-actions"><div class="night"><button onclick="changeNights(${i},-1)">−</button><span>${s.nights}</span><button onclick="changeNights(${i},1)">+</button><small>Nächte</small></div><button class="secondary" onclick="moveStop(${i},-1)">↑</button><button class="secondary" onclick="moveStop(${i},1)">↓</button><button class="secondary" onclick="removeStop(${i})">Entfernen</button></div>`;
+
+const el=
+document.createElement("div");
+
+el.className="stop";
+
+el.innerHTML=
+
+`<div class="stopnum">
+${String(i+1).padStart(2,"0")}
+</div>
+
+<div>
+<h3>${s.name}</h3>
+<span class="muted">
+${placeInfo(s.name)}
+</span>
+</div>
+
+<div class="stop-actions">
+
+<div class="night">
+
+<button onclick="changeNights(${i},-1)">
+−
+</button>
+
+<span>${s.nights}</span>
+
+<button onclick="changeNights(${i},1)">
++
+</button>
+
+<small>Nächte</small>
+
+</div>
+
+<button
+class="secondary"
+onclick="moveStop(${i},-1)">
+↑
+</button>
+
+<button
+class="secondary"
+onclick="moveStop(${i},1)">
+↓
+</button>
+
+<button
+class="secondary"
+onclick="removeStop(${i})">
+Entfernen
+</button>
+
+</div>`;
+
 box.appendChild(el);
+
 });
+
 }
+
+
 function placeInfo(name){
-for(const p of Object.values(places).flat())if(p.name===name)return p.tag+" · "+p.desc;
+
+for(
+const p of Object.values(places).flat()
+)
+
+if(p.name===name)
+
+return p.tag+
+" · "+
+p.desc;
+
 return "Reiseetappe";
+
 }
-function changeNights(i,n){currentStops[i].nights=Math.max(1,currentStops[i].nights+n);renderEditor()}
-function moveStop(i,n){const j=i+n;if(j<0||j>=currentStops.length)return;[currentStops[i],currentStops[j]]=[currentStops[j],currentStops[i]];renderEditor()}
-function removeStop(i){if(currentStops.length<=2){alert("Mindestens zwei Orte sollten in der Reise bleiben.");return}currentStops.splice(i,1);renderEditor()}
+
+
+function changeNights(i,n){
+
+currentStops[i].nights=
+Math.max(
+1,
+currentStops[i].nights+n
+);
+
+renderEditor();
+
+}
+
+
+function moveStop(i,n){
+
+const j=i+n;
+
+if(j<0||j>=currentStops.length)
+return;
+
+[
+currentStops[i],
+currentStops[j]
+]=[
+currentStops[j],
+currentStops[i]
+];
+
+renderEditor();
+
+}
+
+
+function removeStop(i){
+
+if(currentStops.length<=2){
+
+alert(
+"Mindestens zwei Orte sollten in der Reise bleiben."
+);
+
+return;
+
+}
+
+currentStops.splice(i,1);
+
+renderEditor();
+
+}
+
+
 function addStop(){
-const used=currentStops.map(x=>x.name);const available=places[country].filter(x=>!used.includes(x.name));
-if(!available.length){alert("Alle verfügbaren Orte dieses Landes sind bereits in deiner Route.");return}
-const p=available[0];currentStops.push({name:p.name,nights:2});renderEditor();
+
+const used=
+currentStops.map(x=>x.name);
+
+const available=
+places[country].filter(
+x=>!used.includes(x.name)
+);
+
+if(!available.length){
+
+alert(
+"Alle verfügbaren Orte dieses Landes sind bereits in deiner Route."
+);
+
+return;
+
 }
+
+const p=available[0];
+
+currentStops.push({
+name:p.name,
+nights:2
+});
+
+renderEditor();
+
+}
+
+
 function refreshTrip(){
-if(!currentStops.length)return;
+
+if(!currentStops.length)
+return;
+
 renderResult();
-document.getElementById("resultSection").classList.remove("hidden");
-document.getElementById("resultSection").scrollIntoView({behavior:"smooth"});
+
+document.getElementById(
+"resultSection"
+).classList.remove("hidden");
+
+document.getElementById(
+"resultSection"
+).scrollIntoView({
+behavior:"smooth"
+});
+
 }
+
+
 function renderResult(){
-const name=routes[country][selectedRoute].name;
-document.getElementById("routeName").textContent=name+" · "+currentStops.length+" Orte";
-const line=document.getElementById("routeLine");line.innerHTML="";
+
+const name=
+routes[country][selectedRoute].name;
+
+const dates=
+document.getElementById("dates").value||
+"Reisedaten noch offen";
+
+document.getElementById(
+"tripMeta"
+).textContent=
+(document.getElementById("from").value||"Zürich")+
+" → "+
+country.toUpperCase()+
+" · "+
+(document.getElementById("days").value||14)+
+" Tage · "+
+dates+
+" · "+
+adults+
+" Erwachsene + "+
+children+
+" Kinder";
+
+document.getElementById(
+"routeName"
+).textContent=
+name+
+" · "+
+currentStops.length+
+" Orte";
+
+const line=
+document.getElementById("routeLine");
+
+line.innerHTML="";
+
 currentStops.forEach((s,i)=>{
-const p=document.createElement("span");p.className="point";p.textContent=s.name;line.appendChild(p);
-if(i<currentStops.length-1){const a=document.createElement("span");a.className="arrow";a.textContent="→";line.appendChild(a)}
+
+const p=
+document.createElement("span");
+
+p.className="point";
+
+p.textContent=s.name;
+
+line.appendChild(p);
+
+if(i<currentStops.length-1){
+
+const a=
+document.createElement("span");
+
+a.className="arrow";
+
+a.textContent="→";
+
+line.appendChild(a);
+
+}
+
 });
-const totalNights=currentStops.reduce((a,b)=>a+b.nights,0);
-document.getElementById("mapSummary").innerHTML=`<b>${totalNights} Nächte · ${currentStops.length} Orte</b><br><span class="muted">${currentStops.map(s=>s.name+" ("+s.nights+" Nächte)").join(" → ")}</span>`;
-const it=document.getElementById("itinerary");it.innerHTML="";
+
+const totalNights=
+currentStops.reduce(
+(a,b)=>a+b.nights,
+0
+);
+
+document.getElementById(
+"mapSummary"
+).innerHTML=
+
+`<b>
+${totalNights} Nächte ·
+${currentStops.length} Orte
+</b>
+<br>
+<span class="muted">
+${currentStops.map(
+s=>s.name+
+" ("+
+s.nights+
+" Nächte)"
+).join(" → ")}
+</span>`;
+
+const it=
+document.getElementById(
+"itinerary"
+);
+
+it.innerHTML="";
+
 let day=1;
+
 currentStops.forEach(s=>{
-const el=document.createElement("div");el.className="day";
-el.innerHTML=`<div><b>Tag ${day}–${day+s.nights-1}</b></div><div><b>${s.name}</b><span class="muted">${s.nights} ${s.nights===1?"Nacht":"Nächte"} · ${placeInfo(s.name)}</span></div>`;
-it.appendChild(el);day+=s.nights;
+
+const el=
+document.createElement("div");
+
+el.className="day";
+
+el.innerHTML=
+
+`<div>
+<b>
+Tag ${day}–${day+s.nights-1}
+</b>
+</div>
+
+<div>
+<b>${s.name}</b>
+
+<span class="muted">
+${s.nights}
+${s.nights===1?"Nacht":"Nächte"}
+ · ${placeInfo(s.name)}
+</span>
+
+</div>`;
+
+it.appendChild(el);
+
+day+=s.nights;
+
 });
-const budget=Number(document.getElementById("budget").value)||8000;
-document.getElementById("budgetSlider").value=budget;
+
+const budget=
+Number(
+document.getElementById("budget").value
+)||8000;
+
+document.getElementById(
+"budgetSlider"
+).value=budget;
+
 updateBudget(budget);
+
 setTimeout(drawMap,80);
+
 }
+
+
 function drawMap(){
-if(!window.L)return;
-const pts=currentStops.map(s=>coords[s.name]).filter(Boolean);
-if(!pts.length)return;
+
+if(!window.L)
+return;
+
+const pts=
+currentStops
+.map(s=>coords[s.name])
+.filter(Boolean);
+
+if(!pts.length)
+return;
+
 if(!map){
-map=L.map("realMap",{scrollWheelZoom:false,zoomControl:true});
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap contributors"}).addTo(map);
+
+map=L.map(
+"realMap",
+{
+scrollWheelZoom:false,
+zoomControl:true
 }
-if(mapLayer)map.removeLayer(mapLayer);
-mapLayer=L.layerGroup().addTo(map);
+);
+
+L.tileLayer(
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+attribution:
+"© OpenStreetMap contributors"
+}
+).addTo(map);
+
+}
+
+if(mapLayer)
+map.removeLayer(mapLayer);
+
+mapLayer=
+L.layerGroup().addTo(map);
+
 const line=[];
+
 currentStops.forEach((s,i)=>{
-const c=coords[s.name];if(!c)return;
+
+const c=coords[s.name];
+
+if(!c)
+return;
+
 line.push(c);
-L.marker(c).bindPopup("<b>"+(i+1)+". "+s.name+"</b><br>"+s.nights+" Nächte").addTo(mapLayer);
+
+L.marker(c)
+.bindPopup(
+"<b>"+
+(i+1)+
+". "+
+s.name+
+"</b><br>"+
+s.nights+
+" Nächte"
+)
+.addTo(mapLayer);
+
 });
-if(line.length>1)L.polyline(line,{weight:4}).addTo(mapLayer);
-map.fitBounds(line,{padding:[30,30]});
+
+if(line.length>1)
+
+L.polyline(
+line,
+{
+weight:4
 }
+).addTo(mapLayer);
+
+map.fitBounds(
+line,
+{
+padding:[30,30]
+}
+);
+
+drawFinalMap();
+
+drawRouteStrip();
+
+}
+
+
+function drawFinalMap(){
+
+const el=
+document.getElementById(
+"finalRealMap"
+);
+
+if(!el||!window.L)
+return;
+
+if(window.finalMap)
+window.finalMap.remove();
+
+window.finalMap=
+L.map(
+el,
+{
+scrollWheelZoom:false,
+zoomControl:true
+}
+);
+
+L.tileLayer(
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+attribution:
+"© OpenStreetMap contributors"
+}
+).addTo(window.finalMap);
+
+const layer=
+L.layerGroup().addTo(
+window.finalMap
+);
+
+const line=[];
+
+currentStops.forEach((s,i)=>{
+
+const c=coords[s.name];
+
+if(!c)
+return;
+
+line.push(c);
+
+L.marker(c)
+.bindPopup(
+"<b>"+
+(i+1)+
+". "+
+s.name+
+"</b><br>"+
+s.nights+
+" "+
+(
+s.nights===1
+?"Nacht"
+:"Nächte"
+)
+)
+.addTo(layer);
+
+});
+
+if(line.length>1)
+
+L.polyline(
+line,
+{
+weight:5
+}
+).addTo(layer);
+
+if(line.length===1)
+
+window.finalMap.setView(
+line[0],
+10
+);
+
+else
+
+window.finalMap.fitBounds(
+line,
+{
+padding:[35,35]
+}
+);
+
+const totalNights=
+currentStops.reduce(
+(a,b)=>a+b.nights,
+0
+);
+
+document.getElementById(
+"finalRouteTitle"
+).textContent=
+routes[country][selectedRoute].name+
+" · "+
+(document.getElementById("days").value||totalNights)+
+" Tage";
+
+document.getElementById(
+"sumPlaces"
+).textContent=
+currentStops.length;
+
+document.getElementById(
+"sumNights"
+).textContent=
+totalNights;
+
+document.getElementById(
+"sumPeople"
+).textContent=
+adults+
+" + "+
+children;
+
+document.getElementById(
+"sumBudget"
+).textContent=
+money(
+Number(
+document.getElementById("budget").value
+)||8000
+);
+
+}
+
+
+function drawRouteStrip(){
+
+const strip=
+document.getElementById(
+"routeStrip"
+);
+
+if(!strip)
+return;
+
+strip.innerHTML="";
+
+currentStops.forEach((s,i)=>{
+
+const card=
+document.createElement("div");
+
+card.className=
+"route-card-mini";
+
+card.innerHTML=
+
+"<div class='mini-num'>ETAPPE "+
+(i+1)+
+"</div>"+
+"<h4>"+
+s.name+
+"</h4>"+
+"<small>"+
+s.nights+
+" "+
+(s.nights===1?"Nacht":"Nächte")+
+"<br>"+
+placeInfo(s.name)+
+"</small>";
+
+strip.appendChild(card);
+
+if(i<currentStops.length-1){
+
+const c=
+document.createElement("div");
+
+c.className=
+"route-connector";
+
+c.textContent="→";
+
+strip.appendChild(c);
+
+}
+
+});
+
+}
+
+
 function updateBudget(v){
-v=Number(v);document.getElementById("budgetDisplay").textContent=Math.round(v).toLocaleString("de-CH");
-const vals=[.28,.40,.08,.09,.07].map(x=>v*x);
-["flightCost","hotelCost","carCost","activityCost","foodCost"].forEach((id,i)=>document.getElementById(id).textContent=money(vals[i]));
-document.getElementById("totalCost").textContent=money(vals.reduce((a,b)=>a+b,0));
+
+v=Number(v);
+
+document.getElementById(
+"budgetDisplay"
+).textContent=
+Math.round(v)
+.toLocaleString("de-CH");
+
+const vals=
+[
+.28,
+.40,
+.08,
+.09,
+.07
+].map(
+x=>v*x
+);
+
+[
+"flightCost",
+"hotelCost",
+"carCost",
+"activityCost",
+"foodCost"
+].forEach(
+(id,i)=>
+document.getElementById(id)
+.textContent=
+money(vals[i])
+);
+
+document.getElementById(
+"totalCost"
+).textContent=
+money(
+vals.reduce(
+(a,b)=>a+b,
+0
+)
+);
+
+const sb=
+document.getElementById(
+"sumBudget"
+);
+
+if(sb)
+sb.textContent=money(v);
+
 }
-function searchFlights(){const d=document.getElementById("country").options[document.getElementById("country").selectedIndex].textContent,f=document.getElementById("from").value||"Zürich";window.open("https://www.google.com/travel/flights?q="+encodeURIComponent("Flüge von "+f+" nach "+d)," _blank")}
-function searchHotels(){window.open("https://www.google.com/search?q="+encodeURIComponent("Hotels "+currentStops.map(x=>x.name).join(" ")), "_blank")}
-function searchCars(){window.open("https://www.google.com/search?q="+encodeURIComponent("Mietwagen "+country)," _blank")}
-function searchActivities(){window.open("https://www.google.com/search?q="+encodeURIComponent("Aktivitäten "+currentStops.map(x=>x.name).join(" ")), "_blank")}
+
+
+function searchFlights(){
+
+const d=
+document.getElementById(
+"country"
+).options[
+document.getElementById(
+"country"
+).selectedIndex
+].textContent;
+
+const f=
+document.getElementById(
+"from"
+).value||
+"Zürich";
+
+window.open(
+"https://www.google.com/travel/flights?q="+
+encodeURIComponent(
+"Flüge von "+
+f+
+" nach "+
+d
+),
+"_blank"
+);
+
+}
+
+
+function searchHotels(){
+
+window.open(
+"https://www.google.com/search?q="+
+encodeURIComponent(
+"Hotels "+
+currentStops
+.map(x=>x.name)
+.join(" ")
+),
+"_blank"
+);
+
+}
+
+
+function searchCars(){
+
+window.open(
+"https://www.google.com/search?q="+
+encodeURIComponent(
+"Mietwagen "+
+country
+),
+"_blank"
+);
+
+}
+
+
+function searchActivities(){
+
+window.open(
+"https://www.google.com/search?q="+
+encodeURIComponent(
+"Aktivitäten "+
+currentStops
+.map(x=>x.name)
+.join(" ")
+),
+"_blank"
+);
+
+}
+
+
 renderChildren();
+
 </script>
+
 </body>
 </html>

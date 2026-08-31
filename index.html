@@ -5,64 +5,764 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TRIPINOVA – Persönlicher Reiseplaner</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
 <style>
-:root{--navy:#09283f;--teal:#0b8588;--light:#e9f5f4;--bg:#f4f7f8;--line:#d9e4e6;--muted:#667b85;--gold:#d9a51c;--white:#fff}
+:root{
+--navy:#09283f;
+--teal:#0b8588;
+--light:#e9f5f4;
+--bg:#f4f7f8;
+--line:#d9e4e6;
+--muted:#667b85;
+--gold:#d9a51c;
+--white:#fff
+}
+
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--navy);font-family:Arial,Helvetica,sans-serif}
-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
-.nav{max-width:1220px;margin:auto;padding:17px 24px;display:flex;justify-content:space-between;align-items:center}
-.logo{font:bold 29px Georgia,serif;letter-spacing:3px}.logo span{color:var(--teal)}
-button{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer}
-.primary{background:var(--teal);color:#fff}.secondary{background:#edf3f4;color:var(--navy)}
-.container{max-width:1220px;margin:auto;padding:0 24px}
-.hero{padding:42px 0 20px;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
-.hero h1{font:58px/1.03 Georgia,serif;margin:20px 0}.hero h1 span{color:var(--teal)}
-.hero p{font-size:19px;line-height:1.6;color:var(--muted)}
-.card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 10px 30px rgba(9,40,63,.07)}
-.form label{display:block;font-size:13px;font-weight:700;margin:12px 0 7px}
-input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:15px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.counter{display:grid;grid-template-columns:42px 1fr 42px;border:1px solid var(--line);border-radius:9px;overflow:hidden}
-.counter button{background:#fff;border-radius:0;font-size:19px;padding:8px}.counter div{text-align:center;padding:11px;border-left:1px solid var(--line);border-right:1px solid var(--line);font-weight:700}
-.children{background:#fbfcfc;border:1px solid var(--line);border-radius:12px;padding:13px;margin-top:12px}.child{display:grid;grid-template-columns:1fr 150px;gap:10px;align-items:center;margin-top:9px}
-.section{margin:42px 0}.section h2{font:31px Georgia,serif;margin:0 0 12px}.muted{color:var(--muted);line-height:1.5}
-.countries{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.country{background:#fff;border:2px solid transparent;border-radius:18px;padding:20px;cursor:pointer}.country.selected{border-color:var(--teal);background:var(--light)}
-.country .flag{font-size:38px}.country h3{margin:9px 0 5px}
-.interests{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.interest{background:#fff;border:2px solid transparent;border-radius:14px;padding:14px;text-align:center;cursor:pointer}
-.interest.selected{border-color:var(--teal);background:var(--light)}
-.placecard{background:#fff;border:2px solid transparent;border-radius:15px;padding:14px;cursor:pointer;text-align:left}
-.placecard.selected{border-color:var(--teal);background:var(--light)}
-.placecard h4{margin:7px 0 5px}.placecard small{color:var(--muted);line-height:1.4}
-.emoji{font-size:23px;display:block;margin-bottom:5px}
-.stylegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.choice{background:#fff;border:2px solid transparent;border-radius:15px;padding:16px;cursor:pointer}.choice.selected{border-color:var(--teal);background:var(--light)}
-.routecards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.routecard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:19px}.routecard.best{border:2px solid var(--teal)}.routecard h3{margin:9px 0}.routecard button{width:100%;margin-top:10px}
-.badge{display:inline-block;background:var(--light);color:#08696c;border-radius:20px;padding:7px 11px;font-size:11px;font-weight:800;letter-spacing:.5px}
-.notice{background:#fff8e2;border:1px solid #f0d47a;padding:13px 15px;border-radius:12px;color:#6b5411}
-.routebar{background:#eaf3f3;border-radius:20px;padding:20px}.route-line{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:20px 0}.point{background:#fff;border:2px solid var(--teal);padding:10px 14px;border-radius:25px;font-weight:700}.arrow{color:var(--teal);font-size:19px}
-.editor{display:grid;gap:11px}.stop{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;grid-template-columns:55px 1fr auto;gap:13px;align-items:center}.stopnum{color:var(--teal);font-weight:800}.stop h3{margin:0 0 5px}.stop-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.night{display:flex;align-items:center;gap:5px}.night button{padding:6px 10px}.night span{min-width:25px;text-align:center;font-weight:700}
-.mapbox{background:#e7f0ef;border-radius:20px;padding:22px;min-height:150px}
-#realMap{height:390px;border-radius:15px;margin-top:12px;overflow:hidden}
-.maphint{background:#fff;border-radius:13px;padding:14px;margin-top:12px}
-.itinerary{display:grid;gap:9px}.day{background:#fff;border-radius:15px;padding:15px;display:grid;grid-template-columns:90px 1fr;gap:14px}.day b{display:block;margin-bottom:4px}
-.bookinggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.booking{background:#fff;border-radius:17px;padding:18px}.booking h3{margin:8px 0}.booking button{width:100%;margin-top:12px}
-.budget{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.budgetbox{background:#fff;border-radius:18px;padding:20px}.line{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #edf0f1}.total{font-size:23px;font-weight:800;margin-top:14px}
-.finalroute{background:#fff;border-radius:22px;padding:24px;box-shadow:0 10px 30px rgba(9,40,63,.07)}
-.finalroute-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;flex-wrap:wrap}
-.finalroute h2{margin:0 0 7px;font:31px Georgia,serif}
-.finalroute-map{height:430px;border-radius:17px;overflow:hidden;margin:18px 0;background:#e8f1f0}
-.route-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:15px}
-.summaryitem{background:#f4f7f8;border-radius:13px;padding:13px}.summaryitem b{display:block;font-size:18px;margin-top:3px}
-.route-strip{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:15px 0 8px}
-.route-card-mini{min-width:170px;background:#f7faf9;border:1px solid var(--line);padding:14px;border-radius:14px}
-.route-card-mini .mini-num{font-size:11px;color:var(--teal);font-weight:800}.route-card-mini h4{margin:6px 0}.route-card-mini small{color:var(--muted)}
-.route-connector{min-width:38px;display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:20px;font-weight:800}
-.hidden{display:none}
-footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;padding:38px}
-@media(max-width:900px){.hero{grid-template-columns:1fr}.countries,.routecards{grid-template-columns:1fr 1fr}.interests{grid-template-columns:repeat(3,1fr)}.bookinggrid{grid-template-columns:1fr 1fr}.budget{grid-template-columns:1fr}}
-@media(max-width:700px){.route-summary{grid-template-columns:1fr 1fr}.finalroute-map{height:340px}}
-@media(max-width:600px){.grid2,.stylegrid,.countries,.routecards,.bookinggrid{grid-template-columns:1fr}.interests{grid-template-columns:1fr 1fr}.stop{grid-template-columns:45px 1fr}.stop-actions{grid-column:2;justify-content:flex-start}.hero h1{font-size:43px}}
+
+body{
+margin:0;
+background:var(--bg);
+color:var(--navy);
+font-family:Arial,Helvetica,sans-serif
+}
+
+header{
+background:#fff;
+border-bottom:1px solid var(--line);
+position:sticky;
+top:0;
+z-index:30
+}
+
+.nav{
+max-width:1220px;
+margin:auto;
+padding:17px 24px;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.logo{
+font:bold 29px Georgia,serif;
+letter-spacing:3px
+}
+
+.logo span{
+color:var(--teal)
+}
+
+button{
+border:0;
+border-radius:10px;
+padding:11px 16px;
+font-weight:700;
+cursor:pointer
+}
+
+.primary{
+background:var(--teal);
+color:#fff
+}
+
+.secondary{
+background:#edf3f4;
+color:var(--navy)
+}
+
+.container{
+max-width:1220px;
+margin:auto;
+padding:0 24px
+}
+
+.hero{
+padding:42px 0 20px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+align-items:center
+}
+
+.hero h1{
+font:58px/1.03 Georgia,serif;
+margin:20px 0
+}
+
+.hero h1 span{
+color:var(--teal)
+}
+
+.hero p{
+font-size:19px;
+line-height:1.6;
+color:var(--muted)
+}
+
+.card{
+background:#fff;
+border-radius:20px;
+padding:24px;
+box-shadow:0 10px 30px rgba(9,40,63,.07)
+}
+
+.form label{
+display:block;
+font-size:13px;
+font-weight:700;
+margin:12px 0 7px
+}
+
+input,select{
+width:100%;
+padding:12px;
+border:1px solid var(--line);
+border-radius:9px;
+background:#fff;
+font-size:15px
+}
+
+.grid2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px
+}
+
+.counter{
+display:grid;
+grid-template-columns:42px 1fr 42px;
+border:1px solid var(--line);
+border-radius:9px;
+overflow:hidden
+}
+
+.counter button{
+background:#fff;
+border-radius:0;
+font-size:19px;
+padding:8px
+}
+
+.counter div{
+text-align:center;
+padding:11px;
+border-left:1px solid var(--line);
+border-right:1px solid var(--line);
+font-weight:700
+}
+
+.children{
+background:#fbfcfc;
+border:1px solid var(--line);
+border-radius:12px;
+padding:13px;
+margin-top:12px
+}
+
+.child{
+display:grid;
+grid-template-columns:1fr 150px;
+gap:10px;
+align-items:center;
+margin-top:9px
+}
+
+.section{
+margin:42px 0
+}
+
+.section h2{
+font:31px Georgia,serif;
+margin:0 0 12px
+}
+
+.muted{
+color:var(--muted);
+line-height:1.5
+}
+
+.countries{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px
+}
+
+.country{
+background:#fff;
+border:2px solid transparent;
+border-radius:18px;
+padding:20px;
+cursor:pointer
+}
+
+.country.selected{
+border-color:var(--teal);
+background:var(--light)
+}
+
+.country .flag{
+font-size:38px
+}
+
+.country h3{
+margin:9px 0 5px
+}
+
+.interests{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:10px
+}
+
+.interest{
+background:#fff;
+border:2px solid transparent;
+border-radius:14px;
+padding:14px;
+text-align:center;
+cursor:pointer
+}
+
+.interest.selected{
+border-color:var(--teal);
+background:var(--light)
+}
+
+.placecard{
+background:#fff;
+border:2px solid transparent;
+border-radius:15px;
+padding:14px;
+cursor:pointer;
+text-align:left
+}
+
+.placecard.selected{
+border-color:var(--teal);
+background:var(--light)
+}
+
+.placecard h4{
+margin:7px 0 5px
+}
+
+.placecard small{
+color:var(--muted);
+line-height:1.4
+}
+
+.emoji{
+font-size:23px;
+display:block;
+margin-bottom:5px
+}
+
+.stylegrid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px
+}
+
+.choice{
+background:#fff;
+border:2px solid transparent;
+border-radius:15px;
+padding:16px;
+cursor:pointer
+}
+
+.choice.selected{
+border-color:var(--teal);
+background:var(--light)
+}
+
+.routecards{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px
+}
+
+.routecard{
+background:#fff;
+border:1px solid var(--line);
+border-radius:18px;
+padding:19px
+}
+
+.routecard.best{
+border:2px solid var(--teal)
+}
+
+.routecard h3{
+margin:9px 0
+}
+
+.routecard button{
+width:100%;
+margin-top:10px
+}
+
+.badge{
+display:inline-block;
+background:var(--light);
+color:#08696c;
+border-radius:20px;
+padding:7px 11px;
+font-size:11px;
+font-weight:800;
+letter-spacing:.5px
+}
+
+.notice{
+background:#fff8e2;
+border:1px solid #f0d47a;
+padding:13px 15px;
+border-radius:12px;
+color:#6b5411
+}
+
+.routebar{
+background:#eaf3f3;
+border-radius:20px;
+padding:20px
+}
+
+.route-line{
+display:flex;
+gap:7px;
+align-items:center;
+flex-wrap:wrap;
+margin:20px 0
+}
+
+.point{
+background:#fff;
+border:2px solid var(--teal);
+padding:10px 14px;
+border-radius:25px;
+font-weight:700
+}
+
+.arrow{
+color:var(--teal);
+font-size:19px
+}
+
+.editor{
+display:grid;
+gap:11px
+}
+
+.stop{
+background:#fff;
+border:1px solid var(--line);
+border-radius:16px;
+padding:16px;
+display:grid;
+grid-template-columns:55px 1fr auto;
+gap:13px;
+align-items:center
+}
+
+.stopnum{
+color:var(--teal);
+font-weight:800
+}
+
+.stop h3{
+margin:0 0 5px
+}
+
+.stop-actions{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+justify-content:flex-end
+}
+
+.night{
+display:flex;
+align-items:center;
+gap:5px
+}
+
+.night button{
+padding:6px 10px
+}
+
+.night span{
+min-width:25px;
+text-align:center;
+font-weight:700
+}
+
+.mapbox{
+background:#e7f0ef;
+border-radius:20px;
+padding:22px;
+min-height:150px
+}
+
+#realMap{
+height:390px;
+border-radius:15px;
+margin-top:12px;
+overflow:hidden
+}
+
+.maphint{
+background:#fff;
+border-radius:13px;
+padding:14px;
+margin-top:12px
+}
+
+.itinerary{
+display:grid;
+gap:9px
+}
+
+.day{
+background:#fff;
+border-radius:15px;
+padding:15px;
+display:grid;
+grid-template-columns:90px 1fr;
+gap:14px
+}
+
+.day b{
+display:block;
+margin-bottom:4px
+}
+
+.bookinggrid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:13px
+}
+
+.booking{
+background:#fff;
+border-radius:17px;
+padding:18px
+}
+
+.booking h3{
+margin:8px 0
+}
+
+.booking button{
+width:100%;
+margin-top:12px
+}
+
+.budget{
+display:grid;
+grid-template-columns:1.1fr .9fr;
+gap:14px
+}
+
+.budgetbox{
+background:#fff;
+border-radius:18px;
+padding:20px
+}
+
+.line{
+display:flex;
+justify-content:space-between;
+padding:10px 0;
+border-bottom:1px solid #edf0f1
+}
+
+.total{
+font-size:23px;
+font-weight:800;
+margin-top:14px
+}
+
+.finalroute{
+background:#fff;
+border-radius:22px;
+padding:24px;
+box-shadow:0 10px 30px rgba(9,40,63,.07)
+}
+
+.finalroute-head{
+display:flex;
+justify-content:space-between;
+gap:15px;
+align-items:flex-start;
+flex-wrap:wrap
+}
+
+.finalroute h2{
+margin:0 0 7px;
+font:31px Georgia,serif
+}
+
+.finalroute-map{
+height:430px;
+border-radius:17px;
+overflow:hidden;
+margin:18px 0;
+background:#e8f1f0
+}
+
+.route-summary{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+margin-top:15px
+}
+
+.summaryitem{
+background:#f4f7f8;
+border-radius:13px;
+padding:13px
+}
+
+.summaryitem b{
+display:block;
+font-size:18px;
+margin-top:3px
+}
+
+.route-strip{
+display:flex;
+align-items:stretch;
+gap:0;
+overflow-x:auto;
+padding:15px 0 8px
+}
+
+.route-card-mini{
+min-width:170px;
+background:#f7faf9;
+border:1px solid var(--line);
+padding:14px;
+border-radius:14px
+}
+
+.route-card-mini .mini-num{
+font-size:11px;
+color:var(--teal);
+font-weight:800
+}
+
+.route-card-mini h4{
+margin:6px 0
+}
+
+.route-card-mini small{
+color:var(--muted)
+}
+
+.route-connector{
+min-width:38px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:var(--teal);
+font-size:20px;
+font-weight:800
+}
+
+.hidden{
+display:none
+}
+
+footer{
+margin-top:55px;
+background:var(--navy);
+color:#fff;
+text-align:center;
+padding:38px
+}
+
+.hotelprefs{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px
+}
+
+.pref{
+background:#fff;
+border:2px solid transparent;
+border-radius:14px;
+padding:13px;
+cursor:pointer
+}
+
+.pref.selected{
+border-color:var(--teal);
+background:var(--light)
+}
+
+.pref b{
+display:block;
+margin-bottom:4px
+}
+
+.pref small{
+color:var(--muted)
+}
+
+.hotelgrid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px
+}
+
+.hotelcard{
+background:#fff;
+border:1px solid var(--line);
+border-radius:18px;
+padding:18px;
+display:flex;
+flex-direction:column
+}
+
+.hotelcard.recommended{
+border:2px solid var(--teal)
+}
+
+.hotelcard h3{
+margin:8px 0 5px
+}
+
+.match{
+font-size:24px;
+font-weight:800;
+color:var(--teal)
+}
+
+.hotel-tags{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+margin:10px 0
+}
+
+.hotel-tag{
+background:#f1f6f6;
+border-radius:20px;
+padding:5px 8px;
+font-size:11px;
+font-weight:700
+}
+
+.hotel-check{
+margin:10px 0;
+border-top:1px solid #edf0f1;
+padding-top:10px
+}
+
+.hotel-check div{
+display:flex;
+justify-content:space-between;
+gap:8px;
+padding:4px 0;
+font-size:13px
+}
+
+.hotel-actions{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:7px;
+margin-top:auto;
+padding-top:12px
+}
+
+.hotel-actions button{
+width:100%;
+padding:9px 8px
+}
+
+.routehotel{
+margin-top:16px
+}
+
+@media(max-width:900px){
+
+.hero{
+grid-template-columns:1fr
+}
+
+.countries,
+.routecards{
+grid-template-columns:1fr 1fr
+}
+
+.interests{
+grid-template-columns:repeat(3,1fr)
+}
+
+.bookinggrid{
+grid-template-columns:1fr 1fr
+}
+
+.budget{
+grid-template-columns:1fr
+}
+
+.hotelprefs{
+grid-template-columns:1fr 1fr
+}
+
+.hotelgrid{
+grid-template-columns:1fr 1fr
+}
+
+}
+
+@media(max-width:700px){
+
+.route-summary{
+grid-template-columns:1fr 1fr
+}
+
+.finalroute-map{
+height:340px
+}
+
+}
+
+@media(max-width:600px){
+
+.grid2,
+.stylegrid,
+.countries,
+.routecards,
+.bookinggrid{
+grid-template-columns:1fr
+}
+
+.interests{
+grid-template-columns:1fr 1fr
+}
+
+.stop{
+grid-template-columns:45px 1fr
+}
+
+.stop-actions{
+grid-column:2;
+justify-content:flex-start
+}
+
+.hero h1{
+font-size:43px
+}
+
+.hotelprefs,
+.hotelgrid{
+grid-template-columns:1fr
+}
+
+}
 </style>
 </head>
 
@@ -70,8 +770,17 @@ footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;paddi
 
 <header>
 <div class="nav">
-<div class="logo">TRIP<span>INOVA</span></div>
-<button class="secondary" onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">Meine Reise</button>
+
+<div class="logo">
+TRIP<span>INOVA</span>
+</div>
+
+<button
+class="secondary"
+onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">
+Meine Reise
+</button>
+
 </div>
 </header>
 
@@ -80,7 +789,10 @@ footer{margin-top:55px;background:var(--navy);color:#fff;text-align:center;paddi
 <section class="hero">
 
 <div>
-<span class="badge">DEINE REISE. NEU GEDACHT.</span>
+
+<span class="badge">
+DEINE REISE. NEU GEDACHT.
+</span>
 
 <h1>
 Eine fertige Reise.<br>
@@ -92,6 +804,7 @@ Wähle dein Land, deine Interessen und die gewünschte Anzahl Orte.
 TRIPINOVA schlägt dir konkrete Routen vor – und du kannst jeden Ort,
 jede Nacht und die Reihenfolge danach selbst verändern.
 </p>
+
 </div>
 
 
@@ -125,13 +838,28 @@ Bitte Land auswählen
 <div class="grid2">
 
 <div>
+
 <label>Abflugort</label>
-<input id="from" placeholder="z. B. Zürich">
+
+<input
+id="from"
+placeholder="z. B. Zürich"
+>
+
 </div>
 
 <div>
+
 <label>Reisedauer</label>
-<input id="days" type="number" value="14" min="3" max="60">
+
+<input
+id="days"
+type="number"
+value="14"
+min="3"
+max="60"
+>
+
 </div>
 
 </div>
@@ -182,7 +910,9 @@ Wie viele Orte möchtest du besuchen?
 
 <div class="counter">
 
-<button type="button" onclick="changeAdults(-1)">
+<button
+type="button"
+onclick="changeAdults(-1)">
 −
 </button>
 
@@ -190,7 +920,9 @@ Wie viele Orte möchtest du besuchen?
 2
 </div>
 
-<button type="button" onclick="changeAdults(1)">
+<button
+type="button"
+onclick="changeAdults(1)">
 +
 </button>
 
@@ -205,7 +937,9 @@ Wie viele Orte möchtest du besuchen?
 
 <div class="counter">
 
-<button type="button" onclick="changeChildren(-1)">
+<button
+type="button"
+onclick="changeChildren(-1)">
 −
 </button>
 
@@ -213,7 +947,9 @@ Wie viele Orte möchtest du besuchen?
 2
 </div>
 
-<button type="button" onclick="changeChildren(1)">
+<button
+type="button"
+onclick="changeChildren(1)">
 +
 </button>
 
@@ -226,7 +962,9 @@ Wie viele Orte möchtest du besuchen?
 </div>
 
 
-<div class="children" id="childrenBox">
+<div
+class="children"
+id="childrenBox">
 
 <b>Alter der Kinder</b>
 
@@ -237,7 +975,11 @@ Wie viele Orte möchtest du besuchen?
 
 <label>Budget CHF</label>
 
-<input id="budget" type="number" value="8000">
+<input
+id="budget"
+type="number"
+value="8000"
+>
 
 
 <button
@@ -254,11 +996,20 @@ Weiter zu Interessen →
 </section>
 
 
-<section class="section hidden" id="countrySection">
+<section
+class="section hidden"
+id="countrySection">
 
-<div id="countryIntro" class="card" style="margin-bottom:15px"></div>
+<div
+id="countryIntro"
+class="card"
+style="margin-bottom:15px">
+</div>
 
-<div class="card" style="margin-bottom:15px">
+
+<div
+class="card"
+style="margin-bottom:15px">
 
 <h3 style="margin-top:0">
 Oder wähle Orte, die du unbedingt sehen möchtest
@@ -268,9 +1019,13 @@ Oder wähle Orte, die du unbedingt sehen möchtest
 Diese Orte werden bei der persönlichen Route bevorzugt berücksichtigt.
 </p>
 
-<div id="placeChoices" class="interests"></div>
+<div
+id="placeChoices"
+class="interests">
+</div>
 
 </div>
+
 
 <h2>
 2. Was möchtest du erleben?
@@ -280,47 +1035,141 @@ Diese Orte werden bei der persönlichen Route bevorzugt berücksichtigt.
 Diese Auswahl beeinflusst, welche Route TRIPINOVA zuerst empfiehlt.
 </p>
 
-<div class="interests" id="interests"></div>
+<div
+class="interests"
+id="interests">
+</div>
 
 </section>
 
 
-<section class="section hidden" id="styleSection">
+<section
+class="section hidden"
+id="hotelSection">
+
+<div class="card">
 
 <h2>
-3. Wie möchtest du reisen?
+3. Was ist dir beim Hotel wichtig?
+</h2>
+
+<p class="muted">
+TRIPINOVA sucht nicht einfach das billigste Hotel. Die Auswahl wird auf deine
+Familie, deine Wünsche, die Lage und das gewünschte Reiseerlebnis abgestimmt.
+</p>
+
+<div
+class="hotelprefs"
+id="hotelPrefs">
+</div>
+
+<label
+style="display:block;font-size:13px;font-weight:700;margin:16px 0 7px">
+
+Was ist besonders wichtig?
+
+</label>
+
+<input
+id="hotelNote"
+placeholder="z. B. Connecting Rooms oder grosses Zimmer mit 2 grossen Betten">
+
+</div>
+
+</section>
+
+
+<section
+class="section hidden"
+id="styleSection">
+
+<h2>
+4. Wie möchtest du reisen?
 </h2>
 
 <div class="stylegrid">
 
-<div class="choice selected" data-group="pace" onclick="choose(this,'pace')">
+<div
+class="choice selected"
+data-group="pace"
+onclick="choose(this,'pace')">
+
 🐢 <b>Entspannt</b><br>
-<span class="muted">Weniger Wechsel, mehr Zeit.</span>
+
+<span class="muted">
+Weniger Wechsel, mehr Zeit.
+</span>
+
 </div>
 
-<div class="choice" data-group="pace" onclick="choose(this,'pace')">
+
+<div
+class="choice"
+data-group="pace"
+onclick="choose(this,'pace')">
+
 ⚖️ <b>Ausgewogen</b><br>
-<span class="muted">Sehen und geniessen.</span>
+
+<span class="muted">
+Sehen und geniessen.
+</span>
+
 </div>
 
-<div class="choice" data-group="pace" onclick="choose(this,'pace')">
+
+<div
+class="choice"
+data-group="pace"
+onclick="choose(this,'pace')">
+
 ⚡ <b>Viel erleben</b><br>
-<span class="muted">Mehr Orte und Eindrücke.</span>
+
+<span class="muted">
+Mehr Orte und Eindrücke.
+</span>
+
 </div>
 
-<div class="choice selected" data-group="comfort" onclick="choose(this,'comfort')">
+
+<div
+class="choice selected"
+data-group="comfort"
+onclick="choose(this,'comfort')">
+
 ⭐ <b>Komfort</b><br>
-<span class="muted">Gute Hotels und Service.</span>
+
+<span class="muted">
+Gute Hotels und Service.
+</span>
+
 </div>
 
-<div class="choice" data-group="comfort" onclick="choose(this,'comfort')">
+
+<div
+class="choice"
+data-group="comfort"
+onclick="choose(this,'comfort')">
+
 💎 <b>Luxus</b><br>
-<span class="muted">Besondere Hotels.</span>
+
+<span class="muted">
+Besondere Hotels.
+</span>
+
 </div>
 
-<div class="choice" data-group="comfort" onclick="choose(this,'comfort')">
+
+<div
+class="choice"
+data-group="comfort"
+onclick="choose(this,'comfort')">
+
 💰 <b>Preisbewusst</b><br>
-<span class="muted">Gutes Preis-Leistungs-Verhältnis.</span>
+
+<span class="muted">
+Gutes Preis-Leistungs-Verhältnis.
+</span>
+
 </div>
 
 </div>
@@ -328,7 +1177,9 @@ Diese Auswahl beeinflusst, welche Route TRIPINOVA zuerst empfiehlt.
 </section>
 
 
-<section class="section hidden" id="routeSection">
+<section
+class="section hidden"
+id="routeSection">
 
 <div class="notice">
 
@@ -341,7 +1192,7 @@ Wähle eine aus und passe sie danach selbst an.
 
 
 <h2 style="margin-top:24px">
-4. Konkrete Routenvorschläge
+5. Konkrete Routenvorschläge
 </h2>
 
 <p class="muted">
@@ -349,32 +1200,64 @@ Du bekommst komplette Reisen statt einzelner Bausteine.
 Wähle eine Route – danach kannst du sie komplett verändern.
 </p>
 
-<div class="routecards" id="routeCards"></div>
+<div
+class="routecards"
+id="routeCards">
+</div>
 
 </section>
 
 
-<section class="section hidden" id="customSection">
+<section
+class="section hidden"
+id="customSection">
 
 <h2>
-5. Deine Reise selbst bearbeiten
+6. Deine Reise selbst bearbeiten
 </h2>
 
 <p class="muted">
-Du kannst Orte entfernen, Nächte verändern,
-die Reihenfolge verschieben oder einen weiteren Ort hinzufügen.
+Du kannst Orte entfernen, Nächte verändern, die Reihenfolge verschieben
+oder <b>jeden eigenen Ort</b> einfügen – auch wenn er noch nicht in TRIPINOVA hinterlegt ist.
 </p>
 
-<div class="editor" id="editor"></div>
+<div
+class="editor"
+id="editor">
+</div>
 
-<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:15px">
 
-<button class="secondary" onclick="addStop()">
-＋ Ort hinzufügen
+<div
+style="display:flex;gap:10px;flex-wrap:wrap;margin-top:15px">
+
+<input
+id="customPlaceInput"
+placeholder="Eigenen Ort eingeben, z. B. Koh Mak"
+style="max-width:360px"
+>
+
+<button
+class="secondary"
+onclick="addCustomStop()">
+
+＋ Eigenen Ort einfügen
+
 </button>
 
-<button class="primary" onclick="refreshTrip()">
+<button
+class="secondary"
+onclick="addStop()">
+
+＋ Ort hinzufügen
+
+</button>
+
+<button
+class="primary"
+onclick="refreshTrip()">
+
 ✨ Reise aktualisieren
+
 </button>
 
 </div>
@@ -382,7 +1265,9 @@ die Reihenfolge verschieben oder einen weiteren Ort hinzufügen.
 </section>
 
 
-<section class="section hidden" id="resultSection">
+<section
+class="section hidden"
+id="resultSection">
 
 <div class="finalroute">
 
@@ -399,14 +1284,14 @@ Deine Route
 </h2>
 
 <p class="muted">
-Die komplette Reise auf einen Blick – mit Karte,
-Etappen und Nächten.
+Die komplette Reise auf einen Blick – mit Karte, Etappen, Hotels und Nächten.
 </p>
 
 </div>
 
 
-<div style="display:flex;gap:8px;flex-wrap:wrap">
+<div
+style="display:flex;gap:8px;flex-wrap:wrap">
 
 <button
 class="secondary"
@@ -416,12 +1301,20 @@ onclick="document.getElementById('customSection').scrollIntoView({behavior:'smoo
 
 </button>
 
-<button class="primary" onclick="saveTrip()">
+<button
+class="primary"
+onclick="saveTrip()">
+
 💾 Reise speichern
+
 </button>
 
-<button class="secondary" onclick="loadTrip()">
+<button
+class="secondary"
+onclick="loadTrip()">
+
 ↩️ Gespeicherte Reise
+
 </button>
 
 </div>
@@ -429,38 +1322,90 @@ onclick="document.getElementById('customSection').scrollIntoView({behavior:'smoo
 </div>
 
 
-<div id="saveMessage" class="notice" style="display:none;margin-top:12px"></div>
+<div
+id="saveMessage"
+class="notice"
+style="display:none;margin-top:12px">
+</div>
 
 
-<div id="finalRealMap" class="finalroute-map"></div>
+<div
+id="finalRealMap"
+class="finalroute-map">
+</div>
 
 
 <div class="route-summary">
 
 <div class="summaryitem">
+
 📍 Orte
-<b id="sumPlaces">–</b>
+
+<b id="sumPlaces">
+–
+</b>
+
 </div>
 
+
 <div class="summaryitem">
+
 🌙 Nächte
-<b id="sumNights">–</b>
+
+<b id="sumNights">
+–
+</b>
+
 </div>
 
+
 <div class="summaryitem">
+
 👨‍👩‍👧‍👦 Reisende
-<b id="sumPeople">–</b>
+
+<b id="sumPeople">
+–
+</b>
+
 </div>
+
 
 <div class="summaryitem">
+
 💰 Budget
-<b id="sumBudget">–</b>
+
+<b id="sumBudget">
+–
+</b>
+
+</div>
+
+</div>
+
+
+<div
+class="route-strip"
+id="routeStrip">
 </div>
 
 </div>
 
 
-<div class="route-strip" id="routeStrip"></div>
+<div class="section routehotel">
+
+<h2>
+🏨 Deine Hotel-Empfehlungen
+</h2>
+
+<p class="muted">
+Für jede Etappe werden konkrete Hotelkandidaten nach deinen persönlichen
+Wünschen priorisiert. Lage, Zimmermerkmale und Verfügbarkeit werden vor der
+Buchung nochmals geprüft.
+</p>
+
+<div
+id="hotelRecommendations">
+</div>
 
 </div>
 
@@ -468,21 +1413,32 @@ onclick="document.getElementById('customSection').scrollIntoView({behavior:'smoo
 <div class="section">
 
 <h2>
-6. Deine komplette Reise
+7. Deine komplette Reise
 </h2>
 
-<div class="card" style="margin-bottom:15px">
-<b id="tripMeta"></b>
+<div
+class="card"
+style="margin-bottom:15px">
+
+<b id="tripMeta">
+</b>
+
 </div>
 
 
 <div class="routebar">
 
 <div>
-<b id="routeName"></b>
+<b id="routeName">
+</b>
 </div>
 
-<div class="route-line" id="routeLine"></div>
+
+<div
+class="route-line"
+id="routeLine">
+</div>
+
 
 <div class="mapbox">
 
@@ -495,9 +1451,15 @@ Die grosse Karte oben zeigt deine komplette Reise.
 Änderungen an den Etappen werden automatisch übernommen.
 </p>
 
-<div class="maphint" id="mapSummary"></div>
 
-<div id="realMap"></div>
+<div
+class="maphint"
+id="mapSummary">
+</div>
+
+
+<div id="realMap">
+</div>
 
 </div>
 
@@ -512,7 +1474,10 @@ Die grosse Karte oben zeigt deine komplette Reise.
 📅 Etappenplan
 </h2>
 
-<div class="itinerary" id="itinerary"></div>
+<div
+class="itinerary"
+id="itinerary">
+</div>
 
 </div>
 
@@ -596,31 +1561,102 @@ oninput="updateBudget(this.value)"
 <div class="bookinggrid">
 
 <div class="booking">
-<span class="badge">FLUG</span>
-<h3>Flüge</h3>
-<span class="muted">Passende Flüge suchen.</span>
-<button class="primary" onclick="searchFlights()">Flüge suchen</button>
+
+<span class="badge">
+FLUG
+</span>
+
+<h3>
+Flüge
+</h3>
+
+<span class="muted">
+Passende Flüge suchen.
+</span>
+
+<button
+class="primary"
+onclick="searchFlights()">
+
+Flüge suchen
+
+</button>
+
 </div>
 
-<div class="booking">
-<span class="badge">HOTEL</span>
-<h3>Hotels</h3>
-<span class="muted">Hotels für deine Etappen suchen.</span>
-<button class="primary" onclick="searchHotels()">Hotels suchen</button>
-</div>
 
 <div class="booking">
-<span class="badge">AUTO</span>
-<h3>Mietwagen</h3>
-<span class="muted">Mietwagen und Transfers.</span>
-<button class="primary" onclick="searchCars()">Mietwagen suchen</button>
+
+<span class="badge">
+HOTEL
+</span>
+
+<h3>
+Hotels
+</h3>
+
+<span class="muted">
+Hotels für deine Etappen suchen.
+</span>
+
+<button
+class="primary"
+onclick="searchHotels()">
+
+Hotels suchen
+
+</button>
+
 </div>
 
+
 <div class="booking">
-<span class="badge">ERLEBNIS</span>
-<h3>Aktivitäten</h3>
-<span class="muted">Ausflüge passend zur Route suchen.</span>
-<button class="primary" onclick="searchActivities()">Aktivitäten suchen</button>
+
+<span class="badge">
+AUTO
+</span>
+
+<h3>
+Mietwagen
+</h3>
+
+<span class="muted">
+Mietwagen und Transfers.
+</span>
+
+<button
+class="primary"
+onclick="searchCars()">
+
+Mietwagen suchen
+
+</button>
+
+</div>
+
+
+<div class="booking">
+
+<span class="badge">
+ERLEBNIS
+</span>
+
+<h3>
+Aktivitäten
+</h3>
+
+<span class="muted">
+Ausflüge passend zur Route suchen.
+</span>
+
+<button
+class="primary"
+onclick="searchActivities()">
+
+Aktivitäten suchen
+
+</button>
+
 </div>
 
 </div>
@@ -761,7 +1797,7 @@ Komodo:[-8.589,119.494],
 Cancún:[21.1619,-86.8515],
 "Puerto Morelos":[20.848,-86.8753],
 Valladolid:[20.6896,-88.2018],
-Mérida:[20.9674,-89.5926],
+"Mérida":[20.9674,-89.5926],
 "Chichén Itzá":[20.6843,-88.5678],
 Calakmul:[18.105,-89.810],
 Bacalar:[18.678,-88.392],
@@ -779,31 +1815,63 @@ thailand:[
 {
 name:"Bangkok & Trauminseln",
 desc:"Bangkok, Koh Chang und Koh Kood – Stadt, Dschungel und Traumstrände.",
-stops:[["Bangkok",3],["Koh Chang",4],["Koh Kood",5],["Bangkok",1]]
+stops:[
+["Bangkok",3],
+["Koh Chang",4],
+["Koh Kood",5],
+["Bangkok",1]
+]
 },
 
 {
 name:"Golf von Thailand",
 desc:"Samui, Phangan und Tao mit Rückreise über Chumphon.",
-stops:[["Bangkok",3],["Koh Samui",3],["Koh Phangan",3],["Koh Tao",3],["Chumphon",1],["Bangkok",1]]
+stops:[
+["Bangkok",3],
+["Koh Samui",3],
+["Koh Phangan",3],
+["Koh Tao",3],
+["Chumphon",1],
+["Bangkok",1]
+]
 },
 
 {
 name:"Thailand Klassiker",
 desc:"Phuket, Khao Lak, Khao Sok und die Inseln im Golf – sehr abwechslungsreich.",
-stops:[["Phuket",2],["Khao Lak",3],["Khao Sok",2],["Koh Samui",3],["Koh Phangan",3],["Bangkok",1]]
+stops:[
+["Phuket",2],
+["Khao Lak",3],
+["Khao Sok",2],
+["Koh Samui",3],
+["Koh Phangan",3],
+["Bangkok",1]
+]
 },
 
 {
 name:"Andamanen & Inseln",
 desc:"Küste, Natur und Inseln der Andamanensee.",
-stops:[["Phuket",2],["Khao Lak",3],["Krabi",3],["Koh Lanta",4],["Bangkok",1]]
+stops:[
+["Phuket",2],
+["Khao Lak",3],
+["Krabi",3],
+["Koh Lanta",4],
+["Bangkok",1]
+]
 },
 
 {
 name:"Nord & Inseln",
 desc:"Kultur und Berge im Norden, danach Erholung am Meer.",
-stops:[["Bangkok",3],["Chiang Mai",3],["Khao Sok",2],["Krabi",2],["Koh Lanta",3],["Bangkok",1]]
+stops:[
+["Bangkok",3],
+["Chiang Mai",3],
+["Khao Sok",2],
+["Krabi",2],
+["Koh Lanta",3],
+["Bangkok",1]
+]
 }
 
 ],
@@ -813,31 +1881,57 @@ indonesia:[
 {
 name:"Bali, Gili & Lombok",
 desc:"Ubud, Gili Air und Lombok – Kultur, Insel und viel Erholung.",
-stops:[["Ubud",4],["Gili Air",3],["Lombok",6],["Nusa Dua",1]]
+stops:[
+["Ubud",4],
+["Gili Air",3],
+["Lombok",6],
+["Nusa Dua",1]
+]
 },
 
 {
 name:"Bali Klassiker",
 desc:"Ubud, Sidemen und die Strände im Süden.",
-stops:[["Ubud",4],["Sidemen",2],["Uluwatu",3],["Nusa Dua",4]]
+stops:[
+["Ubud",4],
+["Sidemen",2],
+["Uluwatu",3],
+["Nusa Dua",4]
+]
 },
 
 {
 name:"Bali & Inseln",
-desc:"Bali kombiniert mit Gili Air und einem entspannten Strandabschluss.",
-stops:[["Ubud",4],["Gili Air",3],["Nusa Dua",5],["Uluwatu",2]]
+desc:"Ubud, Gili Air und ein entspannter Strandabschluss.",
+stops:[
+["Ubud",4],
+["Gili Air",3],
+["Nusa Dua",5],
+["Uluwatu",2]
+]
 },
 
 {
 name:"Natur & Komodo",
 desc:"Bali, Nusa Penida und der Komodo-Nationalpark.",
-stops:[["Ubud",3],["Nusa Penida",2],["Labuan Bajo",3],["Komodo",2],["Nusa Dua",3]]
+stops:[
+["Ubud",3],
+["Nusa Penida",2],
+["Labuan Bajo",3],
+["Komodo",2],
+["Nusa Dua",3]
+]
 },
 
 {
 name:"Lombok intensiv",
 desc:"Weniger Massentourismus, mehr Natur, Strände und Inselgefühl.",
-stops:[["Ubud",3],["Gili Air",3],["Lombok",7],["Nusa Dua",1]]
+stops:[
+["Ubud",3],
+["Gili Air",3],
+["Lombok",7],
+["Nusa Dua",1]
+]
 }
 
 ],
@@ -847,31 +1941,778 @@ mexico:[
 {
 name:"Mexico Strand & Natur",
 desc:"Puerto Morelos, Valladolid, Calakmul, Bacalar, Akumal und Isla Mujeres.",
-stops:[["Puerto Morelos",2],["Valladolid",2],["Calakmul",1],["Bacalar",2],["Akumal",4],["Isla Mujeres",3]]
+stops:[
+["Puerto Morelos",2],
+["Valladolid",2],
+["Calakmul",1],
+["Bacalar",2],
+["Akumal",4],
+["Isla Mujeres",3]
+]
 },
 
 {
 name:"Yucatán Highlights",
 desc:"Maya-Kultur, Cenoten, Lagune und Karibik.",
-stops:[["Cancún",1],["Valladolid",2],["Mérida",2],["Bacalar",3],["Akumal",5]]
+stops:[
+["Cancún",1],
+["Valladolid",2],
+["Mérida",2],
+["Bacalar",3],
+["Akumal",5]
+]
 },
 
 {
 name:"Entspannt & Familie",
 desc:"Wenige Wechsel, viel Strand und entspannte Familientage.",
-stops:[["Puerto Morelos",3],["Isla Mujeres",3],["Akumal",5],["Tulum",3]]
+stops:[
+["Puerto Morelos",3],
+["Isla Mujeres",3],
+["Akumal",5],
+["Tulum",3]
+]
 },
 
 {
 name:"Maya & Dschungel",
 desc:"Mehr Kultur und Natur mit Calakmul als Höhepunkt.",
-stops:[["Cancún",1],["Valladolid",3],["Calakmul",2],["Bacalar",3],["Tulum",3],["Akumal",2]]
+stops:[
+["Cancún",1],
+["Valladolid",3],
+["Calakmul",2],
+["Bacalar",3],
+["Tulum",3],
+["Akumal",2]
+]
 },
 
 {
 name:"Karibik pur",
 desc:"Schwerpunkt auf Meer, Inseln und Erholung.",
-stops:[["Cancún",2],["Isla Mujeres",3],["Puerto Morelos",2],["Akumal",4],["Tulum",3]]
+stops:[
+["Cancún",2],
+["Isla Mujeres",3],
+["Puerto Morelos",2],
+["Akumal",4],
+["Tulum",3]
+]
+}
+
+]
+
+};
+
+
+const hotelPrefs=[
+
+["connecting","🚪","Connecting Rooms","Verbindungstür zwischen Zimmern"],
+
+["adjacent","↔️","Zimmer nebeneinander","Zimmer möglichst nebeneinander"],
+
+["family","👨‍👩‍👧‍👦","Familienzimmer","Grosses Zimmer für die ganze Familie"],
+
+["beds","🛏️","2 grosse Betten","Zwei grosse Betten bevorzugt"],
+
+["privatepool","🏊","Eigener Pool","Private Pool / Pool Villa"],
+
+["pool","🏊‍♀️","Pool","Schöner Hotelpool"],
+
+["beach5","🏖️","≤ 5 Min. Strand","Zu Fuss höchstens ca. 5 Minuten"],
+
+["sandbeach","🏝️","Sandstrand","Schöner Sandstrand"],
+
+["seaview","🌅","Meerblick","Meerblick oder schöne Aussicht"],
+
+["mountain","⛰️","Bergblick","Berg- oder Landschaftsblick"],
+
+["jungle","🌴","Natur / Urwald","Grün, Dschungel oder Natur"],
+
+["center","🏙️","Nähe Zentrum","Restaurants und Zentrum zu Fuss"],
+
+["quiet","🤫","Ruhig","Keine Party-/Club-Lage"],
+
+["breakfast","🥐","Frühstück","Frühstück im Hotel"],
+
+["modern","✨","Modern","Modernes Hotel / Resort"],
+
+["value","💰","Preis-Leistung","Sehr gutes Preis-Leistungs-Verhältnis"]
+
+];
+
+
+const hotelCandidates={
+
+"Ubud":[
+
+{
+name:"Maya Ubud Resort & Spa",
+score:91,
+tags:["🌴 Natur","🏊 Pool","🤫 Ruhig","✨ Resort"],
+checks:{
+jungle:1,
+pool:1,
+quiet:1,
+modern:0,
+value:1
+},
+note:"Starker Kandidat für Natur- und Resortgefühl in Ubud."
+},
+
+{
+name:"Alaya Resort Ubud",
+score:89,
+tags:["📍 Zentrale Lage","🏊 Pool","🥐 Frühstück","👨‍👩‍👧‍👦 Familie"],
+checks:{
+center:1,
+pool:1,
+breakfast:1,
+family:1,
+value:1
+},
+note:"Interessant, wenn eine zentrale Lage wichtiger ist."
+},
+
+{
+name:"Anumana Ubud Hotel",
+score:84,
+tags:["📍 Zentrum","🏊 Pool","💰 Preis-Leistung"],
+checks:{
+center:1,
+pool:1,
+value:1
+},
+note:"Gute Alternative für ein kompakteres Budget."
+}
+
+],
+
+"Gili Air":[
+
+{
+name:"PinkCoco Gili Air",
+score:90,
+tags:["🏝️ Strand","🏊 Pool","🤫 Ruhig","🌅 Meer"],
+checks:{
+beach5:1,
+pool:1,
+quiet:1,
+seaview:1
+},
+note:"Kandidat für Strand und entspanntes Inselgefühl."
+},
+
+{
+name:"Manta Dive Gili Air Resort",
+score:86,
+tags:["🐠 Schnorcheln","🏊 Pool","📍 Inselzentrum"],
+checks:{
+pool:1,
+center:1,
+value:1
+},
+note:"Interessant für Schnorcheln und kurze Wege."
+},
+
+{
+name:"Grand Sunset Gili Air",
+score:85,
+tags:["🌅 Sonnenuntergang","🏝️ Strand","🏊 Pool"],
+checks:{
+beach5:1,
+pool:1,
+seaview:1,
+value:1
+},
+note:"Kandidat für Strand und Sonnenuntergänge."
+}
+
+],
+
+"Lombok":[
+
+{
+name:"Jeeva Klui Resort",
+score:93,
+tags:["🏝️ Strand","🌅 Meerblick","🤫 Ruhig","🌴 Natur"],
+checks:{
+beach5:1,
+sandbeach:1,
+seaview:1,
+quiet:1,
+jungle:1
+},
+note:"Sehr interessant für Ruhe, Natur und Strand."
+},
+
+{
+name:"Qunci Villas Hotel",
+score:91,
+tags:["🏝️ Strand","🏊 Pool","🌅 Meerblick","✨ Resort"],
+checks:{
+beach5:1,
+pool:1,
+seaview:1,
+modern:1,
+value:1
+},
+note:"Starker Kandidat für Resortgefühl am Meer."
+},
+
+{
+name:"Katamaran Hotel & Resort",
+score:89,
+tags:["🏝️ Strand","🏊 Pool","👨‍👩‍👧‍👦 Familie","🌅 Meerblick"],
+checks:{
+beach5:1,
+pool:1,
+family:1,
+seaview:1
+},
+note:"Gute Option für Familien und Strand."
+}
+
+],
+
+"Nusa Dua":[
+
+{
+name:"The Westin Resort Nusa Dua",
+score:91,
+tags:["🏝️ Strand","👨‍👩‍👧‍👦 Familie","🏊 Pool","✨ Resort"],
+checks:{
+beach5:1,
+pool:1,
+family:1,
+sandbeach:1
+},
+note:"Klassischer Familien- und Strandresort-Kandidat."
+},
+
+{
+name:"Nusa Dua Beach Hotel & Spa",
+score:88,
+tags:["🏝️ Strand","🌴 Garten","🏊 Pool","🥐 Frühstück"],
+checks:{
+beach5:1,
+pool:1,
+sandbeach:1,
+breakfast:1
+},
+note:"Interessant für einen komfortablen Strandabschluss."
+}
+
+],
+
+"Koh Samui":[
+
+{
+name:"Anantara Bophut Koh Samui Resort",
+score:92,
+tags:["🏝️ Strand","🏊 Pool","👨‍👩‍👧‍👦 Familie","✨ Resort"],
+checks:{
+beach5:1,
+pool:1,
+family:1,
+sandbeach:1,
+center:1
+},
+note:"Starker Kandidat für Komfort und Familienurlaub."
+},
+
+{
+name:"Peace Resort Samui",
+score:90,
+tags:["🏝️ Strand","🤫 Ruhig","🏊 Pool","🌴 Garten"],
+checks:{
+beach5:1,
+pool:1,
+quiet:1,
+sandbeach:1,
+value:1
+},
+note:"Gute Kombination aus Strand, Ruhe und Preis-Leistung."
+},
+
+{
+name:"Centara Reserve Samui",
+score:88,
+tags:["🏝️ Strand","💎 Luxus","🏊 Pool","✨ Modern"],
+checks:{
+beach5:1,
+pool:1,
+sandbeach:1,
+modern:1,
+seaview:1
+},
+note:"Für Kunden mit höherem Komfortanspruch."
+}
+
+],
+
+"Koh Phangan":[
+
+{
+name:"Santhiya Koh Phangan Resort & Spa",
+score:93,
+tags:["🌴 Natur","🌅 Aussicht","🏊 Pool","🏝️ Strand"],
+checks:{
+beach5:1,
+seaview:1,
+jungle:1,
+pool:1,
+quiet:1
+},
+note:"Starker Kandidat für Aussicht, Natur und Strand."
+},
+
+{
+name:"Panviman Resort Koh Phangan",
+score:91,
+tags:["⛰️ Aussicht","🏝️ Strand","🏊 Pool","🤫 Ruhig"],
+checks:{
+beach5:1,
+seaview:1,
+pool:1,
+quiet:1
+},
+note:"Besonders interessant für Aussicht und Ruhe."
+}
+
+],
+
+"Koh Tao":[
+
+{
+name:"Haad Tien Beach Resort",
+score:92,
+tags:["🏝️ Strand","🐠 Schnorcheln","🤫 Ruhig","🌴 Natur"],
+checks:{
+beach5:1,
+sandbeach:1,
+quiet:1,
+jungle:1
+},
+note:"Starker Insel- und Strandkandidat."
+},
+
+{
+name:"Jamahkiri Resort & Spa",
+score:89,
+tags:["🌅 Aussicht","🏊 Pool","🐠 Tauchen","🤫 Ruhig"],
+checks:{
+seaview:1,
+pool:1,
+quiet:1,
+mountain:1
+},
+note:"Interessant für Aussicht und Tauchen."
+}
+
+],
+
+"Khao Lak":[
+
+{
+name:"JW Marriott Khao Lak Resort & Spa",
+score:94,
+tags:["🏝️ Sandstrand","🏊 Pool","👨‍👩‍👧‍👦 Familie","✨ Resort"],
+checks:{
+beach5:1,
+sandbeach:1,
+pool:1,
+family:1,
+modern:1
+},
+note:"Sehr starker Familien- und Strandkandidat."
+},
+
+{
+name:"The Sarojin",
+score:92,
+tags:["🏝️ Strand","🤫 Ruhig","💎 Luxus","🌴 Natur"],
+checks:{
+beach5:1,
+quiet:1,
+jungle:1,
+sandbeach:1,
+seaview:1
+},
+note:"Für Kunden mit Fokus auf Ruhe und gehobenem Komfort."
+}
+
+],
+
+"Khao Sok":[
+
+{
+name:"500 Rai Floating Resort",
+score:94,
+tags:["🌳 Urwald","💧 See","🌅 Aussicht","✨ Besonderes"],
+checks:{
+jungle:1,
+seaview:1,
+quiet:1
+},
+note:"Ein besonderes Naturerlebnis am Cheow-Lan-See."
+},
+
+{
+name:"Elephant Hills",
+score:92,
+tags:["🐘 Natur","🌳 Urwald","⛺ Abenteuer"],
+checks:{
+jungle:1,
+quiet:1
+},
+note:"Stark für Familien, Natur und Abenteuer."
+}
+
+],
+
+"Bangkok":[
+
+{
+name:"Chatrium Hotel Riverside Bangkok",
+score:89,
+tags:["🏙️ Stadt","🌊 Flussblick","👨‍👩‍👧‍👦 Familie","🏊 Pool"],
+checks:{
+center:1,
+pool:1,
+family:1,
+seaview:1
+},
+note:"Guter Start oder Abschluss für Familien."
+},
+
+{
+name:"Eastin Grand Hotel Sathorn",
+score:91,
+tags:["🏙️ Zentrum","🚆 Verkehr","🏊 Pool","✨ Modern"],
+checks:{
+center:1,
+pool:1,
+modern:1,
+value:1
+},
+note:"Sehr praktisch für Sightseeing und Weiterreise."
+}
+
+],
+
+"Phuket":[
+
+{
+name:"JW Marriott Phuket Resort & Spa",
+score:93,
+tags:["🏝️ Strand","👨‍👩‍👧‍👦 Familie","🏊 Pool","✨ Resort"],
+checks:{
+beach5:1,
+sandbeach:1,
+pool:1,
+family:1
+},
+note:"Starker Familien- und Strandkandidat."
+},
+
+{
+name:"SAii Laguna Phuket",
+score:90,
+tags:["🏝️ Strand","🏊 Pool","👨‍👩‍👧‍👦 Familie"],
+checks:{
+beach5:1,
+pool:1,
+family:1,
+sandbeach:1
+},
+note:"Gute Option für Strand und Familienurlaub."
+}
+
+],
+
+"Krabi":[
+
+{
+name:"Rayavadee",
+score:94,
+tags:["🏝️ Strand","⛰️ Aussicht","🌴 Natur","💎 Luxus"],
+checks:{
+beach5:1,
+sandbeach:1,
+seaview:1,
+jungle:1,
+quiet:1
+},
+note:"Besonderer Natur- und Strandkandidat."
+},
+
+{
+name:"Dusit Thani Krabi Beach Resort",
+score:90,
+tags:["🏝️ Sandstrand","🏊 Pool","👨‍👩‍👧‍👦 Familie"],
+checks:{
+beach5:1,
+sandbeach:1,
+pool:1,
+family:1
+},
+note:"Gute Familienoption am Strand."
+}
+
+],
+
+"Koh Lanta":[
+
+{
+name:"Pimalai Resort & Spa",
+score:94,
+tags:["🌴 Natur","🏝️ Strand","⛰️ Aussicht","🏊 Pool"],
+checks:{
+beach5:1,
+seaview:1,
+jungle:1,
+pool:1,
+quiet:1
+},
+note:"Starker Kandidat für Natur, Aussicht und Ruhe."
+},
+
+{
+name:"Layana Resort & Spa",
+score:92,
+tags:["🏝️ Strand","🤫 Ruhig","💎 Luxus","🌴 Natur"],
+checks:{
+beach5:1,
+quiet:1,
+sandbeach:1,
+jungle:1
+},
+note:"Für ruhige Strandtage mit gehobenem Komfort."
+}
+
+],
+
+"Chiang Mai":[
+
+{
+name:"137 Pillars House Chiang Mai",
+score:90,
+tags:["🏛️ Kultur","✨ Boutique","📍 Zentrum","🏊 Pool"],
+checks:{
+center:1,
+pool:1,
+quiet:1,
+modern:1
+},
+note:"Starker Boutique-Kandidat für Chiang Mai."
+},
+
+{
+name:"Anantara Chiang Mai Resort",
+score:91,
+tags:["🏙️ Zentrum","🏊 Pool","✨ Luxus","🌴 Garten"],
+checks:{
+center:1,
+pool:1,
+modern:1,
+quiet:1
+},
+note:"Komfortable Option für Stadt und Kultur."
+}
+
+],
+
+"Puerto Morelos":[
+
+{
+name:"Hotel Marina El Cid Spa & Beach Resort",
+score:88,
+tags:["🏝️ Strand","👨‍👩‍👧‍👦 Familie","🏊 Pool","✨ Resort"],
+checks:{
+beach5:1,
+sandbeach:1,
+pool:1,
+family:1
+},
+note:"Kandidat für einen entspannten Strandstart."
+},
+
+{
+name:"Ventus Ha at Marina El Cid Spa & Beach Resort",
+score:87,
+tags:["🏝️ Strand","🏊 Pool","👨‍👩‍👧‍👦 Familie"],
+checks:{
+beach5:1,
+pool:1,
+family:1,
+sandbeach:1
+},
+note:"Alternative für Resort- und Strandfokus."
+}
+
+],
+
+"Valladolid":[
+
+{
+name:"Hotel Mesón del Marqués",
+score:89,
+tags:["🏛️ Altstadt","📍 Zentrum","💰 Preis-Leistung","🏊 Pool"],
+checks:{
+center:1,
+pool:1,
+value:1,
+quiet:1
+},
+note:"Praktisch für Stadt, Restaurants und Ausflüge."
+},
+
+{
+name:"Coqui Coqui Mesón de Malleville",
+score:86,
+tags:["✨ Boutique","🌿 Natur","🤫 Ruhig"],
+checks:{
+quiet:1,
+jungle:1,
+modern:1
+},
+note:"Besondere Boutique-Alternative."
+}
+
+],
+
+"Calakmul":[
+
+{
+name:"Hotel Puerta Calakmul",
+score:87,
+tags:["🌳 Urwald","🦎 Maya","📍 Nähe Calakmul"],
+checks:{
+jungle:1,
+quiet:1,
+value:1
+},
+note:"Praktischer Ausgangspunkt für Calakmul."
+}
+
+],
+
+"Bacalar":[
+
+{
+name:"La Albarina",
+score:91,
+tags:["💧 Lagune","🏊 Pool","🤫 Ruhig","🌅 Aussicht"],
+checks:{
+seaview:1,
+pool:1,
+quiet:1,
+jungle:1
+},
+note:"Stark für Lagune und ruhige Erholung."
+},
+
+{
+name:"Mia Bacalar Luxury Resort & Spa",
+score:92,
+tags:["💧 Lagune","💎 Luxus","🏊 Pool","🌅 Aussicht"],
+checks:{
+seaview:1,
+pool:1,
+quiet:1,
+modern:1
+},
+note:"Für Kunden mit Fokus auf Komfort und Lagune."
+}
+
+],
+
+"Akumal":[
+
+{
+name:"Akumal Bay Beach & Wellness Resort",
+score:91,
+tags:["🏝️ Sandstrand","🐢 Schnorcheln","🏊 Pool","👨‍👩‍👧‍👦 Familie"],
+checks:{
+beach5:1,
+sandbeach:1,
+pool:1,
+family:1
+},
+note:"Sehr passend für Strand, Familie und Schnorcheln."
+},
+
+{
+name:"Secrets Akumal Riviera Maya",
+score:92,
+tags:["🏝️ Strand","💎 Luxus","🐢 Schnorcheln","🏊 Pool"],
+checks:{
+beach5:1,
+sandbeach:1,
+pool:1,
+quiet:1
+},
+note:"Gehobene Alternative für ruhigen Strandurlaub."
+}
+
+],
+
+"Isla Mujeres":[
+
+{
+name:"Privilege Aluxes Isla Mujeres",
+score:90,
+tags:["🏝️ Strand","🏊 Pool","📍 Zentrum","✨ Komfort"],
+checks:{
+center:1,
+pool:1,
+beach5:1,
+value:1
+},
+note:"Gute Kombination aus Insel, Strand und Zentrum."
+},
+
+{
+name:"Hotel Secreto",
+score:88,
+tags:["🌅 Meerblick","🏊 Pool","📍 Zentrum","🤫 Ruhig"],
+checks:{
+center:1,
+pool:1,
+seaview:1,
+quiet:1
+},
+note:"Kompakte Alternative mit Aussicht."
+}
+
+],
+
+"Tulum":[
+
+{
+name:"Hotel Bardo",
+score:89,
+tags:["🌴 Natur","🏊 Pool","✨ Boutique","🤫 Ruhig"],
+checks:{
+jungle:1,
+pool:1,
+quiet:1,
+modern:1
+},
+note:"Interessant für Boutique- und Naturgefühl."
+},
+
+{
+name:"La Zebra Boutique Hotel",
+score:91,
+tags:["🏝️ Sandstrand","🌅 Meer","✨ Boutique","👨‍👩‍👧‍👦 Familie"],
+checks:{
+beach5:1,
+sandbeach:1,
+seaview:1,
+family:1
+},
+note:"Starker Strandkandidat."
 }
 
 ]
@@ -890,22 +2731,6 @@ let mapLayer=null;
 let interests={};
 
 
-const interestData=[
-
-["strand","🏝️","Strand & Meer"],
-["natur","🌴","Urwald & Natur"],
-["kultur","🏛️","Kultur & Geschichte"],
-["essen","🍜","Essen & Genuss"],
-["abenteuer","🏔️","Abenteuer"],
-["tauchen","🐠","Tauchen & Schnorcheln"],
-["erholung","😌","Erholung"],
-["familie","👨‍👩‍👧‍👦","Familie"],
-["stadt","🏙️","Städte & Shopping"],
-["romantik","❤️","Romantik"]
-
-];
-
-
 function money(n){
 
 return "CHF "+
@@ -914,10 +2739,597 @@ Math.round(n).toLocaleString("de-CH");
 }
 
 
+function renderHotelPrefs(){
+
+const box=
+document.getElementById(
+"hotelPrefs"
+);
+
+if(!box)
+return;
+
+box.innerHTML="";
+
+hotelPrefs.forEach(p=>{
+
+const el=
+document.createElement("div");
+
+el.className="pref";
+
+el.dataset.key=p[0];
+
+el.innerHTML=
+`<b>${p[1]} ${p[2]}</b>
+<small>${p[3]}</small>`;
+
+el.onclick=()=>
+el.classList.toggle(
+"selected"
+);
+
+box.appendChild(el);
+
+});
+
+}
+
+
+function getHotelPrefs(){
+
+return [
+...document.querySelectorAll(
+"#hotelPrefs .pref.selected"
+)
+].map(
+x=>x.dataset.key
+);
+
+}
+
+
+function hotelMatch(h,prefs){
+
+let score=
+h.score||
+80;
+
+const checks=
+h.checks||
+{};
+
+prefs.forEach(p=>{
+
+if(checks[p]===1)
+score+=3;
+
+else if(checks[p]===0)
+score-=2;
+
+else
+score-=1;
+
+});
+
+if(prefs.length)
+
+score=
+Math.max(
+50,
+Math.min(
+99,
+score
+)
+);
+
+return score;
+
+}
+
+
+function bookingLinks(city,hotel){
+
+const q=
+encodeURIComponent(
+hotel+
+" "+
+city
+);
+
+return {
+
+booking:
+"https://www.booking.com/searchresults.html?ss="+q,
+
+agoda:
+"https://www.agoda.com/search?text="+q,
+
+hotels:
+"https://www.hotels.com/search.do?q-destination="+q,
+
+trivago:
+"https://www.trivago.com/en-US/srl/hotels?search="+q
+
+};
+
+}
+
+
+function googleMapsLinks(city,hotel){
+
+const h=
+encodeURIComponent(
+hotel+
+" "+
+city
+);
+
+const beach=
+encodeURIComponent(
+hotel+
+" "+
+city+
+" beach"
+);
+
+const center=
+encodeURIComponent(
+hotel+
+" "+
+city+
+" center"
+);
+
+return {
+
+hotel:
+"https://www.google.com/maps/search/?api=1&query="+h,
+
+beach:
+"https://www.google.com/maps/dir/?api=1&origin="+h+
+"&destination="+beach+
+"&travelmode=walking",
+
+center:
+"https://www.google.com/maps/dir/?api=1&origin="+h+
+"&destination="+center+
+"&travelmode=walking"
+
+};
+
+}
+
+
+function renderHotels(){
+
+const box=
+document.getElementById(
+"hotelRecommendations"
+);
+
+if(!box)
+return;
+
+box.innerHTML="";
+
+const prefs=
+getHotelPrefs();
+
+currentStops.forEach(
+(stop,si)=>{
+
+const candidates=
+hotelCandidates[
+stop.name
+]||
+[];
+
+const scored=
+candidates
+.map(
+(h,i)=>({
+...h,
+_score:
+hotelMatch(
+h,
+prefs
+),
+_i:i
+})
+)
+.sort(
+(a,b)=>
+b._score-
+a._score
+)
+.slice(
+0,
+3
+);
+
+const wrap=
+document.createElement(
+"div"
+);
+
+wrap.className="section";
+
+wrap.style.margin=
+"0 0 24px";
+
+const title=
+document.createElement(
+"h3"
+);
+
+title.textContent=
+stop.name+
+" · "+
+stop.nights+
+" "+
+(
+stop.nights===1
+?"Nacht"
+:"Nächte"
+);
+
+wrap.appendChild(
+title
+);
+
+const grid=
+document.createElement(
+"div"
+);
+
+grid.className="hotelgrid";
+
+if(!scored.length){
+
+const links=
+bookingLinks(
+stop.name,
+stop.name
+);
+
+const maps=
+googleMapsLinks(
+stop.name,
+stop.name
+);
+
+grid.innerHTML=
+`<div class="hotelcard">
+
+<span class="badge">
+📍 EIGENER ORT
+</span>
+
+<h3>
+${stop.name}
+</h3>
+
+<p class="muted">
+Für diesen selbst eingefügten Ort ist noch keine kuratierte
+TRIPINOVA-Hotelliste hinterlegt.
+</p>
+
+<div class="hotel-actions">
+
+<button
+class="secondary"
+onclick="window.open('${maps.hotel}','_blank')">
+📍 Maps
+</button>
+
+<button
+class="secondary"
+onclick="window.open('${links.booking}','_blank')">
+Booking
+</button>
+
+<button
+class="secondary"
+onclick="window.open('${links.agoda}','_blank')">
+Agoda
+</button>
+
+<button
+class="secondary"
+onclick="window.open('${links.hotels}','_blank')">
+Hotels.com
+</button>
+
+<button
+class="secondary"
+onclick="window.open('${links.trivago}','_blank')">
+trivago
+</button>
+
+</div>
+
+</div>`;
+
+}else{
+
+scored.forEach(
+(h,i)=>{
+
+const links=
+bookingLinks(
+stop.name,
+h.name
+);
+
+const maps=
+googleMapsLinks(
+stop.name,
+h.name
+);
+
+const checks=
+h.checks||
+{};
+
+const wanted=
+prefs.length
+?
+prefs
+:
+["value"];
+
+const checkRows=
+wanted
+.slice(0,6)
+.map(
+key=>{
+
+const p=
+hotelPrefs.find(
+x=>x[0]===key
+);
+
+if(!p)
+return "";
+
+let status=
+checks[key]===1
+?
+"🟢 passend"
+:
+checks[key]===0
+?
+"🔴 nicht passend"
+:
+"🟡 prüfen";
+
+return `
+<div>
+<span>
+${p[1]} ${p[2]}
+</span>
+<b>
+${status}
+</b>
+</div>
+`;
+
+}
+)
+.join("");
+
+const card=
+document.createElement(
+"div"
+);
+
+card.className=
+"hotelcard"+
+(
+i===0
+?
+" recommended"
+:
+""
+);
+
+card.innerHTML=
+`
+${
+i===0
+?
+'<span class="badge">🥇 BEST MATCH</span>'
+:
+'<span class="badge">'+
+(
+i===1
+?
+'🥈 ALTERNATIVE'
+:
+'🥉 PREIS-LEISTUNG'
+)+
+'</span>'
+}
+
+<h3>
+${h.name}
+</h3>
+
+<div class="match">
+${h._score}% Match
+</div>
+
+<div class="hotel-tags">
+
+${h.tags
+.map(
+t=>
+`<span class="hotel-tag">${t}</span>`
+)
+.join("")}
+
+</div>
+
+<p class="muted">
+${h.note}
+</p>
+
+<div class="hotel-check">
+
+${checkRows}
+
+<div>
+<span>
+⭐ Hotelbewertung
+</span>
+
+<b>
+${h.score}/100*
+</b>
+
+</div>
+
+</div>
+
+<small class="muted">
+* Die Matchbewertung ist eine TRIPINOVA-Priorisierung.
+Preis, Zimmerverfügbarkeit und aktuelle Gästebewertung vor Buchung prüfen.
+</small>
+
+<div class="hotel-actions">
+
+<button
+class="primary"
+onclick="chooseHotel(
+'${h.name.replace(/'/g,"\\'")}',
+'${stop.name.replace(/'/g,"\\'")}'
+)">
+Hotel wählen
+</button>
+
+<button
+class="secondary"
+onclick="window.open(
+'${maps.hotel}',
+'_blank'
+)">
+📍 Maps
+</button>
+
+<button
+class="secondary"
+onclick="window.open(
+'${maps.beach}',
+'_blank'
+)">
+🚶 Strand
+</button>
+
+<button
+class="secondary"
+onclick="window.open(
+'${links.booking}',
+'_blank'
+)">
+Booking
+</button>
+
+<button
+class="secondary"
+onclick="window.open(
+'${links.agoda}',
+'_blank'
+)">
+Agoda
+</button>
+
+<button
+class="secondary"
+onclick="window.open(
+'${links.hotels}',
+'_blank'
+)">
+Hotels.com
+</button>
+
+<button
+class="secondary"
+onclick="window.open(
+'${links.trivago}',
+'_blank'
+)">
+trivago
+</button>
+
+</div>
+`;
+
+grid.appendChild(
+card
+);
+
+});
+
+}
+
+wrap.appendChild(
+grid
+);
+
+box.appendChild(
+wrap
+);
+
+});
+
+}
+
+
+function chooseHotel(
+hotel,
+city
+){
+
+localStorage.setItem(
+"tripinova_selected_hotel_"+
+city,
+hotel
+);
+
+const msg=
+document.getElementById(
+"saveMessage"
+);
+
+if(msg){
+
+msg.style.display="block";
+
+msg.textContent=
+"✓ "+
+hotel+
+" wurde für "+
+city+
+" ausgewählt.";
+
+setTimeout(
+()=>
+msg.style.display="none",
+3000
+);
+
+}
+
+}
+
+
 function countryChanged(){
 
 country=
-document.getElementById("country").value;
+document.getElementById(
+"country"
+).value;
 
 if(!country)
 return;
@@ -967,24 +3379,38 @@ document.getElementById(
 
 box.innerHTML="";
 
-places[country].forEach(p=>{
+places[country].forEach(
+p=>{
 
 const el=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 el.className="placecard";
 
-el.dataset.name=p.name;
+el.dataset.name=
+p.name;
 
 el.innerHTML=
-"<b>"+p.tag+"</b>"+
-"<h4>"+p.name+"</h4>"+
-"<small>"+p.desc+"</small>";
+"<b>"+
+p.tag+
+"</b>"+
+"<h4>"+
+p.name+
+"</h4>"+
+"<small>"+
+p.desc+
+"</small>";
 
 el.onclick=()=>
-el.classList.toggle("selected");
+el.classList.toggle(
+"selected"
+);
 
-box.appendChild(el);
+box.appendChild(
+el
+);
 
 });
 
@@ -1004,6 +3430,22 @@ x=>x.dataset.name
 }
 
 
+const interestData=[
+
+["strand","🏝️","Strand & Meer"],
+["natur","🌴","Urwald & Natur"],
+["kultur","🏛️","Kultur & Geschichte"],
+["essen","🍜","Essen & Genuss"],
+["abenteuer","🏔️","Abenteuer"],
+["tauchen","🐠","Tauchen & Schnorcheln"],
+["erholung","😌","Erholung"],
+["familie","👨‍👩‍👧‍👦","Familie"],
+["stadt","🏙️","Städte & Shopping"],
+["romantik","❤️","Romantik"]
+
+];
+
+
 function renderCountryPlaces(){
 
 const box=
@@ -1013,16 +3455,20 @@ document.getElementById(
 
 box.innerHTML="";
 
-interestData.forEach(x=>{
+interestData.forEach(
+x=>{
 
 interests[x[0]]=0;
 
 const el=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 el.className="interest";
 
-el.dataset.key=x[0];
+el.dataset.key=
+x[0];
 
 el.innerHTML=
 `<span class="emoji">${x[1]}</span>
@@ -1032,7 +3478,11 @@ el.innerHTML=
 el.onclick=()=>{
 
 interests[x[0]]=
-interests[x[0]]?0:3;
+interests[x[0]]
+?
+0
+:
+3;
 
 el.classList.toggle(
 "selected"
@@ -1040,7 +3490,9 @@ el.classList.toggle(
 
 };
 
-box.appendChild(el);
+box.appendChild(
+el
+);
 
 });
 
@@ -1052,12 +3504,16 @@ function changeAdults(n){
 adults=
 Math.max(
 1,
-Math.min(8,adults+n)
+Math.min(
+8,
+adults+n
+)
 );
 
 document.getElementById(
 "adultCount"
-).textContent=adults;
+).textContent=
+adults;
 
 }
 
@@ -1067,14 +3523,21 @@ function changeChildren(n){
 children=
 Math.max(
 0,
-Math.min(6,children+n)
+Math.min(
+6,
+children+n
+)
 );
 
 document.getElementById(
 "childCount"
-).textContent=children;
+).textContent=
+children;
 
-while(childAges.length<children){
+while(
+childAges.length<
+children
+){
 
 childAges.push(0);
 
@@ -1115,51 +3578,82 @@ return;
 
 box.style.display="block";
 
-for(let i=0;i<children;i++){
+for(
+let i=0;
+i<children;
+i++
+){
 
 const row=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 row.className="child";
 
 const b=
-document.createElement("b");
+document.createElement(
+"b"
+);
 
 b.textContent=
-"Kind "+(i+1);
+"Kind "+
+(
+i+1
+);
 
 const s=
-document.createElement("select");
+document.createElement(
+"select"
+);
 
-for(let a=0;a<=17;a++){
+for(
+let a=0;
+a<=17;
+a++
+){
 
 const o=
-document.createElement("option");
+document.createElement(
+"option"
+);
 
 o.value=a;
 
 o.textContent=
 a===0
-?"unter 1 Jahr"
-:a+" Jahre";
+?
+"unter 1 Jahr"
+:
+a+
+" Jahre";
 
-if(childAges[i]===a)
+if(
+childAges[i]===a
+)
+
 o.selected=true;
 
-s.appendChild(o);
+s.appendChild(
+o
+);
 
 }
 
 s.onchange=()=>
 childAges[i]=
-Number(s.value);
+Number(
+s.value
+);
 
 row.append(
 b,
 s
 );
 
-out.appendChild(row);
+out.appendChild(
+row
+);
 
 }
 
@@ -1173,7 +3667,8 @@ document
 `[data-group="${g}"]`
 )
 .forEach(
-x=>x.classList.remove(
+x=>
+x.classList.remove(
 "selected"
 )
 );
@@ -1202,6 +3697,14 @@ document.getElementById(
 ).classList.remove(
 "hidden"
 );
+
+document.getElementById(
+"hotelSection"
+).classList.remove(
+"hidden"
+);
+
+renderHotelPrefs();
 
 document.getElementById(
 "styleSection"
@@ -1235,14 +3738,23 @@ document.getElementById(
 
 box.innerHTML="";
 
-routes[country].forEach((r,i)=>{
+routes[country].forEach(
+(r,i)=>{
 
 const el=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 el.className=
 "routecard"+
-(i===0?" best":"");
+(
+i===0
+?
+" best"
+:
+""
+);
 
 el.innerHTML=
 
@@ -1250,7 +3762,9 @@ el.innerHTML=
 ${i===0?"TRIPINOVA EMPFEHLUNG":"ALTERNATIVE"}
 </span>
 
-<h3>${r.name}</h3>
+<h3>
+${r.name}
+</h3>
 
 <p>
 <b>
@@ -1265,27 +3779,49 @@ ${r.desc}
 </p>
 
 <p>
-<span class="badge">Karte</span>
-<span class="badge">Nächte</span>
-<span class="badge">Budget</span>
+<span class="badge">
+Karte
+</span>
+
+<span class="badge">
+Nächte
+</span>
+
+<span class="badge">
+Budget
+</span>
+
 </p>
 
 <p>
-<b>${r.stops.length} Orte</b>
- · ${r.stops.reduce(
-(a,b)=>a+b[1],0
-)} Nächte
+<b>
+${r.stops.length} Orte
+</b>
+ ·
+${r.stops.reduce(
+(a,b)=>a+b[1],
+0
+)}
+Nächte
 </p>
 
 <button
-class="${i===0?"primary":"secondary"}"
+class="${
+i===0
+?
+"primary"
+:
+"secondary"
+}"
 onclick="selectRoute(${i})">
 
 Diese Route wählen
 
 </button>`;
 
-box.appendChild(el);
+box.appendChild(
+el
+);
 
 });
 
@@ -1294,14 +3830,16 @@ box.appendChild(el);
 
 function selectRoute(i){
 
-selectedRoute=i;
+selectedRoute=
+i;
 
 const wanted=
 Number(
 document.getElementById(
 "placeCount"
 ).value
-)||5;
+)||
+5;
 
 let base=
 routes[country][i].stops.map(
@@ -1316,16 +3854,21 @@ getMustPlaces();
 
 const merged=[];
 
-for(const n of must){
+for(
+const n of must
+){
 
 const found=
 base.find(
-x=>x.name===n
+x=>
+x.name===n
 );
 
 if(found)
 
-merged.push({...found});
+merged.push({
+...found
+});
 
 else
 
@@ -1336,7 +3879,9 @@ nights:2
 
 }
 
-for(const x of base){
+for(
+const x of base
+){
 
 if(
 !merged.some(
@@ -1345,7 +3890,9 @@ y=>y.name===x.name
 merged.length<wanted
 )
 
-merged.push({...x});
+merged.push({
+...x
+});
 
 }
 
@@ -1399,10 +3946,13 @@ document.getElementById(
 
 box.innerHTML="";
 
-currentStops.forEach((s,i)=>{
+currentStops.forEach(
+(s,i)=>{
 
 const el=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 el.className="stop";
 
@@ -1413,27 +3963,38 @@ ${String(i+1).padStart(2,"0")}
 </div>
 
 <div>
-<h3>${s.name}</h3>
+
+<h3>
+${s.name}
+</h3>
+
 <span class="muted">
 ${placeInfo(s.name)}
 </span>
+
 </div>
 
 <div class="stop-actions">
 
 <div class="night">
 
-<button onclick="changeNights(${i},-1)">
+<button
+onclick="changeNights(${i},-1)">
 −
 </button>
 
-<span>${s.nights}</span>
+<span>
+${s.nights}
+</span>
 
-<button onclick="changeNights(${i},1)">
+<button
+onclick="changeNights(${i},1)">
 +
 </button>
 
-<small>Nächte</small>
+<small>
+Nächte
+</small>
 
 </div>
 
@@ -1457,7 +4018,9 @@ Entfernen
 
 </div>`;
 
-box.appendChild(el);
+box.appendChild(
+el
+);
 
 });
 
@@ -1472,13 +4035,15 @@ places
 ).flat()
 )
 
-if(p.name===name)
+if(
+p.name===name
+)
 
 return p.tag+
 " · "+
 p.desc;
 
-return "Reiseetappe";
+return "Eigener Ort · Lage und Angebote werden separat geprüft.";
 
 }
 
@@ -1498,12 +4063,14 @@ renderEditor();
 
 function moveStop(i,n){
 
-const j=i+n;
+const j=
+i+n;
 
 if(
 j<0||
 j>=currentStops.length
 )
+
 return;
 
 [
@@ -1543,6 +4110,60 @@ renderEditor();
 }
 
 
+function addCustomStop(){
+
+const input=
+document.getElementById(
+"customPlaceInput"
+);
+
+const name=
+(
+input?.value||
+""
+).trim();
+
+if(!name){
+
+alert(
+"Bitte zuerst einen Ort eingeben."
+);
+
+return;
+
+}
+
+if(
+currentStops.some(
+x=>
+x.name.toLowerCase()===
+name.toLowerCase()
+)
+){
+
+alert(
+"Dieser Ort ist bereits in deiner Route."
+);
+
+return;
+
+}
+
+currentStops.push({
+name:name,
+nights:2
+});
+
+if(input)
+input.value="";
+
+renderEditor();
+
+refreshTrip();
+
+}
+
+
 function addStop(){
 
 const used=
@@ -1552,7 +4173,8 @@ x=>x.name
 
 const available=
 places[country].filter(
-x=>!used.includes(
+x=>
+!used.includes(
 x.name
 )
 );
@@ -1582,7 +4204,10 @@ renderEditor();
 
 function refreshTrip(){
 
-if(!currentStops.length)
+if(
+!currentStops.length
+)
+
 return;
 
 renderResult();
@@ -1664,12 +4289,16 @@ document.createElement(
 
 p.className="point";
 
-p.textContent=s.name;
+p.textContent=
+s.name;
 
-line.appendChild(p);
+line.appendChild(
+p
+);
 
 if(
-i<currentStops.length-1
+i<
+currentStops.length-1
 ){
 
 const a=
@@ -1681,7 +4310,9 @@ a.className="arrow";
 
 a.textContent="→";
 
-line.appendChild(a);
+line.appendChild(
+a
+);
 
 }
 
@@ -1690,7 +4321,8 @@ line.appendChild(a);
 
 const totalNights=
 currentStops.reduce(
-(a,b)=>a+b.nights,
+(a,b)=>
+a+b.nights,
 0
 );
 
@@ -1702,10 +4334,13 @@ document.getElementById(
 ${totalNights} Nächte ·
 ${currentStops.length} Orte
 </b>
+
 <br>
+
 <span class="muted">
 ${currentStops.map(
-s=>s.name+
+s=>
+s.name+
 " ("+
 s.nights+
 " Nächte)"
@@ -1735,25 +4370,40 @@ el.className="day";
 el.innerHTML=
 
 `<div>
+
 <b>
 Tag ${day}–${day+s.nights-1}
 </b>
+
 </div>
 
 <div>
-<b>${s.name}</b>
+
+<b>
+${s.name}
+</b>
 
 <span class="muted">
 ${s.nights}
-${s.nights===1?"Nacht":"Nächte"}
- · ${placeInfo(s.name)}
+${
+s.nights===1
+?
+"Nacht"
+:
+"Nächte"
+}
+ ·
+${placeInfo(s.name)}
 </span>
 
 </div>`;
 
-it.appendChild(el);
+it.appendChild(
+el
+);
 
-day+=s.nights;
+day+=
+s.nights;
 
 });
 
@@ -1763,18 +4413,24 @@ Number(
 document.getElementById(
 "budget"
 ).value
-)||8000;
+)||
+8000;
 
 document.getElementById(
 "budgetSlider"
-).value=budget;
+).value=
+budget;
 
-updateBudget(budget);
+updateBudget(
+budget
+);
 
 setTimeout(
 drawMap,
 80
 );
+
+renderHotels();
 
 }
 
@@ -1787,7 +4443,8 @@ return;
 const pts=
 currentStops
 .map(
-s=>coords[s.name]
+s=>
+coords[s.name]
 )
 .filter(Boolean);
 
@@ -1796,7 +4453,8 @@ return;
 
 if(!map){
 
-map=L.map(
+map=
+L.map(
 "realMap",
 {
 scrollWheelZoom:false,
@@ -1810,7 +4468,9 @@ L.tileLayer(
 attribution:
 "© OpenStreetMap contributors"
 }
-).addTo(map);
+).addTo(
+map
+);
 
 }
 
@@ -1835,7 +4495,9 @@ coords[s.name];
 if(!c)
 return;
 
-line.push(c);
+line.push(
+c
+);
 
 L.marker(c)
 .bindPopup(
@@ -1847,7 +4509,9 @@ s.name+
 s.nights+
 " Nächte"
 )
-.addTo(mapLayer);
+.addTo(
+mapLayer
+);
 
 });
 
@@ -1859,7 +4523,9 @@ line,
 {
 weight:4
 }
-).addTo(mapLayer);
+).addTo(
+mapLayer
+);
 
 map.fitBounds(
 line,
@@ -1886,9 +4552,13 @@ if(
 !el||
 !window.L
 )
+
 return;
 
-if(window.finalMap)
+if(
+window.finalMap
+)
+
 window.finalMap.remove();
 
 window.finalMap=
@@ -1926,7 +4596,9 @@ coords[s.name];
 if(!c)
 return;
 
-line.push(c);
+line.push(
+c
+);
 
 L.marker(c)
 .bindPopup(
@@ -1939,11 +4611,15 @@ s.nights+
 " "+
 (
 s.nights===1
-?"Nacht"
-:"Nächte"
+?
+"Nacht"
+:
+"Nächte"
 )
 )
-.addTo(layer);
+.addTo(
+layer
+);
 
 });
 
@@ -1955,8 +4631,9 @@ line,
 {
 weight:5
 }
-).addTo(layer);
-
+).addTo(
+layer
+);
 
 if(line.length===1)
 
@@ -1977,7 +4654,8 @@ padding:[35,35]
 
 const totalNights=
 currentStops.reduce(
-(a,b)=>a+b.nights,
+(a,b)=>
+a+b.nights,
 0
 );
 
@@ -2019,7 +4697,8 @@ Number(
 document.getElementById(
 "budget"
 ).value
-)||8000
+)||
+8000
 );
 
 }
@@ -2060,18 +4739,22 @@ s.nights+
 " "+
 (
 s.nights===1
-?"Nacht"
-:"Nächte"
+?
+"Nacht"
+:
+"Nächte"
 )+
 "<br>"+
 placeInfo(s.name)+
 "</small>";
 
-strip.appendChild(card);
-
+strip.appendChild(
+card
+);
 
 if(
-i<currentStops.length-1
+i<
+currentStops.length-1
 ){
 
 const c=
@@ -2084,7 +4767,9 @@ c.className=
 
 c.textContent="→";
 
-strip.appendChild(c);
+strip.appendChild(
+c
+);
 
 }
 
@@ -2095,7 +4780,8 @@ strip.appendChild(c);
 
 function updateBudget(v){
 
-v=Number(v);
+v=
+Number(v);
 
 document.getElementById(
 "budgetDisplay"
@@ -2105,15 +4791,15 @@ Math.round(v)
 "de-CH"
 );
 
-const vals=
-[
+const vals=[
 .28,
 .40,
 .08,
 .09,
 .07
 ].map(
-x=>v*x
+x=>
+v*x
 );
 
 [
@@ -2124,9 +4810,12 @@ x=>v*x
 "foodCost"
 ].forEach(
 (id,i)=>
-document.getElementById(id)
-.textContent=
-money(vals[i])
+document.getElementById(
+id
+).textContent=
+money(
+vals[i]
+)
 );
 
 document.getElementById(
@@ -2134,7 +4823,8 @@ document.getElementById(
 ).textContent=
 money(
 vals.reduce(
-(a,b)=>a+b,
+(a,b)=>
+a+b,
 0
 )
 );
@@ -2145,6 +4835,7 @@ document.getElementById(
 );
 
 if(sb)
+
 sb.textContent=
 money(v);
 
@@ -2184,6 +4875,29 @@ interests:{
 ...interests
 },
 
+hotelPrefs:
+getHotelPrefs(),
+
+hotelNote:
+document.getElementById(
+"hotelNote"
+)?.value||
+"",
+
+selectedHotels:
+Object.fromEntries(
+currentStops.map(
+s=>[
+s.name,
+localStorage.getItem(
+"tripinova_selected_hotel_"+
+s.name
+)||
+""
+]
+)
+),
+
 from:
 document.getElementById(
 "from"
@@ -2218,7 +4932,9 @@ document.getElementById(
 
 localStorage.setItem(
 "tripinova_saved_trip",
-JSON.stringify(data)
+JSON.stringify(
+data
+)
 );
 
 const msg=
@@ -2228,13 +4944,15 @@ document.getElementById(
 
 if(msg){
 
-msg.style.display="block";
+msg.style.display=
+"block";
 
 msg.textContent=
 "✓ Deine Reise wurde auf diesem Gerät gespeichert.";
 
 setTimeout(
-()=>msg.style.display="none",
+()=>
+msg.style.display="none",
 3500
 );
 
@@ -2278,16 +4996,24 @@ Number(d.children)||
 0;
 
 childAges=
-Array.isArray(d.childAges)
-?d.childAges:
+Array.isArray(
+d.childAges
+)
+?
+d.childAges
+:
 [];
 
 selectedRoute=
-Number(d.selectedRoute)||
+Number(
+d.selectedRoute
+)||
 0;
 
 currentStops=
-Array.isArray(d.currentStops)
+Array.isArray(
+d.currentStops
+)
 ?
 d.currentStops.map(
 x=>({
@@ -2340,6 +5066,18 @@ document.getElementById(
 d.budget||
 8000;
 
+if(
+document.getElementById(
+"hotelNote"
+)
+)
+
+document.getElementById(
+"hotelNote"
+).value=
+d.hotelNote||
+"";
+
 document.getElementById(
 "placeCount"
 ).value=
@@ -2368,6 +5106,12 @@ document.getElementById(
 );
 
 document.getElementById(
+"hotelSection"
+).classList.remove(
+"hidden"
+);
+
+document.getElementById(
 "styleSection"
 ).classList.remove(
 "hidden"
@@ -2382,6 +5126,27 @@ document.getElementById(
 renderCountryPlaces();
 
 renderPlaceChoices();
+
+renderHotelPrefs();
+
+(
+d.hotelPrefs||
+[]
+).forEach(
+k=>{
+
+const el=
+document.querySelector(
+`#hotelPrefs .pref[data-key="${k}"]`
+);
+
+if(el)
+el.classList.add(
+"selected"
+);
+
+}
+);
 
 renderRoutes();
 
@@ -2400,6 +5165,28 @@ document.getElementById(
 );
 
 renderResult();
+
+(
+d.selectedHotels||
+{}
+);
+
+Object.entries(
+d.selectedHotels||
+{}
+).forEach(
+([city,hotel])=>{
+
+if(hotel)
+
+localStorage.setItem(
+"tripinova_selected_hotel_"+
+city,
+hotel
+);
+
+}
+);
 
 setTimeout(
 drawMap,
